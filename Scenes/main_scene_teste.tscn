@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cum7f7rew7u4d"]
+
+[ext_resource type="PackedScene" uid="uid://cctan0cxox4el" path="res://Prefabs/Joueur.tscn" id="1_il8hn"]
+
+[node name="MainScene" type="Node2D"]
+
+[node name="Joueur" parent="." instance=ExtResource("1_il8hn")]
+position = Vector2(150, 150)

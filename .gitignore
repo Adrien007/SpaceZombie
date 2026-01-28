@@ -1,0 +1,22 @@
+# Godot 4+
+.godot/
+
+# Godot 3.x
+.import/
+
+# Exported builds
+export/
+exports/
+
+# Mono / C#
+.mono/
+.nuget/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+

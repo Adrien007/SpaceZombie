@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://jtkmbfleqcdn"]
+
+[ext_resource type="Script" uid="uid://br8jict4vgalp" path="res://Scripts/Mondes/AeraPlayBound.cs" id="1_jc1jd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v7c55"]
+
+[node name="AeraPlayBounds" type="Control" node_paths=PackedStringArray("area", "collisionShape2D")]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jc1jd")
+area = NodePath("Control/Area2D")
+collisionShape2D = NodePath("Control/Area2D/CollisionShape2D")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Area2D" type="Area2D" parent="Control"]
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/Area2D"]
+shape = SubResource("RectangleShape2D_v7c55")

@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://cccdrmtfnmbgi"]
+
+[ext_resource type="Script" uid="uid://cuwcuwe3vhqrj" path="res://Scripts/Enemies/EnemyObjet.cs" id="1_pj2xj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r77uo"]
+radius = 20.0
+
+[node name="Enemy" type="Node2D" node_paths=PackedStringArray("area", "panel")]
+script = ExtResource("1_pj2xj")
+area = NodePath("Area2D")
+panel = NodePath("Panel")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 536870912
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_r77uo")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
