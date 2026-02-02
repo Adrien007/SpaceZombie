@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dqdl0p8fg2rt2"]
+
+[ext_resource type="Script" uid="uid://by12bheanyax6" path="res://Scripts/title_screen.gd" id="1_klylv"]
+
+[node name="TitleScreen" type="Control" unique_id=22300465]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_klylv")
+
+[node name="StartButton" type="Button" parent="." unique_id=1698263586]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 341.0
+offset_right = 654.0
+offset_bottom = 397.0
+text = "Start"
+
+[node name="Quit" type="Button" parent="." unique_id=1344365612]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 519.0
+offset_right = 654.0
+offset_bottom = 575.0
+text = "Quit"
+
+[node name="ButtonEnglish" type="Button" parent="." unique_id=1984175847]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 401.0
+offset_right = 653.0
+offset_bottom = 455.0
+text = "English"
+
+[node name="ButtonFrancais" type="Button" parent="." unique_id=1014296910]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 460.0
+offset_right = 653.0
+offset_bottom = 510.0
+text = "Français"
+
+[node name="Title" type="Label" parent="." unique_id=2802375]
+modulate = Color(0, 1, 1, 1)
+layout_mode = 0
+offset_right = 1150.0
+offset_bottom = 340.0
+theme_override_colors/font_color = Color(0.15966657, 0.35595918, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.25117916, 0.07615139, 0.03541747, 1)
+theme_override_colors/font_outline_color = Color(0.34509805, 0.5058824, 0, 1)
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 50
+theme_override_font_sizes/font_size = 150
+text = "SPACE ZOMBIE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="ButtonEnglish" to="." method="_on_button_english_pressed"]
+[connection signal="pressed" from="ButtonFrancais" to="." method="_on_button_francais_pressed"]
