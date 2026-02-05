@@ -14,11 +14,11 @@ namespace SpaceZombie.Cannons
             base._Ready();
             
         }
-        public void Initialize(Control mainAera, int capacity, Projectile projectile, IBulletCollisionManager bulletCollisionManager)
+        public void Initialize(Control mainAera, int capacity, uint collisionLayer, uint collisionMask, Projectile projectile, IBulletCollisionManager bulletCollisionManager)
         {
-            InitializeBuffer(mainAera, capacity, projectile, bulletCollisionManager);
+            InitializeBuffer(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager);
         }
-        private void InitializeBuffer(Control mainAera, int capacity, Projectile projectile, IBulletCollisionManager bulletCollisionManager)
+        private void InitializeBuffer(Control mainAera, int capacity, uint collisionLayer, uint collisionMask, Projectile projectile, IBulletCollisionManager bulletCollisionManager)
         {
             projectileBuffer = new CircularBuffer<ProjectileObjet>(capacity);
 
@@ -29,7 +29,7 @@ namespace SpaceZombie.Cannons
             for (int i = 0; i < capacity; i++)
             {
                 ProjectileObjet projectileInstance = (ProjectileObjet)projectileScene.Instantiate();
-                projectileInstance.Initialize(projectile, bulletCollisionManager);
+                projectileInstance.Initialize(collisionLayer, collisionMask, projectile, bulletCollisionManager);
                 projectileInstance.HitSignal += HandleHitSignal;
                 mainAera.AddChild(projectileInstance);
                 projectileBuffer.Enqueue(projectileInstance);

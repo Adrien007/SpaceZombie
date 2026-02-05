@@ -40,8 +40,10 @@ namespace SpaceZombie.Events
             projectile.Disable();
             //projectile.CallDeferred(ProjectileObjet.CALL_DEFFERED_DISABLE);
             var j = JoueurEventHandler.TrouverParent(aera2D);
+            var t = j.GetType();
+            GD.Print($"Parent: {t}");
             JoueurEventHandler.GestionHitSurEnemy(j, projectile.Projectile.Damage);
-            GD.Print($"[DamageSystem] Enemy took damage!");
+            GD.Print($"[DamageSystem] Player took damage!");
         }
     }
 }

@@ -38,9 +38,6 @@ namespace SpaceZombie.Joueurs
             reloadTimer.OneShot = true;
             reloadTimer.Timeout += OnReloadTimeout;
         }
-        public void Initialiser(int hp)
-        {
-        }
 
         public override void _PhysicsProcess(double delta)
         {
@@ -89,9 +86,14 @@ namespace SpaceZombie.Joueurs
         }
 
 
-        public void Initialize(Control mainAera, int capacity, Projectile projectile, IBulletCollisionManager bulletCollisionManager)
+        public void Initialize(int hp, int invicibilityTimerTime, Control mainAera, int capacity, uint collisionLayer, uint collisionMask, Projectile projectile, IBulletCollisionManager bulletCollisionManager)
         {
-            cannon0.Initialize(mainAera, capacity, projectile, bulletCollisionManager);
+            Timer invisibilityTimer = new Timer();
+            invisibilityTimer.Name = "invisibilityTimer";
+            invisibilityTimer.WaitTime = invicibilityTimerTime;
+            this.AddChild(invisibilityTimer);
+            jState = new JoueurEtat(hp, invisibilityTimer);
+            cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager);
         }
         public void InitialiserSize(Vector2 size)
         {

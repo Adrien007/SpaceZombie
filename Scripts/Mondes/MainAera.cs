@@ -15,6 +15,7 @@ namespace SpaceZombie.Mondes.Utilitaires
         [Export] private AeraPlayBound area;
         [Export] private Joueur joueur;
         [Export] private ZombiesSpawn zombiesSpawn;
+        private EnemyAttackManager enemyAttackManager;
         private LevelManager lm;
         private EnemyEventSystem ees;
         private JoueurEventSystem jes;
@@ -43,7 +44,16 @@ namespace SpaceZombie.Mondes.Utilitaires
 
             joueur.InitialiserSize(this.Size);
             joueur.InitialiserPosition(this.Position);
-            joueur.Initialize(this, 14, new Ammunitions.Projectile(1, 250f, false), ees);
+            uint collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.ProjectileJoueur);
+            uint collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
+                                 | LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
+            joueur.Initialize(2, 0, this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 250f, false), ees);
+
+            collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
+            collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
+                                 | LayerDictionnary.GetLayer(LayerDictionnary.Joueur);
+            enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes);
+            
 
             //lm.DemarrerPremierNiveau();
             lm.DemarrerNiveau(0, 1);
@@ -51,7 +61,9 @@ namespace SpaceZombie.Mondes.Utilitaires
 
         public override void _PhysicsProcess(double delta)
         {
+            enemyAttackManager.Fire();//Tempo
             ees.Notify();
+            jes.Notify();
         }
 
         private void QUITTER()

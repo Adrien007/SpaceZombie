@@ -14,5 +14,7 @@ namespace SpaceZombie.Enemies
             enemyObj.SetEnemy(mapper);
             enemyObj.Position = this.Size * 0.5f;
         }
+
+        public EnemyObjet GetEnemyObjet() { return enemyObj; }
     }
 }
