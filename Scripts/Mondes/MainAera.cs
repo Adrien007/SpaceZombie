@@ -7,6 +7,7 @@ using SpaceZombie.Niveaux;
 using SpaceZombie.Scores.GameScore;
 using SpaceZombie.Utilitaires.Layers;
 using System;
+using System.Linq;
 
 namespace SpaceZombie.Mondes.Utilitaires
 {
@@ -49,14 +50,18 @@ namespace SpaceZombie.Mondes.Utilitaires
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
             joueur.Initialize(2, 0, this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 250f, false), ees);
 
+
+            EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1), 1);
+            EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
             collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
             collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Joueur);
-            enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes);
+            enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes, enemyFireService);
             
 
             //lm.DemarrerPremierNiveau();
-            lm.DemarrerNiveau(0, 1);
+            lm.DemarrerNiveau(0, 0);
+            enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Node2D>());
         }
 
         public override void _PhysicsProcess(double delta)

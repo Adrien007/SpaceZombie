@@ -1,5 +1,6 @@
 //ZombiesSpawn.cs
 using System;
+using System.Collections.Generic;
 using Godot;
 using SpaceZombie.Events;
 using SpaceZombie.Mondes.Utilitaires;
@@ -18,7 +19,7 @@ namespace SpaceZombie.Enemies
     }
     public interface IObtainEnemyObject
     {
-        public EnemyObjet[] GetAllEnemy(ObtainEnemyObjectService service);
+        public List<EnemyObjet> GetAllEnemy(ObtainEnemyObjectService service);
     }
     public partial class ZombiesSpawn : VBoxContainer, IZombiesSpawnService
     {
@@ -43,7 +44,7 @@ namespace SpaceZombie.Enemies
             service.DesactiverEnemyPasEnSandwitch(inLigneSpawnersObjet);
         }
 
-        public EnemyObjet[] GetAllEnemy(ObtainEnemyObjectService service)
+        public List<EnemyObjet> GetAllEnemy(ObtainEnemyObjectService service)
         {
             return service.GetAllEnemy(inLigneSpawnersObjet);
         }

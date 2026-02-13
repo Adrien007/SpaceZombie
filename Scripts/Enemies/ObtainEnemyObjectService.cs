@@ -5,7 +5,7 @@ namespace SpaceZombie.Enemies
 {
     public class ObtainEnemyObjectService
     {
-        public EnemyObjet[] GetAllEnemy(InLigneSpawnerObjet[] inLigneSpawnersObjet)
+        public List<EnemyObjet> GetAllEnemy(InLigneSpawnerObjet[] inLigneSpawnersObjet)
         {
             List<EnemyObjet> enemies = new List<EnemyObjet>();
             foreach (var ligne in inLigneSpawnersObjet)
@@ -16,7 +16,7 @@ namespace SpaceZombie.Enemies
                     enemies.Add(s.GetEnemyObjet());
                 }
             }
-            return enemies.ToArray();
+            return enemies;
         }
     }
 }
