@@ -21,7 +21,6 @@ namespace SpaceZombie.Enemies
         {
             enemiesAvailable = new List<Node2D>();
             this.service = service;
-            //res://Prefabs/cannon.tscn
             PackedScene cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
             cannon0 = cannonPrefab.Instantiate<CanonObjet>();
             mainAera.AddChild(cannon0);
