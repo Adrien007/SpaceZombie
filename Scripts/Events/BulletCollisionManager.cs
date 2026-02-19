@@ -47,7 +47,7 @@ namespace SpaceZombie.Events
 
         public void ReportCollision(ProjectileObjet projectile, Area2D aera2D)
         {
-            GD.Print("[CollisionManager] Bullet hit something.");
+            //GD.Print($"[CollisionManager] Bullet hit something. ColLayer: {aera2D.CollisionLayer} ColMask: {aera2D.CollisionMask}.");
             _notificationBuffer.Enqueue((projectile, aera2D));
         }
 

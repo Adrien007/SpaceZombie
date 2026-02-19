@@ -26,8 +26,10 @@ namespace SpaceZombie.Ammunitions
             area.AreaExited += OnAreaExited;
             Disable();
         }
-        public void Initialize(Projectile projectile, IBulletCollisionManager bulletCollisionManager)
+        public void Initialize(uint collisionLayer, uint collisionMask, Projectile projectile, IBulletCollisionManager bulletCollisionManager)
         {
+            area.CollisionLayer = collisionLayer;
+            area.CollisionMask = collisionMask;
             this.projectile = projectile;
             _collisionManager = bulletCollisionManager;
         }

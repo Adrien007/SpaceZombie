@@ -180,6 +180,11 @@ namespace SpaceZombie.Enemies
                 }
             }
         }
+
+        public EnemySlot[] GetAllEnemySlot()
+        {
+            return enemySlots;
+        }
     }
     public class InLigneSpawnerObjetAttributsMapper
     {

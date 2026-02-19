@@ -43,12 +43,13 @@ namespace SpaceZombie.Niveaux
 			var stageLevelLocal = gdi.Next();
 			stage = stageLevelLocal.Item1;
 			levelLocal = stageLevelLocal.Item2;
-
-			//CreerNiveau(stage, levelLocal);
 		}
-		public void DemarrerPremierNiveau()
+
+		public void SetNiveau(int stage, int levelLocal)
 		{
-			CreerNiveau(stage, globalLevel);
+            this.stage = stage;
+            this.levelLocal = levelLocal;
+            this.globalLevel = levelLocal;
 		}
 		public void DemarrerNiveau(int stage, int globalLevel)
 		{

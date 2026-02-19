@@ -17,6 +17,7 @@ namespace SpaceZombie.Joueurs
         }
         public static void GestionHitSurEnemy(Joueur j, int damage)
         {
+            //GD.Print("GestionHitSurEnemy");
             if (!IsObjetDie(j.jState) && !IsObjetInvincible(j.jState))
             {
                 j.jState.IsInvicible = true;
@@ -51,8 +52,8 @@ namespace SpaceZombie.Joueurs
         }
         public static Joueur TrouverParent(Area2D aera2D)
         {
-            GD.Print(aera2D.GetParent().GetType());
-            return (Joueur)aera2D.GetParent();
+            //GD.Print(aera2D.GetParent().GetType());
+            return aera2D.GetParent().GetParent().GetParent<Joueur>();
         }
     }
 }
