@@ -38,7 +38,7 @@ namespace SpaceZombie.Enemies
             return ListsUtils.PickRandom(list, options.NbOfElementToSelect, options.Rng);
         }
 
-        
+        public Timer GetTimerRateOfFire() { return options.RateOfFire; }
 
     }
 
@@ -46,15 +46,25 @@ namespace SpaceZombie.Enemies
     public class EnemyFireOptions
     {
         private Random rng;
-        private int nbOfElementToSelect;
+        private Timer rateOfFire;
+
+        private int nbOfElementToSelectPerShotFire;
 
         public Random Rng { get => rng; }
-        public int NbOfElementToSelect { get => nbOfElementToSelect; }
+        public Timer RateOfFire { get => rateOfFire; }
 
-        public EnemyFireOptions(Random rng, int nbOfElementToSelect)
+        public int NbOfElementToSelect { get => nbOfElementToSelectPerShotFire; }
+
+        public EnemyFireOptions(Random rng, Timer rateOfFire)
         {
             this.rng = rng;
-            this.nbOfElementToSelect = nbOfElementToSelect;
+            this.rateOfFire = rateOfFire;
+        }
+
+        public void NewSettings(int nbOfElementToSelectPerShotFire, float tempsRelaod)
+        {
+            this.nbOfElementToSelectPerShotFire = nbOfElementToSelectPerShotFire;
+            rateOfFire.WaitTime = tempsRelaod;
         }
     }
 }

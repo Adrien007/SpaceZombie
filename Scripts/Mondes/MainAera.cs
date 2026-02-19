@@ -17,6 +17,7 @@ namespace SpaceZombie.Mondes.Utilitaires
         [Export] private Joueur joueur;
         [Export] private ZombiesSpawn zombiesSpawn;
         private EnemyAttackManager enemyAttackManager;
+        private EnemyFireOptions enemyFireOptions;
         private LevelManager lm;
         private EnemyEventSystem ees;
         private JoueurEventSystem jes;
@@ -48,25 +49,24 @@ namespace SpaceZombie.Mondes.Utilitaires
             uint collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.ProjectileJoueur);
             uint collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
-            joueur.Initialize(2, 0, this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 250f, false), ees);
+            joueur.Initialize(2, 1, this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 250f, false), ees);
 
 
-            EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1), 1);
+            Timer enemyFireOptionsTimer = new Timer();
+            enemyFireOptions = new EnemyFireOptions(new Random(1), enemyFireOptionsTimer);
             EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
             collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
             collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Joueur);
             enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes, enemyFireService);
-            
 
-            //lm.DemarrerPremierNiveau();
-            lm.DemarrerNiveau(0, 0);
-            enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Node2D>());
+            //lm.DemarrerNiveau(0, 0);
+            lm.SetNiveau(0, 0);
+            ChangerNiveauLogic();
         }
 
         public override void _PhysicsProcess(double delta)
         {
-            enemyAttackManager.Fire();//Tempo
             ees.Notify();
             jes.Notify();
         }
@@ -79,7 +79,11 @@ namespace SpaceZombie.Mondes.Utilitaires
         {
             //Resetter toutes les objets et position.
             //Desactiver input
+            //Ecran loading
             lm.CreerNiveau();
+            enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Node2D>());
+            enemyFireOptions.NewSettings(1, 1f);
+            //Ecran loading
             //ReactiverInput
         }
     }

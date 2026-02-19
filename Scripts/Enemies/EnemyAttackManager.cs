@@ -15,6 +15,7 @@ namespace SpaceZombie.Enemies
         private List<Node2D> enemiesAvailable;
         private CanonObjet cannon0;
         private EnemyFireService service;
+        private Timer rateOfFire;
 
         public EnemyAttackManager(Control mainAera, int capacity, uint collisionLayer, uint collisionMask, Projectile projectile, IBulletCollisionManager bulletCollisionManager,
                                 EnemyFireService service)
@@ -26,16 +27,19 @@ namespace SpaceZombie.Enemies
             mainAera.AddChild(cannon0);
             cannon0.Rotate(Mathf.Pi);
             cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager);
+
+            rateOfFire = service.GetTimerRateOfFire();
+            mainAera.AddChild(rateOfFire);
+            rateOfFire.Timeout += Fire;
+            rateOfFire.Start();
         }
 
-        int i = -60;
-        public void Fire()
+        private void Fire()
         {
-            if (i++ > 30)
+            EnemyFireService.UpdateEnemyAvailable(enemiesAvailable);
+            List<Node2D> enemyFire = service.PickRandom(enemiesAvailable);
+            if (enemyFire.Count > 0)
             {
-                i = 0;
-                EnemyFireService.UpdateEnemyAvailable(enemiesAvailable);
-                List<Node2D> enemyFire = service.PickRandom(enemiesAvailable);
                 cannon0.GlobalPosition = enemyFire[0].GlobalPosition;
                 cannon0.Fire();
             }
@@ -43,14 +47,7 @@ namespace SpaceZombie.Enemies
 
         public void SetEnemyForLevel(List<Node2D> allEnemy)
         {
-            GD.Print(allEnemy.Count);
             this.enemiesAvailable = allEnemy;
-        }
-
-        private void SelectAvailableEnemyToFire(int nbElementsToSelect)
-        {
-            //Selectionner un enemy random a tirer missile.
-            
         }
     }
 }
