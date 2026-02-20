@@ -3,6 +3,7 @@ using Godot;
 using SpaceZombie.Ammunitions;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
+using System;
 using System.Collections.Generic;
 
 namespace SpaceZombie.Enemies
@@ -42,9 +43,9 @@ namespace SpaceZombie.Enemies
         {
             EnemyFireService.UpdateEnemyAvailable(enemiesAvailable);
             List<Node2D> enemyFire = service.PickRandom(enemiesAvailable);
-            if (enemyFire.Count > 0)
+            for (int i = 0; i < enemyFire.Count; i++)
             {
-                cannon0.GlobalPosition = enemyFire[0].GlobalPosition;
+                cannon0.GlobalPosition = enemyFire[i].GlobalPosition;
                 cannon0.Fire();
             }
         }
