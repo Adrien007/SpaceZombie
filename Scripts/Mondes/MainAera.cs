@@ -42,8 +42,6 @@ namespace SpaceZombie.Mondes.Utilitaires
             ees.Register(zombiesSpawn, endLevelSystemEnemySide);
             jes.Register(endLevelSystemPlayerSide);
 
-            lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn);
-
             joueur.InitialiserSize(this.Size);
             joueur.InitialiserPosition(this.Position);
             uint collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.ProjectileJoueur);
@@ -60,7 +58,8 @@ namespace SpaceZombie.Mondes.Utilitaires
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Joueur);
             enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes, enemyFireService);
 
-            //lm.DemarrerNiveau(0, 0);
+            lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn, enemyFireOptions, enemyAttackManager);
+
             lm.SetNiveau(0, 0);
             ChangerNiveauLogic();
         }
@@ -81,8 +80,6 @@ namespace SpaceZombie.Mondes.Utilitaires
             //Desactiver input
             //Ecran loading
             lm.CreerNiveau();
-            enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Node2D>());
-            enemyFireOptions.NewSettings(1, 1f);
             //Ecran loading
             //ReactiverInput
         }

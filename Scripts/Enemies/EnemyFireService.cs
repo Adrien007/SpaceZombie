@@ -43,7 +43,12 @@ namespace SpaceZombie.Enemies
     }
 
 
-    public class EnemyFireOptions
+
+    public interface IEnemyFireOptionsSettings
+    {
+        public void NewSettings(int nbOfElementToSelectPerShotFire, float tempsRelaod);
+    }
+    public class EnemyFireOptions : IEnemyFireOptionsSettings
     {
         private Random rng;
         private Timer rateOfFire;

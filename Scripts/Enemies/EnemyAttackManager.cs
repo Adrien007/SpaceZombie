@@ -7,10 +7,14 @@ using System.Collections.Generic;
 
 namespace SpaceZombie.Enemies
 {
+    public interface IEnemyAttackManagerSetEnemy
+    {
+        public void SetEnemyForLevel(List<Node2D> allEnemy);
+    }
     /// <summary>
     /// At each level, get all eneymy. If enemy are visdible, thay can posstentially attack.
     /// </summary>
-    public class EnemyAttackManager
+    public class EnemyAttackManager : IEnemyAttackManagerSetEnemy
     {
         private List<Node2D> enemiesAvailable;
         private CanonObjet cannon0;

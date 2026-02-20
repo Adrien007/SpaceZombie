@@ -236,10 +236,16 @@ namespace SpaceZombie.Niveaux.Configs
     {
         //
     }
+    public class NiveauEnemyAttackSettings
+    {
+        public float FireRate { get; set; }
+        public int NbProjectilePerAttack { get; set; }
+    }
     public class NiveauZombiesSpawnSettings
     {
         public bool DeplaceEnBlock { get; set; }
         public NiveauLigneSettings[] LigneSettings { get; set; }
+        public NiveauEnemyAttackSettings EnemyAttackSettings { get; set; }
     }
     public class NiveauLigneSettings
     {
