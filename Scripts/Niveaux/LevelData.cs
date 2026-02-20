@@ -23,7 +23,9 @@ namespace SpaceZombie.Niveaux.Configs.V
 		public int NbEnemiesParLigne { get; set; }
 		public bool DeplaceEnBlock { get; set; }
 		public List<Line> Lines { get; set; }
-	}
+		public float TpsRecharge { get; set; }
+		public int NbProjectilePerAttack { get; set; }
+    }
 
 	public class Line
 	{

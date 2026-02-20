@@ -3,14 +3,19 @@ using Godot;
 using SpaceZombie.Ammunitions;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
+using System;
 using System.Collections.Generic;
 
 namespace SpaceZombie.Enemies
 {
+    public interface IEnemyAttackManagerSetEnemy
+    {
+        public void SetEnemyForLevel(List<Node2D> allEnemy);
+    }
     /// <summary>
     /// At each level, get all eneymy. If enemy are visdible, thay can posstentially attack.
     /// </summary>
-    public class EnemyAttackManager
+    public class EnemyAttackManager : IEnemyAttackManagerSetEnemy
     {
         private List<Node2D> enemiesAvailable;
         private CanonObjet cannon0;
@@ -38,9 +43,9 @@ namespace SpaceZombie.Enemies
         {
             EnemyFireService.UpdateEnemyAvailable(enemiesAvailable);
             List<Node2D> enemyFire = service.PickRandom(enemiesAvailable);
-            if (enemyFire.Count > 0)
+            for (int i = 0; i < enemyFire.Count; i++)
             {
-                cannon0.GlobalPosition = enemyFire[0].GlobalPosition;
+                cannon0.GlobalPosition = enemyFire[i].GlobalPosition;
                 cannon0.Fire();
             }
         }

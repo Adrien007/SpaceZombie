@@ -1,5 +1,6 @@
 //LevelManager.cs
 using System;
+using System.Linq;
 using SpaceZombie.Enemies;
 using SpaceZombie.Events;
 using SpaceZombie.Niveaux.Configs;
@@ -17,11 +18,13 @@ namespace SpaceZombie.Niveaux
 		private IEndLevelSystem endLevelSystem;
 		private INbEnemy endLevelNbEnemy;
 		private ZombiesSpawn zombiesSpawn;
-
-		public int Stage { get => stage; }
+        private IEnemyFireOptionsSettings enemyFireAttackOption;
+        private IEnemyAttackManagerSetEnemy enemyAttackManager;
+        public int Stage { get => stage; }
 		public int GlobalLevel { get => globalLevel; }
 
-		public LevelManager(IEndLevelSystem endLevelSystem, INbEnemy endLevelNbEnemy, ZombiesSpawn zombiesSpawn)
+		public LevelManager(IEndLevelSystem endLevelSystem, INbEnemy endLevelNbEnemy, ZombiesSpawn zombiesSpawn,
+							IEnemyFireOptionsSettings enemyFireAttackOption, IEnemyAttackManagerSetEnemy enemyAttackManager)
 		{
 			var gd = ExempleDeserialisation.Deserialize();
 			gdi = new GameDataIterator(gd);
@@ -29,8 +32,10 @@ namespace SpaceZombie.Niveaux
 			this.endLevelSystem = endLevelSystem;
 			this.endLevelNbEnemy = endLevelNbEnemy;
 			this.zombiesSpawn = zombiesSpawn;
+            this.enemyFireAttackOption = enemyFireAttackOption;
+			this.enemyAttackManager = enemyAttackManager;
 
-			this.endLevelSystem.EndLevelSignal += OnEndLevelSignal;
+            this.endLevelSystem.EndLevelSignal += OnEndLevelSignal;
 		}
 
 		private void OnEndLevelSignal()
@@ -51,10 +56,6 @@ namespace SpaceZombie.Niveaux
             this.levelLocal = levelLocal;
             this.globalLevel = levelLocal;
 		}
-		public void DemarrerNiveau(int stage, int globalLevel)
-		{
-			CreerNiveau(stage, globalLevel);
-		}
 		public void CreerNiveau()
 		{
 			CreerNiveau(stage, levelLocal);
@@ -63,8 +64,10 @@ namespace SpaceZombie.Niveaux
 		{
 			var niveauSettings = ncr.CreerNiveau(stage, niveau);
 			endLevelNbEnemy.NbEnemy = CountNumberOfEnemy(niveauSettings);
-			ncr.AppliquerNiveau(zombiesSpawn, niveauSettings);
-		}
+            ncr.AppliquerNiveau(zombiesSpawn, niveauSettings);
+            enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Godot.Node2D>());
+            enemyFireAttackOption.NewSettings(niveauSettings.EnemyAttackSettings.NbProjectilePerAttack, niveauSettings.EnemyAttackSettings.FireRate);
+        }
 
 		private int CountNumberOfEnemy(NiveauZombiesSpawnSettings niveau)
 		{

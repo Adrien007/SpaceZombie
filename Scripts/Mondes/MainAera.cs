@@ -16,8 +16,6 @@ namespace SpaceZombie.Mondes.Utilitaires
         [Export] private AeraPlayBound area;
         [Export] private Joueur joueur;
         [Export] private ZombiesSpawn zombiesSpawn;
-        private EnemyAttackManager enemyAttackManager;
-        private EnemyFireOptions enemyFireOptions;
         private LevelManager lm;
         private EnemyEventSystem ees;
         private JoueurEventSystem jes;
@@ -42,8 +40,6 @@ namespace SpaceZombie.Mondes.Utilitaires
             ees.Register(zombiesSpawn, endLevelSystemEnemySide);
             jes.Register(endLevelSystemPlayerSide);
 
-            lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn);
-
             joueur.InitialiserSize(this.Size);
             joueur.InitialiserPosition(this.Position);
             uint collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.ProjectileJoueur);
@@ -53,14 +49,15 @@ namespace SpaceZombie.Mondes.Utilitaires
 
 
             Timer enemyFireOptionsTimer = new Timer();
-            enemyFireOptions = new EnemyFireOptions(new Random(1), enemyFireOptionsTimer);
+            EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1), enemyFireOptionsTimer);
             EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
             collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
             collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Joueur);
-            enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes, enemyFireService);
+            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes, enemyFireService);
 
-            //lm.DemarrerNiveau(0, 0);
+            lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn, enemyFireOptions, enemyAttackManager);
+
             lm.SetNiveau(0, 0);
             ChangerNiveauLogic();
         }
@@ -81,8 +78,6 @@ namespace SpaceZombie.Mondes.Utilitaires
             //Desactiver input
             //Ecran loading
             lm.CreerNiveau();
-            enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Node2D>());
-            enemyFireOptions.NewSettings(1, 1f);
             //Ecran loading
             //ReactiverInput
         }
