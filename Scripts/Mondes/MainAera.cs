@@ -4,12 +4,9 @@ using SpaceZombie.Enemies;
 using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using SpaceZombie.Niveaux;
-using SpaceZombie.Scores.GameScore;
 using SpaceZombie.Ui;
 using SpaceZombie.Utilitaires.Layers;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SpaceZombie.Mondes.Utilitaires
 {
