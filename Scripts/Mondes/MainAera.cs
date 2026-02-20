@@ -19,6 +19,7 @@ namespace SpaceZombie.Mondes.Utilitaires
         private LevelManager lm;
         private EnemyEventSystem ees;
         private JoueurEventSystem jes;
+        private ResetEtatManager res;
         private static LayerDictionnary ld;
         public override void _Ready()
         {
@@ -27,9 +28,12 @@ namespace SpaceZombie.Mondes.Utilitaires
             ld = new LayerDictionnary();
             ees = new EnemyEventSystem(new BulletCollisionManager(64, new BulletCollisionOnEnemyService()));
             jes = new JoueurEventSystem(new BulletCollisionManager(32, new BulletCollisionOnPlayerService()));
+            res = new ResetEtatManager();
         }
         public void Initialiser()
         {
+            GetTree().Paused = true;
+
             area.InitialiserSize(this.Size);
 
             var endLevelSystemEnemySide = new EndLevelSystem();
@@ -45,7 +49,7 @@ namespace SpaceZombie.Mondes.Utilitaires
             uint collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.ProjectileJoueur);
             uint collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
-            joueur.Initialize(2, 1, this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 250f, false), ees);
+            joueur.Initialize(2, 1, this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 250f, false), ees, res);
 
 
             Timer enemyFireOptionsTimer = new Timer();
@@ -54,7 +58,8 @@ namespace SpaceZombie.Mondes.Utilitaires
             collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
             collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Joueur);
-            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes, enemyFireService);
+            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), 
+                                                                            jes, res, enemyFireService);
 
             lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn, enemyFireOptions, enemyAttackManager);
 
@@ -62,6 +67,7 @@ namespace SpaceZombie.Mondes.Utilitaires
             ChangerNiveauLogic();
         }
 
+        int i = -90;
         public override void _PhysicsProcess(double delta)
         {
             ees.Notify();
@@ -74,12 +80,15 @@ namespace SpaceZombie.Mondes.Utilitaires
         }
         private void ChangerNiveauLogic()
         {
+            GetTree().Paused = true;
             //Resetter toutes les objets et position.
             //Desactiver input
             //Ecran loading
+            res.ResetToInitaialState();
             lm.CreerNiveau();
             //Ecran loading
             //ReactiverInput
+            GetTree().Paused = false;
         }
     }
 }

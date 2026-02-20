@@ -9,7 +9,7 @@ namespace SpaceZombie.Joueurs
     /// <summary>
     /// Represents a player in the game, handling movement and shooting mechanics.
     /// </summary>
-    public partial class Joueur : Node2D, IInitialisationSize, IInitialisationPosition
+    public partial class Joueur : Node2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver
     {
         [Export] private Control enfant;
         [Export] public float vitesse = 200f;
@@ -86,14 +86,20 @@ namespace SpaceZombie.Joueurs
         }
 
 
-        public void Initialize(int hp, int invicibilityTimerTime, Control mainAera, int capacity, uint collisionLayer, uint collisionMask, Projectile projectile, IBulletCollisionManager bulletCollisionManager)
+        public void Initialize(int hp, int invicibilityTimerTime, Control mainAera, 
+                                int capacity, uint collisionLayer, uint collisionMask, 
+                                Projectile projectile, IBulletCollisionManager bulletCollisionManager,
+                                IResetEtatNotifier resetEtatNotifier)
         {
             Timer invisibilityTimer = new Timer();
             invisibilityTimer.Name = "invisibilityTimer";
             invisibilityTimer.WaitTime = invicibilityTimerTime;
             this.AddChild(invisibilityTimer);
             jState = new JoueurEtat(hp, invisibilityTimer);
-            cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager);
+            nouvellePosition.X = PositionCentreX();
+            Position = nouvellePosition;
+            resetEtatNotifier.Register(this);
+            cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager, resetEtatNotifier);
         }
         public void InitialiserSize(Vector2 size)
         {
@@ -108,6 +114,18 @@ namespace SpaceZombie.Joueurs
         {
             Visible = false;
             aera.Monitorable = false;
+        }
+
+        public void OnResetToInitaialState()
+        {
+            nouvellePosition.X = PositionCentreX();
+            Position = nouvellePosition;
+            reloadTimer.Stop();
+        }
+
+        private float PositionCentreX()
+        {
+            return playAeraPosition.X + playAeraSize.X * 0.5f - longueurX;
         }
     }
 

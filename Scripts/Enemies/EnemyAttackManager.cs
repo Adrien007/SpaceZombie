@@ -22,7 +22,8 @@ namespace SpaceZombie.Enemies
         private EnemyFireService service;
         private Timer rateOfFire;
 
-        public EnemyAttackManager(Control mainAera, int capacity, uint collisionLayer, uint collisionMask, Projectile projectile, IBulletCollisionManager bulletCollisionManager,
+        public EnemyAttackManager(Control mainAera, int capacity, uint collisionLayer, uint collisionMask, Projectile projectile, 
+                                IBulletCollisionManager bulletCollisionManager, IResetEtatNotifier resetEtatNotifier,
                                 EnemyFireService service)
         {
             enemiesAvailable = new List<Node2D>();
@@ -31,7 +32,7 @@ namespace SpaceZombie.Enemies
             cannon0 = cannonPrefab.Instantiate<CanonObjet>();
             mainAera.AddChild(cannon0);
             cannon0.Rotate(Mathf.Pi);
-            cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager);
+            cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager, resetEtatNotifier);
 
             rateOfFire = service.GetTimerRateOfFire();
             mainAera.AddChild(rateOfFire);
