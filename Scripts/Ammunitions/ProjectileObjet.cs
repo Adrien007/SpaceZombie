@@ -1,12 +1,10 @@
 //ProjectileObjet.cs
 using Godot;
-using SpaceZombie.Enemies;
 using SpaceZombie.Events;
-using SpaceZombie.Mondes.Utilitaires;
 
 namespace SpaceZombie.Ammunitions
 {
-    public partial class ProjectileObjet : Node2D
+    public partial class ProjectileObjet : Node2D, IResetEtatObserver
     {
         public delegate void HitSignalEventHandler(ProjectileObjet projectileObj);
 		public event HitSignalEventHandler HitSignal;
@@ -26,12 +24,14 @@ namespace SpaceZombie.Ammunitions
             area.AreaExited += OnAreaExited;
             Disable();
         }
-        public void Initialize(uint collisionLayer, uint collisionMask, Projectile projectile, IBulletCollisionManager bulletCollisionManager)
+        public void Initialize(uint collisionLayer, uint collisionMask, Projectile projectile, 
+                                IBulletCollisionManager bulletCollisionManager, IResetEtatNotifier resetEtatNotifier)
         {
             area.CollisionLayer = collisionLayer;
             area.CollisionMask = collisionMask;
             this.projectile = projectile;
             _collisionManager = bulletCollisionManager;
+            resetEtatNotifier.Register(this);
         }
 
         private const float CORRECTION_ANGLE = Mathf.Pi * 0.5f;
@@ -59,11 +59,11 @@ namespace SpaceZombie.Ammunitions
 
         private void OnAreaExited(Area2D aera2D)
         {
-            //GD.Print("Projectile visible? " + Visible);
             //GD.Print("AreaExited: " + aera2D.CollisionLayer);
             const uint layer1 = 1u << 0; // Layer 1 is the 1st bit (index 0)
             if ((aera2D.CollisionLayer & layer1) != 0)
             {
+                //GD.Print("OnAreaExited + " + this.Name);
                 //GD.Print("AreaExited: " + aera2D.GetType() + "  " + aera2D.CollisionLayer);
                 // Defer the call to Disable() to avoid issues during signal processing
                 CallDeferred(nameof(Disable));
@@ -82,5 +82,14 @@ namespace SpaceZombie.Ammunitions
             Visible = true;
             area.Monitoring = true;
         }
+
+        public void OnResetToInitaialState()
+        {
+            if (!Visible)//Si est un projectile NON tire; Pas besoin de le reset.
+                return;
+            Disable();//Le fait de Disable, on disable le area.Monitoring, ce qui semble appeler OnAreaExited.
+        }
+
+        public void StartTimerState() { /*This class has no timer*/ }
     }
 }

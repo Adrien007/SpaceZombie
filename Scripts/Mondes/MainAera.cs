@@ -4,10 +4,9 @@ using SpaceZombie.Enemies;
 using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using SpaceZombie.Niveaux;
-using SpaceZombie.Scores.GameScore;
+using SpaceZombie.Ui;
 using SpaceZombie.Utilitaires.Layers;
 using System;
-using System.Linq;
 
 namespace SpaceZombie.Mondes.Utilitaires
 {
@@ -16,7 +15,7 @@ namespace SpaceZombie.Mondes.Utilitaires
         [Export] private AeraPlayBound area;
         [Export] private Joueur joueur;
         [Export] private ZombiesSpawn zombiesSpawn;
-        private LevelManager lm;
+        [Export] private ProchainNiveauUi prochainNiveauUi;
         private EnemyEventSystem ees;
         private JoueurEventSystem jes;
         private static LayerDictionnary ld;
@@ -30,10 +29,13 @@ namespace SpaceZombie.Mondes.Utilitaires
         }
         public void Initialiser()
         {
+            GetTree().Paused = true;
+
             area.InitialiserSize(this.Size);
 
+            var res = new ResetEtatManager();
+
             var endLevelSystemEnemySide = new EndLevelSystem();
-            endLevelSystemEnemySide.EndLevelSignal += ChangerNiveauLogic;
             var endLevelSystemPlayerSide = new EndLevelSystemPlayer();
             endLevelSystemPlayerSide.EndLevelSignal += QUITTER;
 
@@ -45,7 +47,7 @@ namespace SpaceZombie.Mondes.Utilitaires
             uint collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.ProjectileJoueur);
             uint collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
-            joueur.Initialize(2, 1, this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 250f, false), ees);
+            joueur.Initialize(2, 1, this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 250f, false), ees, res);
 
 
             Timer enemyFireOptionsTimer = new Timer();
@@ -54,12 +56,14 @@ namespace SpaceZombie.Mondes.Utilitaires
             collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
             collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Joueur);
-            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes, enemyFireService);
+            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), 
+                                                                            jes, res, enemyFireService);
 
-            lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn, enemyFireOptions, enemyAttackManager);
-
+            var lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn, enemyFireOptions, enemyAttackManager);
             lm.SetNiveau(0, 0);
-            ChangerNiveauLogic();
+
+            var ltm = new LevelTransitionManager(GetTree(), prochainNiveauUi, lm, res, endLevelSystemEnemySide);
+            ltm.ChangerNiveauLogic();
         }
 
         public override void _PhysicsProcess(double delta)
@@ -71,15 +75,6 @@ namespace SpaceZombie.Mondes.Utilitaires
         private void QUITTER()
         {
             GetTree().Quit();
-        }
-        private void ChangerNiveauLogic()
-        {
-            //Resetter toutes les objets et position.
-            //Desactiver input
-            //Ecran loading
-            lm.CreerNiveau();
-            //Ecran loading
-            //ReactiverInput
         }
     }
 }

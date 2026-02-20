@@ -10,6 +10,9 @@ namespace SpaceZombie.Niveaux
 {
 	public class LevelManager
 	{
+		public delegate void FinCreationNiveauSignalEventHandler();
+		public event FinCreationNiveauSignalEventHandler FinCreationNiveau;
+		
 		private int stage = 0;
 		private int globalLevel = 0;
 		private int levelLocal = 0;
@@ -59,7 +62,8 @@ namespace SpaceZombie.Niveaux
 		public void CreerNiveau()
 		{
 			CreerNiveau(stage, levelLocal);
-		}
+            FinCreationNiveau.Invoke();
+        }
 		private void CreerNiveau(int stage, int niveau)
 		{
 			var niveauSettings = ncr.CreerNiveau(stage, niveau);
