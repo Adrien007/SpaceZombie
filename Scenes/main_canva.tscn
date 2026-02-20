@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://ldnssl3fut00" path="res://Scripts/Enemies/ZombiesSpawn.cs" id="5_4gd4g"]
 [ext_resource type="Script" uid="uid://dyd3bw3m7n1ge" path="res://Scripts/Enemies/InLigneSpawnerObjet.cs" id="5_ylj3c"]
 [ext_resource type="PackedScene" uid="uid://cgpw88utk0j4p" path="res://Prefabs/enemy_slot.tscn" id="7_wwtlw"]
+[ext_resource type="Script" uid="uid://bmrula5s1hvpo" path="res://Scripts/Ui/ProchainNiveauUi.cs" id="9_tpj28"]
 
 [node name="MainCanva" type="Control" unique_id=206631295 node_paths=PackedStringArray("mainAera")]
 layout_mode = 3
@@ -39,13 +40,15 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="MainAera" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=2040906383 node_paths=PackedStringArray("area", "joueur", "zombiesSpawn")]
+[node name="MainAera" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=2040906383 node_paths=PackedStringArray("area", "joueur", "zombiesSpawn", "prochainNiveauUi")]
+process_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("1_3lruc")
 area = NodePath("AeraPlayBounds")
 joueur = NodePath("Joueur")
 zombiesSpawn = NodePath("ZombiesSpawn")
+prochainNiveauUi = NodePath("NextLevelCtr")
 
 [node name="AeraPlayBounds" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=666234240 instance=ExtResource("1_0pure")]
 layout_mode = 1
@@ -362,18 +365,26 @@ size_flags_vertical = 4
 [node name="EnemySlot" parent="HBoxContainer/VBoxContainer/MainAera/ZombiesSpawn/ColonneSpawner5" unique_id=78870456 instance=ExtResource("7_wwtlw")]
 visible = false
 layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="EnemySlot2" parent="HBoxContainer/VBoxContainer/MainAera/ZombiesSpawn/ColonneSpawner5" unique_id=1979036627 instance=ExtResource("7_wwtlw")]
 visible = false
 layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="EnemySlot3" parent="HBoxContainer/VBoxContainer/MainAera/ZombiesSpawn/ColonneSpawner5" unique_id=450203966 instance=ExtResource("7_wwtlw")]
 visible = false
 layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="EnemySlot4" parent="HBoxContainer/VBoxContainer/MainAera/ZombiesSpawn/ColonneSpawner5" unique_id=1525362034 instance=ExtResource("7_wwtlw")]
 visible = false
 layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="ColonneSpawner6" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/ZombiesSpawn" unique_id=1127416894]
 custom_minimum_size = Vector2(0, 50)
@@ -438,6 +449,39 @@ offset_left = 264.0
 offset_top = 5.0
 offset_right = 304.0
 offset_bottom = 45.0
+
+[node name="NextLevelCtr" type="Control" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=1259785756 node_paths=PackedStringArray("p", "label")]
+process_mode = 2
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("9_tpj28")
+p = NodePath("ColorRect")
+label = NodePath("ColorRect/Label")
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/VBoxContainer/MainAera/NextLevelCtr" unique_id=852850020]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.5647059, 1, 1)
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MainAera/NextLevelCtr/ColorRect" unique_id=768441727]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Prohcain niveau: "
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Marge2" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=1413647310]
 custom_minimum_size = Vector2(0, 10)

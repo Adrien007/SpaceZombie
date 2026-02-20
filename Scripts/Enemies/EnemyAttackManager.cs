@@ -15,7 +15,7 @@ namespace SpaceZombie.Enemies
     /// <summary>
     /// At each level, get all eneymy. If enemy are visdible, thay can posstentially attack.
     /// </summary>
-    public class EnemyAttackManager : IEnemyAttackManagerSetEnemy
+    public class EnemyAttackManager : IEnemyAttackManagerSetEnemy, IResetEtatObserver
     {
         private List<Node2D> enemiesAvailable;
         private CanonObjet cannon0;
@@ -26,6 +26,7 @@ namespace SpaceZombie.Enemies
                                 IBulletCollisionManager bulletCollisionManager, IResetEtatNotifier resetEtatNotifier,
                                 EnemyFireService service)
         {
+            resetEtatNotifier.Register(this);
             enemiesAvailable = new List<Node2D>();
             this.service = service;
             PackedScene cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
@@ -37,7 +38,6 @@ namespace SpaceZombie.Enemies
             rateOfFire = service.GetTimerRateOfFire();
             mainAera.AddChild(rateOfFire);
             rateOfFire.Timeout += Fire;
-            rateOfFire.Start();
         }
 
         private void Fire()
@@ -54,6 +54,16 @@ namespace SpaceZombie.Enemies
         public void SetEnemyForLevel(List<Node2D> allEnemy)
         {
             this.enemiesAvailable = allEnemy;
+        }
+
+        public void OnResetToInitaialState()
+        {
+            rateOfFire.Stop();
+        }
+
+        public void StartTimerState()
+        {
+            rateOfFire.Start();
         }
     }
 }

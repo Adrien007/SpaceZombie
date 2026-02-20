@@ -94,6 +94,7 @@ namespace SpaceZombie.Joueurs
             Timer invisibilityTimer = new Timer();
             invisibilityTimer.Name = "invisibilityTimer";
             invisibilityTimer.WaitTime = invicibilityTimerTime;
+            invisibilityTimer.OneShot = true;
             this.AddChild(invisibilityTimer);
             jState = new JoueurEtat(hp, invisibilityTimer);
             nouvellePosition.X = PositionCentreX();
@@ -109,6 +110,10 @@ namespace SpaceZombie.Joueurs
         {
             playAeraPosition = position;
         }
+        private float PositionCentreX()
+        {
+            return playAeraPosition.X + playAeraSize.X * 0.5f - longueurX;
+        }
 
         public void Disable()
         {
@@ -122,10 +127,9 @@ namespace SpaceZombie.Joueurs
             Position = nouvellePosition;
             reloadTimer.Stop();
         }
-
-        private float PositionCentreX()
+        public void StartTimerState()
         {
-            return playAeraPosition.X + playAeraSize.X * 0.5f - longueurX;
+            
         }
     }
 

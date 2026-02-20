@@ -1,8 +1,6 @@
 //ProjectileObjet.cs
 using Godot;
-using SpaceZombie.Enemies;
 using SpaceZombie.Events;
-using SpaceZombie.Mondes.Utilitaires;
 
 namespace SpaceZombie.Ammunitions
 {
@@ -65,7 +63,7 @@ namespace SpaceZombie.Ammunitions
             const uint layer1 = 1u << 0; // Layer 1 is the 1st bit (index 0)
             if ((aera2D.CollisionLayer & layer1) != 0)
             {
-                GD.Print("OnAreaExited + " + this.Name);
+                //GD.Print("OnAreaExited + " + this.Name);
                 //GD.Print("AreaExited: " + aera2D.GetType() + "  " + aera2D.CollisionLayer);
                 // Defer the call to Disable() to avoid issues during signal processing
                 CallDeferred(nameof(Disable));
@@ -91,5 +89,7 @@ namespace SpaceZombie.Ammunitions
                 return;
             Disable();//Le fait de Disable, on disable le area.Monitoring, ce qui semble appeler OnAreaExited.
         }
+
+        public void StartTimerState() { /*This class has no timer*/ }
     }
 }

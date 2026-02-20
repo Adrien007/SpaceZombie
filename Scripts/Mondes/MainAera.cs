@@ -5,9 +5,11 @@ using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using SpaceZombie.Niveaux;
 using SpaceZombie.Scores.GameScore;
+using SpaceZombie.Ui;
 using SpaceZombie.Utilitaires.Layers;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SpaceZombie.Mondes.Utilitaires
 {
@@ -16,10 +18,9 @@ namespace SpaceZombie.Mondes.Utilitaires
         [Export] private AeraPlayBound area;
         [Export] private Joueur joueur;
         [Export] private ZombiesSpawn zombiesSpawn;
-        private LevelManager lm;
+        [Export] private ProchainNiveauUi prochainNiveauUi;
         private EnemyEventSystem ees;
         private JoueurEventSystem jes;
-        private ResetEtatManager res;
         private static LayerDictionnary ld;
         public override void _Ready()
         {
@@ -28,7 +29,6 @@ namespace SpaceZombie.Mondes.Utilitaires
             ld = new LayerDictionnary();
             ees = new EnemyEventSystem(new BulletCollisionManager(64, new BulletCollisionOnEnemyService()));
             jes = new JoueurEventSystem(new BulletCollisionManager(32, new BulletCollisionOnPlayerService()));
-            res = new ResetEtatManager();
         }
         public void Initialiser()
         {
@@ -36,8 +36,9 @@ namespace SpaceZombie.Mondes.Utilitaires
 
             area.InitialiserSize(this.Size);
 
+            var res = new ResetEtatManager();
+
             var endLevelSystemEnemySide = new EndLevelSystem();
-            endLevelSystemEnemySide.EndLevelSignal += ChangerNiveauLogic;
             var endLevelSystemPlayerSide = new EndLevelSystemPlayer();
             endLevelSystemPlayerSide.EndLevelSignal += QUITTER;
 
@@ -61,13 +62,13 @@ namespace SpaceZombie.Mondes.Utilitaires
             EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), 
                                                                             jes, res, enemyFireService);
 
-            lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn, enemyFireOptions, enemyAttackManager);
-
+            var lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn, enemyFireOptions, enemyAttackManager);
             lm.SetNiveau(0, 0);
-            ChangerNiveauLogic();
+
+            var ltm = new LevelTransitionManager(GetTree(), prochainNiveauUi, lm, res, endLevelSystemEnemySide);
+            ltm.ChangerNiveauLogic();
         }
 
-        int i = -90;
         public override void _PhysicsProcess(double delta)
         {
             ees.Notify();
@@ -77,18 +78,6 @@ namespace SpaceZombie.Mondes.Utilitaires
         private void QUITTER()
         {
             GetTree().Quit();
-        }
-        private void ChangerNiveauLogic()
-        {
-            GetTree().Paused = true;
-            //Resetter toutes les objets et position.
-            //Desactiver input
-            //Ecran loading
-            res.ResetToInitaialState();
-            lm.CreerNiveau();
-            //Ecran loading
-            //ReactiverInput
-            GetTree().Paused = false;
         }
     }
 }

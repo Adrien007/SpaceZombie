@@ -4,6 +4,7 @@ namespace SpaceZombie.Events
     public interface IResetEtatObserver
     {
         void OnResetToInitaialState();
+        void StartTimerState();
     }
 
     public interface IResetEtatNotifier

@@ -6,6 +6,7 @@ namespace SpaceZombie.Events
     public interface IResetEtatManager
     {
         public void ResetToInitaialState();
+        public void StartTimerState();
     }
     public class ResetEtatManager : IResetEtatNotifier, IResetEtatManager
     {
@@ -21,6 +22,14 @@ namespace SpaceZombie.Events
             foreach (var observer in _observers)
             {
                 observer.OnResetToInitaialState();
+            }
+        }
+
+        public void StartTimerState()
+        {
+            foreach (var observer in _observers)
+            {
+                observer.StartTimerState();
             }
         }
     }
