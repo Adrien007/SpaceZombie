@@ -16,8 +16,6 @@ namespace SpaceZombie.Mondes.Utilitaires
         [Export] private AeraPlayBound area;
         [Export] private Joueur joueur;
         [Export] private ZombiesSpawn zombiesSpawn;
-        private EnemyAttackManager enemyAttackManager;
-        private EnemyFireOptions enemyFireOptions;
         private LevelManager lm;
         private EnemyEventSystem ees;
         private JoueurEventSystem jes;
@@ -51,12 +49,12 @@ namespace SpaceZombie.Mondes.Utilitaires
 
 
             Timer enemyFireOptionsTimer = new Timer();
-            enemyFireOptions = new EnemyFireOptions(new Random(1), enemyFireOptionsTimer);
+            EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1), enemyFireOptionsTimer);
             EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
             collisionLayer = LayerDictionnary.GetLayer(LayerDictionnary.Enemy);
             collisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound)
                                  | LayerDictionnary.GetLayer(LayerDictionnary.Joueur);
-            enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes, enemyFireService);
+            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, 14, collisionLayer, collisionMask, new Ammunitions.Projectile(1, 200f, false), jes, enemyFireService);
 
             lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn, enemyFireOptions, enemyAttackManager);
 
