@@ -1,5 +1,7 @@
 //EnemyObjet.cs
 using Godot;
+using SpaceZombie.Ammunitions;
+using SpaceZombie.Events;
 using System;
 
 namespace SpaceZombie.Enemies
@@ -15,7 +17,33 @@ namespace SpaceZombie.Enemies
         public override void _Ready()
         {
             base._Ready();
+            area.AreaEntered += OnAreaEntered;
             enemyFlagLogic = new EnemyFlagLogic();
+        }
+
+        private void OnAreaEntered(Area2D area)
+        {
+            //_collisionManager.ReportCollision(this, aera2D);
+
+            //GD.Print("Enemy Hit !!! + ");
+
+            if (area.GetParent() is ProjectileObjet projectile && !enemyFlagLogic.isDead)
+            {
+                Enemy.Hp = RetirerHp(Enemy.Hp, projectile.Projectile.Damage);
+                if (Enemy.Hp <= 0)
+                {
+                    enemyFlagLogic.isDead = true;
+                    enemyFlagLogic.deadSoundPlayed = true;
+                    GD.Print("[SoundSystemEnemy] Play 'enemy Die' sound.");
+                    Disable();
+                    GameEvents.Instance.EmitSignal(nameof(GameEvents.EnemyDied), this);
+                }
+                else
+                {
+                    GD.Print("[SoundSystemEnemy] Play 'enemy hit' sound.");
+                }
+                Callable.From(projectile.Disable).CallDeferred();
+            }
         }
         public void SetEnemy(EnemyObjetMapper mapper)
         {
@@ -33,25 +61,34 @@ namespace SpaceZombie.Enemies
             this.enemy = mapper.Enemy;
         }
 
-        // public void DisableCallDefered()
-        // {
-        //     area.CallDeferred(Area2D.MethodName.SetMonitorable, false);
-        //     this.CallDeferred(Node2D.MethodName.SetVisible, false);
-        // }
-        public void Disable()
+        private static int RetirerHp(int hp, int hitValue)
         {
-            area.Monitorable = false;
+            hp -= hitValue;
+            if (hp < 0)
+            {
+                hp = 0;
+            }
+            return hp;
+        }
+
+        private void DisableCallDefered()
+        {
+            area.Monitoring = false;
             Visible = false;
         }
-        // public void EnableCallDefered()
-        // {
-        //     area.CallDeferred(Area2D.MethodName.SetMonitorable, true);
-        //     this.CallDeferred(Node2D.MethodName.SetVisible, true);
-        // }
-        private void Enable()
+        public void Disable()
+        {
+            CallDeferred(nameof(DisableCallDefered));
+        }
+
+        private void EnableCallDefered()
         {
             Visible = true;
-            area.Monitorable = true;
+            area.Monitoring = true;
+        }
+        private void Enable()
+        {
+            CallDeferred(nameof(EnableCallDefered));
         }
     }
 

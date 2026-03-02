@@ -6,10 +6,10 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
 
-[node name="Joueur" type="Node2D" unique_id=1982290760 node_paths=PackedStringArray("enfant", "aera", "cannon0")]
+[node name="Joueur" type="Node2D" unique_id=1982290760 node_paths=PackedStringArray("enfant", "area", "cannon0")]
 script = ExtResource("1_0i1yc")
 enfant = NodePath("Panel")
-aera = NodePath("Panel/Control/Area2D")
+area = NodePath("Panel/Control/Area2D")
 cannon0 = NodePath("Panel/CannonPosition_0/Cannon0")
 
 [node name="Panel" type="Panel" parent="." unique_id=1282621038]
@@ -41,8 +41,7 @@ grow_vertical = 2
 
 [node name="Area2D" type="Area2D" parent="Panel/Control" unique_id=404862405]
 collision_layer = 2147483648
-collision_mask = 0
-monitoring = false
+collision_mask = 2147483648
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Panel/Control/Area2D" unique_id=1078271631]
 shape = SubResource("CircleShape2D_0i1yc")

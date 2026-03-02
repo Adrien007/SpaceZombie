@@ -3,6 +3,7 @@ using Godot;
 using SpaceZombie.Ammunitions;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
+using SpaceZombie.Utilitaires.Layers;
 using System;
 using System.Collections.Generic;
 
@@ -22,8 +23,8 @@ namespace SpaceZombie.Enemies
         private EnemyFireService service;
         private Timer rateOfFire;
 
-        public EnemyAttackManager(Control mainAera, int capacity, uint collisionLayer, uint collisionMask, Projectile projectile, 
-                                IBulletCollisionManager bulletCollisionManager, IResetEtatNotifier resetEtatNotifier,
+        public EnemyAttackManager(Control mainAera,
+                                 IResetEtatNotifier resetEtatNotifier,
                                 EnemyFireService service)
         {
             resetEtatNotifier.Register(this);
@@ -33,7 +34,7 @@ namespace SpaceZombie.Enemies
             cannon0 = cannonPrefab.Instantiate<CanonObjet>();
             mainAera.AddChild(cannon0);
             cannon0.Rotate(Mathf.Pi);
-            cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager, resetEtatNotifier);
+            cannon0.Initialize(0, new Projectile(1, 200f, false), LayerDictionnary.GetLayer(LayerDictionnary.Joueur), resetEtatNotifier);
 
             rateOfFire = service.GetTimerRateOfFire();
             mainAera.AddChild(rateOfFire);

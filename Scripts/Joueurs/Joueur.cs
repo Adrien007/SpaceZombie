@@ -3,6 +3,7 @@ using SpaceZombie.Ammunitions;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
 using SpaceZombie.Mondes.Utilitaires;
+using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Joueurs
 {
@@ -14,7 +15,7 @@ namespace SpaceZombie.Joueurs
         [Export] private Control enfant;
         [Export] public float vitesse = 200f;
         [Export] public float tempsRelaod = 0.5f;
-        [Export] private Area2D aera;
+        [Export] private Area2D area;
 
         [Export] private CanonObjet cannon0;
         private Timer reloadTimer;
@@ -28,6 +29,7 @@ namespace SpaceZombie.Joueurs
 
         public override void _Ready()
         {
+            base._Ready();
             longueurX = (int)enfant.Size.X;
             playAeraSize = enfant.Size;
             playAeraPosition = Position;
@@ -37,6 +39,9 @@ namespace SpaceZombie.Joueurs
             reloadTimer.WaitTime = tempsRelaod;
             reloadTimer.OneShot = true;
             reloadTimer.Timeout += OnReloadTimeout;
+
+            area.AreaEntered += OnAreaEntered;
+            GameEvents.Instance.LevelUp += LevelUpCannon;
         }
 
         public override void _PhysicsProcess(double delta)
@@ -78,6 +83,44 @@ namespace SpaceZombie.Joueurs
             }
         }
 
+        private void OnAreaEntered(Area2D area)
+        {
+            //GD.Print("Joueur Hit !!! + " + area.GetInstanceId());
+
+            if (area.GetParent() is ProjectileObjet projectile)
+            {
+                if (!jState.IsDead && !jState.IsInvicible)
+                {
+                    jState.IsInvicible = true;
+                    jState.InvincibilityTimer.Start();
+                    jState.Hp = RetirerHp(jState.Hp, projectile.Projectile.Damage);
+                    if (jState.Hp <= 0)
+                    {
+                        jState.IsDead = true;
+                        jState.DeadSoundPlayed = true;
+                        GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
+                        CallDeferred(nameof(Disable));
+                        GameEvents.Instance.EmitSignal(nameof(GameEvents.PlayerDied));
+                    }
+                    else
+                    {
+                        GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
+                    }
+                }
+                projectile.Disable();
+            }
+        }
+
+        private static int RetirerHp(int hp, int hitValue)
+        {
+            hp -= hitValue;
+            if (hp < 0)
+            {
+                hp = 0;
+            }
+            return hp;
+        }
+
         // Reload timer timeout handler
         private void OnReloadTimeout()
         {
@@ -86,21 +129,24 @@ namespace SpaceZombie.Joueurs
         }
 
 
-        public void Initialize(int hp, int invicibilityTimerTime, Control mainAera, 
-                                int capacity, uint collisionLayer, uint collisionMask, 
-                                Projectile projectile, IBulletCollisionManager bulletCollisionManager,
+        private void LevelUpCannon()
+        {
+            cannon0.LevelUp();
+        }
+
+        public void Initialize(int hp,
                                 IResetEtatNotifier resetEtatNotifier)
         {
             Timer invisibilityTimer = new Timer();
             invisibilityTimer.Name = "invisibilityTimer";
-            invisibilityTimer.WaitTime = invicibilityTimerTime;
+            invisibilityTimer.WaitTime = 1;
             invisibilityTimer.OneShot = true;
             this.AddChild(invisibilityTimer);
             jState = new JoueurEtat(hp, invisibilityTimer);
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
             resetEtatNotifier.Register(this);
-            cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager, resetEtatNotifier);
+            cannon0.Initialize(0, new Projectile(1, 250f, false), LayerDictionnary.GetLayer(LayerDictionnary.Enemy), resetEtatNotifier);
         }
         public void InitialiserSize(Vector2 size)
         {
@@ -118,7 +164,8 @@ namespace SpaceZombie.Joueurs
         public void Disable()
         {
             Visible = false;
-            aera.Monitorable = false;
+            area.Monitorable = false;
+            area.Monitoring = false;
         }
 
         public void OnResetToInitaialState()
@@ -129,7 +176,7 @@ namespace SpaceZombie.Joueurs
         }
         public void StartTimerState()
         {
-            
+
         }
     }
 

@@ -1,43 +1,53 @@
 //CanonObjet.cs
+using System.Collections.Generic;
 using Godot;
 using SpaceZombie.Ammunitions;
 using SpaceZombie.Events;
-using SpaceZombie.Utilitaires.Tableaux;
 
 namespace SpaceZombie.Cannons
 {
     public partial class CanonObjet : Node2D
     {
-        private CircularBuffer<ProjectileObjet> projectileBuffer;
+        private Queue<ProjectileObjet> projectileBuffer;
+        private int level = 0;
+        PackedScene projectileScene;
+        Node mainAera;
+        Projectile projectile;
+        IResetEtatNotifier resetEtatNotifier;
+        private uint collisionLayer;
+
+
         public override void _Ready()
         {
+            projectileScene = (PackedScene)ResourceLoader.Load("res://Prefabs/projectile_objet.tscn");
+            mainAera = GetTree().CurrentScene;
             base._Ready();
-            
         }
-        public void Initialize(Control mainAera, int capacity, uint collisionLayer, uint collisionMask, 
-                                Projectile projectile, IBulletCollisionManager bulletCollisionManager,
+        public void Initialize(int level,
+                                Projectile projectile, uint collisionLayer,
                                 IResetEtatNotifier resetEtatNotifier)
         {
-            InitializeBuffer(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager, resetEtatNotifier);
+            this.level = level;
+            this.projectile = projectile;
+            this.resetEtatNotifier = resetEtatNotifier;
+            this.collisionLayer = collisionLayer;
+            InitializeBuffer(level, projectile, resetEtatNotifier);
         }
-        private void InitializeBuffer(Control mainAera, int capacity, uint collisionLayer, uint collisionMask, 
-                                        Projectile projectile, IBulletCollisionManager bulletCollisionManager,
+        private void InitializeBuffer(int level,
+                                        Projectile projectile,
                                         IResetEtatNotifier resetEtatNotifier)
         {
-            projectileBuffer = new CircularBuffer<ProjectileObjet>(capacity);
-
-            // Load the scene dynamically by its path at runtime.
-            PackedScene projectileScene = (PackedScene)ResourceLoader.Load("res://Prefabs/projectile_objet.tscn");
-
-            // Populate the buffer with preloaded projectiles.
-            for (int i = 0; i < capacity; i++)
+            projectileBuffer = new Queue<ProjectileObjet>();
+            for (int i = 0; i <= level; i++)
             {
-                ProjectileObjet projectileInstance = (ProjectileObjet)projectileScene.Instantiate();
-                projectileInstance.Initialize(collisionLayer, collisionMask, projectile, bulletCollisionManager, resetEtatNotifier);
-                projectileInstance.HitSignal += HandleHitSignal;
-                mainAera.AddChild(projectileInstance);
-                projectileBuffer.Enqueue(projectileInstance);
+                projectileBuffer.Enqueue(newProjectile());
             }
+        }
+
+        public void LevelUp()
+        {
+            level += 1;
+            projectile.AugmenteVitesse(0.1f);
         }
 
         public Vector2 GetGlobalDirection()
@@ -47,19 +57,40 @@ namespace SpaceZombie.Cannons
 
         public void Fire()
         {
-            if (!projectileBuffer.CanDequeue())
+            int projectilePosition = level * 20;
+            for (int i = 0; i <= level; i++)
             {
-                    GD.Print("No available projectiles to fire!");
-                    return;
+                Vector2 globalPosition = GlobalPosition;
+                globalPosition.X += projectilePosition;
+                getNextProjectile().Fire(GetGlobalDirection(), globalPosition, GlobalRotation);
+                projectilePosition -= 40;
             }
-
-            // Get the next available projectile.
-            ProjectileObjet nextProjectile = projectileBuffer.Dequeue();
-            nextProjectile.Fire(GetGlobalDirection(), GlobalPosition, GlobalRotation);
         }
-        private void HandleHitSignal(ProjectileObjet projectileObj)
+
+        private ProjectileObjet getNextProjectile()
         {
-            //GD.Print("HandleHitSignal + " + projectileObj.Name);
+            if (projectileBuffer.Count > 0)
+            {
+                return projectileBuffer.Dequeue();
+            }
+            else
+            {
+                return newProjectile();
+            }
+        }
+
+        private ProjectileObjet newProjectile()
+        {
+            ProjectileObjet projectileInstance = (ProjectileObjet)projectileScene.Instantiate();
+            projectileInstance.Initialize(projectile, collisionLayer, resetEtatNotifier);
+            projectileInstance.OutOfBoundignal += HandleOutOfBoundSignal;
+            mainAera.AddChild(projectileInstance);
+            return projectileInstance;
+        }
+
+        private void HandleOutOfBoundSignal(ProjectileObjet projectileObj)
+        {
+            //GD.Print("HandleOutOfBoundSignal + " + projectileObj.Name);
             projectileBuffer.Enqueue(projectileObj);
         }
     }
