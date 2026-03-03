@@ -2,15 +2,17 @@
 
 [ext_resource type="Script" uid="uid://ceppxdbu03qif" path="res://Scripts/Joueurs/Joueur.cs" id="1_0i1yc"]
 [ext_resource type="PackedScene" uid="uid://b42c0nlqmpudy" path="res://Prefabs/cannon_joueur.tscn" id="2_trojc"]
+[ext_resource type="AudioStream" uid="uid://b7hx8meu7j2ev" path="res://Sounds/PlayerHitTaken.wav" id="3_trojc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
 
-[node name="Joueur" type="Node2D" unique_id=1982290760 node_paths=PackedStringArray("enfant", "area", "cannons")]
+[node name="Joueur" type="Node2D" unique_id=1982290760 node_paths=PackedStringArray("enfant", "area", "cannons", "sonPrendsHit")]
 script = ExtResource("1_0i1yc")
 enfant = NodePath("Panel")
 area = NodePath("Panel/Area2D")
 cannons = NodePath("Panel/CannonJoueur")
+sonPrendsHit = NodePath("AudioStreamPlayer")
 
 [node name="Panel" type="Panel" parent="." unique_id=1282621038]
 anchors_preset = 7
@@ -34,3 +36,6 @@ collision_mask = 2147483648
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Panel/Area2D" unique_id=1078271631]
 shape = SubResource("CircleShape2D_0i1yc")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1546965647]
+stream = ExtResource("3_trojc")

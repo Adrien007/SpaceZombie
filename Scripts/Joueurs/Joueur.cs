@@ -16,11 +16,13 @@ namespace SpaceZombie.Joueurs
         [Export] public float vitesse = 200f;
         [Export] private Area2D area;
         [Export] private CannonJoueur cannons;
+        [Export] private AudioStreamPlayer sonPrendsHit;
 
         public JoueurEtat jState;
         private Vector2 playAeraSize;
         private Vector2 playAeraPosition;
         private int longueurX;
+        private int demiLongueurX;
         private Vector2 nouvellePosition;
         private float directionX = 0;
 
@@ -28,6 +30,7 @@ namespace SpaceZombie.Joueurs
         {
             base._Ready();
             longueurX = (int)enfant.Size.X;
+            demiLongueurX = (int)(longueurX * 0.5f);
             playAeraSize = enfant.Size;
             playAeraPosition = Position;
 
@@ -52,7 +55,9 @@ namespace SpaceZombie.Joueurs
             Position += new Vector2(directionX * vitesse * (float)delta, 0);
 
             // Clamp the position within the play area
-            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X, playAeraPosition.X + playAeraSize.X - longueurX);
+            //GD.Print($"{Position.X}, {playAeraPosition.X}, {playAeraPosition.X + playAeraSize.X - longueurX}");
+            //nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X, playAeraPosition.X + playAeraSize.X - longueurX);
+            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X + demiLongueurX, playAeraPosition.X + playAeraSize.X - demiLongueurX);
             nouvellePosition.Y = Position.Y;
 
             Position = nouvellePosition;
@@ -84,6 +89,7 @@ namespace SpaceZombie.Joueurs
                     else
                     {
                         GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
+                        sonPrendsHit.Play();
                     }
                 }
                 projectile.Disable();
@@ -129,7 +135,8 @@ namespace SpaceZombie.Joueurs
         }
         private float PositionCentreX()
         {
-            return playAeraPosition.X + playAeraSize.X * 0.5f - longueurX;
+            //return playAeraPosition.X + playAeraSize.X * 0.5f - longueurX;
+            return playAeraPosition.X + playAeraSize.X * 0.5f - demiLongueurX;
         }
 
         public void Disable()
