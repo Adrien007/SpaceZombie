@@ -1,47 +1,36 @@
 [gd_scene format=3 uid="uid://cctan0cxox4el"]
 
 [ext_resource type="Script" uid="uid://ceppxdbu03qif" path="res://Scripts/Joueurs/Joueur.cs" id="1_0i1yc"]
-[ext_resource type="PackedScene" uid="uid://cogrlhaliv7r7" path="res://Prefabs/cannon.tscn" id="2_okgyc"]
+[ext_resource type="PackedScene" uid="uid://b42c0nlqmpudy" path="res://Prefabs/cannon_joueur.tscn" id="2_trojc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
 
-[node name="Joueur" type="Node2D" unique_id=1982290760 node_paths=PackedStringArray("enfant", "area", "cannon0")]
+[node name="Joueur" type="Node2D" unique_id=1982290760 node_paths=PackedStringArray("enfant", "area", "cannons")]
 script = ExtResource("1_0i1yc")
 enfant = NodePath("Panel")
-area = NodePath("Panel/Control/Area2D")
-cannon0 = NodePath("Panel/CannonPosition_0/Cannon0")
+area = NodePath("Panel/Area2D")
+cannons = NodePath("Panel/CannonJoueur")
 
 [node name="Panel" type="Panel" parent="." unique_id=1282621038]
-anchors_preset = 2
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -20.0
 offset_top = -40.0
-offset_right = 40.0
+offset_right = 20.0
+grow_horizontal = 2
 grow_vertical = 0
 
-[node name="CannonPosition_0" type="Control" parent="Panel" unique_id=1854298296]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-grow_horizontal = 2
+[node name="CannonJoueur" parent="Panel" unique_id=1857421205 instance=ExtResource("2_trojc")]
+position = Vector2(20, 0)
 
-[node name="Cannon0" parent="Panel/CannonPosition_0" unique_id=1703175370 instance=ExtResource("2_okgyc")]
-
-[node name="Control" type="Control" parent="Panel" unique_id=2064035535]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Area2D" type="Area2D" parent="Panel/Control" unique_id=404862405]
+[node name="Area2D" type="Area2D" parent="Panel" unique_id=404862405]
+position = Vector2(20, 20)
 collision_layer = 2147483648
 collision_mask = 2147483648
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Panel/Control/Area2D" unique_id=1078271631]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Panel/Area2D" unique_id=1078271631]
 shape = SubResource("CircleShape2D_0i1yc")

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b42c0nlqmpudy"]
+
+[ext_resource type="Script" uid="uid://c4km4fesugva4" path="res://Scripts/Cannons/CannonJoueur.cs" id="1_fcawe"]
+
+[node name="CannonJoueur" type="Node2D" unique_id=1857421205]
+script = ExtResource("1_fcawe")

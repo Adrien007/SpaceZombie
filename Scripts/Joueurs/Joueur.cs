@@ -14,11 +14,8 @@ namespace SpaceZombie.Joueurs
     {
         [Export] private Control enfant;
         [Export] public float vitesse = 200f;
-        [Export] public float tempsRelaod = 0.5f;
         [Export] private Area2D area;
-
-        [Export] private CanonObjet cannon0;
-        private Timer reloadTimer;
+        [Export] private CannonJoueur cannons;
 
         public JoueurEtat jState;
         private Vector2 playAeraSize;
@@ -33,12 +30,6 @@ namespace SpaceZombie.Joueurs
             longueurX = (int)enfant.Size.X;
             playAeraSize = enfant.Size;
             playAeraPosition = Position;
-
-            reloadTimer = new Timer();
-            AddChild(reloadTimer);
-            reloadTimer.WaitTime = tempsRelaod;
-            reloadTimer.OneShot = true;
-            reloadTimer.Timeout += OnReloadTimeout;
 
             area.AreaEntered += OnAreaEntered;
             GameEvents.Instance.LevelUp += LevelUpCannon;
@@ -67,26 +58,14 @@ namespace SpaceZombie.Joueurs
             Position = nouvellePosition;
 
             // Check if spacebar is pressed and reload timer is not active
-            if (Input.IsActionPressed("shot_fire") && reloadTimer.TimeLeft == 0)
+            if (Input.IsActionPressed("shot_fire"))
             {
-                FireAllCannons(); // Fire all cannons when spacebar is pressed
-            }
-        }
-
-        // Method to fire all cannons
-        private void FireAllCannons()
-        {
-            reloadTimer.Start();
-            if (cannon0.Visible)
-            {
-                cannon0.Fire();
+                cannons.Fire();
             }
         }
 
         private void OnAreaEntered(Area2D area)
         {
-            //GD.Print("Joueur Hit !!! + " + area.GetInstanceId());
-
             if (area.GetParent() is ProjectileObjet projectile)
             {
                 if (!jState.IsDead && !jState.IsInvicible)
@@ -121,17 +100,9 @@ namespace SpaceZombie.Joueurs
             return hp;
         }
 
-        // Reload timer timeout handler
-        private void OnReloadTimeout()
-        {
-            // You can add any additional logic for what happens when the reload timer finishes
-            //GD.Print("Reload finished. You can fire again!");
-        }
-
-
         private void LevelUpCannon()
         {
-            cannon0.LevelUp();
+            cannons.LevelUp();
         }
 
         public void Initialize(int hp,
@@ -146,7 +117,7 @@ namespace SpaceZombie.Joueurs
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
             resetEtatNotifier.Register(this);
-            cannon0.Initialize(0, new Projectile(1, 250f, false), LayerDictionnary.GetLayer(LayerDictionnary.Enemy), resetEtatNotifier);
+            cannons.Initialize(resetEtatNotifier);
         }
         public void InitialiserSize(Vector2 size)
         {
@@ -172,7 +143,7 @@ namespace SpaceZombie.Joueurs
         {
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
-            reloadTimer.Stop();
+            cannons.StopReloadTimer();
         }
         public void StartTimerState()
         {

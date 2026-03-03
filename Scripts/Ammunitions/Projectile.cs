@@ -19,7 +19,7 @@ namespace SpaceZombie.Ammunitions
             this.canHitMultipleObjects = canHitMultipleObjects;
         }
 
-        public void AugmenteVitesse(float pourcentage)
+        public void upgradeVitesse(float pourcentage)
         {
             vitesse += vitesse * pourcentage;
         }

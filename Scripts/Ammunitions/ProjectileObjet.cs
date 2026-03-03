@@ -9,7 +9,6 @@ namespace SpaceZombie.Ammunitions
     {
         public delegate void HitSignalEventHandler(ProjectileObjet projectileObj);
         public event HitSignalEventHandler OutOfBoundignal;
-
         [Export] private Area2D area;
         private Projectile projectile;
         private Vector2 directionXY;
@@ -19,24 +18,22 @@ namespace SpaceZombie.Ammunitions
         public override void _Ready()
         {
             base._Ready();
-            area.AreaExited += OnAreaExited;
             Disable();
         }
-        public void Initialize(Projectile projectile, uint collisionLayer,
+        public void Initialize(Projectile projectile,
                                 IResetEtatNotifier resetEtatNotifier)
         {
+            area.AreaExited += OnAreaExited;
             this.projectile = projectile;
-            area.CollisionLayer = collisionLayer;
-            area.CollisionMask = LayerDictionnary.GetLayer(LayerDictionnary.OutOfBound);
             resetEtatNotifier.Register(this);
         }
 
-        private const float CORRECTION_ANGLE = Mathf.Pi * 0.5f;
+        //private const float CORRECTION_ANGLE = Mathf.Pi * 0.5f;
         public void Fire(Vector2 directionXY, Vector2 globalPosition, float globalRotation)
         {
             this.directionXY = directionXY;
             this.GlobalPosition = globalPosition;
-            this.GlobalRotation = globalRotation + CORRECTION_ANGLE;
+            this.GlobalRotation = globalRotation;// + CORRECTION_ANGLE;
             Enable();
         }
 

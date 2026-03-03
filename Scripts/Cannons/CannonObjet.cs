@@ -1,70 +1,46 @@
 //CanonObjet.cs
+using System;
 using System.Collections.Generic;
 using Godot;
 using SpaceZombie.Ammunitions;
 using SpaceZombie.Events;
+using SpaceZombie.Mondes.Utilitaires;
 
 namespace SpaceZombie.Cannons
 {
-    public partial class CanonObjet : Node2D
+    public partial class CannonObjet : Node2D
     {
         private Queue<ProjectileObjet> projectileBuffer;
-        private int level = 0;
         PackedScene projectileScene;
         Node mainAera;
         Projectile projectile;
         IResetEtatNotifier resetEtatNotifier;
-        private uint collisionLayer;
-
 
         public override void _Ready()
         {
-            projectileScene = (PackedScene)ResourceLoader.Load("res://Prefabs/projectile_objet.tscn");
-            mainAera = GetTree().CurrentScene;
             base._Ready();
         }
-        public void Initialize(int level,
-                                Projectile projectile, uint collisionLayer,
+        public void Initialize(int level, string projectileName,
+                                Projectile projectile,
                                 IResetEtatNotifier resetEtatNotifier)
         {
-            this.level = level;
+            mainAera = GetTree().CurrentScene.FindChild("MainAera");
             this.projectile = projectile;
             this.resetEtatNotifier = resetEtatNotifier;
-            this.collisionLayer = collisionLayer;
-            InitializeBuffer(level, projectile, resetEtatNotifier);
+            projectileScene = (PackedScene)ResourceLoader.Load($"res://Prefabs/{projectileName}.tscn");
+            InitializeBuffer();
         }
-        private void InitializeBuffer(int level,
-                                        Projectile projectile,
-                                        IResetEtatNotifier resetEtatNotifier)
+        private void InitializeBuffer()
         {
             projectileBuffer = new Queue<ProjectileObjet>();
-            for (int i = 0; i <= level; i++)
+            for (int i = 0; i <= 15; i++)
             {
                 projectileBuffer.Enqueue(newProjectile());
             }
         }
-
-        public void LevelUp()
+        public void Fire(Vector2 direction)
         {
-            level += 1;
-            projectile.AugmenteVitesse(0.1f);
-        }
-
-        public Vector2 GetGlobalDirection()
-        {
-            return new Vector2(Mathf.Cos(GlobalRotation), Mathf.Sin(GlobalRotation)).Normalized();
-        }
-
-        public void Fire()
-        {
-            int projectilePosition = level * 20;
-            for (int i = 0; i <= level; i++)
-            {
-                Vector2 globalPosition = GlobalPosition;
-                globalPosition.X += projectilePosition;
-                getNextProjectile().Fire(GetGlobalDirection(), globalPosition, GlobalRotation);
-                projectilePosition -= 40;
-            }
+            getNextProjectile().Fire(direction, GlobalPosition, GlobalRotation);
         }
 
         private ProjectileObjet getNextProjectile()
@@ -82,7 +58,7 @@ namespace SpaceZombie.Cannons
         private ProjectileObjet newProjectile()
         {
             ProjectileObjet projectileInstance = (ProjectileObjet)projectileScene.Instantiate();
-            projectileInstance.Initialize(projectile, collisionLayer, resetEtatNotifier);
+            projectileInstance.Initialize(projectile, resetEtatNotifier);
             projectileInstance.OutOfBoundignal += HandleOutOfBoundSignal;
             mainAera.AddChild(projectileInstance);
             return projectileInstance;
