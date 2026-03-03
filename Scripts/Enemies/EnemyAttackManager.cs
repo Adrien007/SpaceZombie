@@ -3,6 +3,7 @@ using Godot;
 using SpaceZombie.Ammunitions;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
+using SpaceZombie.Utilitaires.Layers;
 using System;
 using System.Collections.Generic;
 
@@ -18,22 +19,21 @@ namespace SpaceZombie.Enemies
     public class EnemyAttackManager : IEnemyAttackManagerSetEnemy, IResetEtatObserver
     {
         private List<Node2D> enemiesAvailable;
-        private CanonObjet cannon0;
+        private CannonObjet cannon0;
         private EnemyFireService service;
         private Timer rateOfFire;
 
-        public EnemyAttackManager(Control mainAera, int capacity, uint collisionLayer, uint collisionMask, Projectile projectile, 
-                                IBulletCollisionManager bulletCollisionManager, IResetEtatNotifier resetEtatNotifier,
+        public EnemyAttackManager(Control mainAera,
+                                 IResetEtatNotifier resetEtatNotifier,
                                 EnemyFireService service)
         {
             resetEtatNotifier.Register(this);
             enemiesAvailable = new List<Node2D>();
             this.service = service;
             PackedScene cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
-            cannon0 = cannonPrefab.Instantiate<CanonObjet>();
+            cannon0 = cannonPrefab.Instantiate<CannonObjet>();
             mainAera.AddChild(cannon0);
-            cannon0.Rotate(Mathf.Pi);
-            cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager, resetEtatNotifier);
+            cannon0.Initialize(0, "projectile_enemy", new Projectile(1, 200f, false), resetEtatNotifier);
 
             rateOfFire = service.GetTimerRateOfFire();
             mainAera.AddChild(rateOfFire);
@@ -47,8 +47,13 @@ namespace SpaceZombie.Enemies
             for (int i = 0; i < enemyFire.Count; i++)
             {
                 cannon0.GlobalPosition = enemyFire[i].GlobalPosition;
-                cannon0.Fire();
+                cannon0.Fire(GetGlobalDirection(enemyFire[i].GlobalRotation));
             }
+        }
+
+        private Vector2 GetGlobalDirection(float globalRotation)
+        {
+            return new Vector2(Mathf.Cos(globalRotation), Mathf.Sin(globalRotation)).Normalized();
         }
 
         public void SetEnemyForLevel(List<Node2D> allEnemy)

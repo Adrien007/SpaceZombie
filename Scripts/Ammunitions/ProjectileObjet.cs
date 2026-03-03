@@ -1,45 +1,39 @@
 //ProjectileObjet.cs
 using Godot;
 using SpaceZombie.Events;
+using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Ammunitions
 {
     public partial class ProjectileObjet : Node2D, IResetEtatObserver
     {
         public delegate void HitSignalEventHandler(ProjectileObjet projectileObj);
-		public event HitSignalEventHandler HitSignal;
-
+        public event HitSignalEventHandler OutOfBoundignal;
         [Export] private Area2D area;
         private Projectile projectile;
         private Vector2 directionXY;
 
         public Projectile Projectile { get => projectile; }
 
-        private IBulletCollisionManager _collisionManager;
-
         public override void _Ready()
         {
             base._Ready();
-            area.AreaEntered += OnAreaEntered;
-            area.AreaExited += OnAreaExited;
             Disable();
         }
-        public void Initialize(uint collisionLayer, uint collisionMask, Projectile projectile, 
-                                IBulletCollisionManager bulletCollisionManager, IResetEtatNotifier resetEtatNotifier)
+        public void Initialize(Projectile projectile,
+                                IResetEtatNotifier resetEtatNotifier)
         {
-            area.CollisionLayer = collisionLayer;
-            area.CollisionMask = collisionMask;
+            area.AreaExited += OnAreaExited;
             this.projectile = projectile;
-            _collisionManager = bulletCollisionManager;
             resetEtatNotifier.Register(this);
         }
 
-        private const float CORRECTION_ANGLE = Mathf.Pi * 0.5f;
+        //private const float CORRECTION_ANGLE = Mathf.Pi * 0.5f;
         public void Fire(Vector2 directionXY, Vector2 globalPosition, float globalRotation)
         {
             this.directionXY = directionXY;
             this.GlobalPosition = globalPosition;
-            this.GlobalRotation = globalRotation + CORRECTION_ANGLE;
+            this.GlobalRotation = globalRotation;// + CORRECTION_ANGLE;
             Enable();
         }
 
@@ -51,12 +45,6 @@ namespace SpaceZombie.Ammunitions
             }
         }
 
-        private void OnAreaEntered(Area2D aera2D)
-        {
-            _collisionManager.ReportCollision(this, aera2D);
-        }
-        
-
         private void OnAreaExited(Area2D aera2D)
         {
             //GD.Print("AreaExited: " + aera2D.CollisionLayer);
@@ -67,20 +55,21 @@ namespace SpaceZombie.Ammunitions
                 //GD.Print("AreaExited: " + aera2D.GetType() + "  " + aera2D.CollisionLayer);
                 // Defer the call to Disable() to avoid issues during signal processing
                 CallDeferred(nameof(Disable));
-                HitSignal.Invoke(this);
+                OutOfBoundignal.Invoke(this);
             }
         }
 
         public void Disable()
         {
-            Projectile.JusHitValidObjects = false;
-            area.Monitoring = false;
+            //area.Monitoring = false;
+            area.CallDeferred(Area2D.MethodName.SetMonitorable, false);
             Visible = false;
         }
         private void Enable()
         {
             Visible = true;
-            area.Monitoring = true;
+            area.CallDeferred(Area2D.MethodName.SetMonitorable, true);
+            //area.Monitoring = true;
         }
 
         public void OnResetToInitaialState()

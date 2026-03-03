@@ -15,20 +15,21 @@ namespace SpaceZombie.Niveaux
 
         private bool finCreationNiveau = false;
 
-        public LevelTransitionManager(SceneTree sceneTree, ProchainNiveauUi prochainNiveauUi, LevelManager lm, 
-                                        ResetEtatManager res, EndLevelSystem endLevelSystemEnemySide)
+        public LevelTransitionManager(SceneTree sceneTree, ProchainNiveauUi prochainNiveauUi, LevelManager lm,
+                                        ResetEtatManager res)
         {
             this.sceneTree = sceneTree;
             this.prochainNiveauUi = prochainNiveauUi;
             this.lm = lm;
             this.res = res;
 
-            endLevelSystemEnemySide.EndLevelSignal += ChangerNiveauLogic;
+            //endLevelSystemEnemySide.EndLevelSignal += ChangerNiveauLogic;
+            GameEvents.Instance.EndLevel += ChangerNiveauLogic;
             lm.FinCreationNiveau += FinCreationNiveau;
             prochainNiveauUi.timer.Timeout += WaitForTimerOrLevelToFinish;
         }
         private void FinCreationNiveau()
-        { 
+        {
             finCreationNiveau = true;
             WaitForTimerOrLevelToFinish();
         }
@@ -58,7 +59,7 @@ namespace SpaceZombie.Niveaux
             //GD.Print($"{finCreationNiveau} || {prochainNiveauUi.TimeLeft()}");
             if (!finCreationNiveau || prochainNiveauUi.TimeLeft() > 0)
                 return;
-            
+
             finCreationNiveau = false;
             //Ecran loading Fin
             prochainNiveauUi.Visible = false;

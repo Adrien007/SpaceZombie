@@ -7,7 +7,7 @@ using SpaceZombie.Mondes.Utilitaires;
 
 namespace SpaceZombie.Enemies
 {
-    public interface IZombiesSpawnService : IInLigneSpawnerObjetService, IObtainEnemyObject, IZombiesSpawnServiceUtilitiesEvent
+    public interface IZombiesSpawnService : IInLigneSpawnerObjetService, IObtainEnemyObject
     {
 
     }

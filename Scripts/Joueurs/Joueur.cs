@@ -3,6 +3,7 @@ using SpaceZombie.Ammunitions;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
 using SpaceZombie.Mondes.Utilitaires;
+using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Joueurs
 {
@@ -13,11 +14,8 @@ namespace SpaceZombie.Joueurs
     {
         [Export] private Control enfant;
         [Export] public float vitesse = 200f;
-        [Export] public float tempsRelaod = 0.5f;
-        [Export] private Area2D aera;
-
-        [Export] private CanonObjet cannon0;
-        private Timer reloadTimer;
+        [Export] private Area2D area;
+        [Export] private CannonJoueur cannons;
 
         public JoueurEtat jState;
         private Vector2 playAeraSize;
@@ -28,15 +26,13 @@ namespace SpaceZombie.Joueurs
 
         public override void _Ready()
         {
+            base._Ready();
             longueurX = (int)enfant.Size.X;
             playAeraSize = enfant.Size;
             playAeraPosition = Position;
 
-            reloadTimer = new Timer();
-            AddChild(reloadTimer);
-            reloadTimer.WaitTime = tempsRelaod;
-            reloadTimer.OneShot = true;
-            reloadTimer.Timeout += OnReloadTimeout;
+            area.AreaEntered += OnAreaEntered;
+            GameEvents.Instance.LevelUp += LevelUpCannon;
         }
 
         public override void _PhysicsProcess(double delta)
@@ -62,45 +58,66 @@ namespace SpaceZombie.Joueurs
             Position = nouvellePosition;
 
             // Check if spacebar is pressed and reload timer is not active
-            if (Input.IsActionPressed("shot_fire") && reloadTimer.TimeLeft == 0)
+            if (Input.IsActionPressed("shot_fire"))
             {
-                FireAllCannons(); // Fire all cannons when spacebar is pressed
+                cannons.Fire();
             }
         }
 
-        // Method to fire all cannons
-        private void FireAllCannons()
+        private void OnAreaEntered(Area2D area)
         {
-            reloadTimer.Start();
-            if (cannon0.Visible)
+            if (area.GetParent() is ProjectileObjet projectile)
             {
-                cannon0.Fire();
+                if (!jState.IsDead && !jState.IsInvicible)
+                {
+                    jState.IsInvicible = true;
+                    jState.InvincibilityTimer.Start();
+                    jState.Hp = RetirerHp(jState.Hp, projectile.Projectile.Damage);
+                    if (jState.Hp <= 0)
+                    {
+                        jState.IsDead = true;
+                        jState.DeadSoundPlayed = true;
+                        GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
+                        CallDeferred(nameof(Disable));
+                        GameEvents.Instance.EmitSignal(nameof(GameEvents.PlayerDied));
+                    }
+                    else
+                    {
+                        GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
+                    }
+                }
+                projectile.Disable();
             }
         }
 
-        // Reload timer timeout handler
-        private void OnReloadTimeout()
+        private static int RetirerHp(int hp, int hitValue)
         {
-            // You can add any additional logic for what happens when the reload timer finishes
-            //GD.Print("Reload finished. You can fire again!");
+            hp -= hitValue;
+            if (hp < 0)
+            {
+                hp = 0;
+            }
+            return hp;
         }
 
+        private void LevelUpCannon()
+        {
+            cannons.LevelUp();
+        }
 
-        public void Initialize(int hp, int invicibilityTimerTime, Control mainAera, 
-                                int capacity, uint collisionLayer, uint collisionMask, 
-                                Projectile projectile, IBulletCollisionManager bulletCollisionManager,
+        public void Initialize(int hp,
                                 IResetEtatNotifier resetEtatNotifier)
         {
             Timer invisibilityTimer = new Timer();
             invisibilityTimer.Name = "invisibilityTimer";
-            invisibilityTimer.WaitTime = invicibilityTimerTime;
+            invisibilityTimer.WaitTime = 1;
             invisibilityTimer.OneShot = true;
             this.AddChild(invisibilityTimer);
             jState = new JoueurEtat(hp, invisibilityTimer);
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
             resetEtatNotifier.Register(this);
-            cannon0.Initialize(mainAera, capacity, collisionLayer, collisionMask, projectile, bulletCollisionManager, resetEtatNotifier);
+            cannons.Initialize(resetEtatNotifier);
         }
         public void InitialiserSize(Vector2 size)
         {
@@ -118,18 +135,19 @@ namespace SpaceZombie.Joueurs
         public void Disable()
         {
             Visible = false;
-            aera.Monitorable = false;
+            area.Monitorable = false;
+            area.Monitoring = false;
         }
 
         public void OnResetToInitaialState()
         {
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
-            reloadTimer.Stop();
+            cannons.StopReloadTimer();
         }
         public void StartTimerState()
         {
-            
+
         }
     }
 

@@ -6,26 +6,6 @@ using SpaceZombie.Mondes.Utilitaires;
 
 namespace SpaceZombie.Events
 {
-    public interface IZombiesSpawnServiceUtilitiesEvent
-    {
-        public void DesactiverEnemyPasEnSandwitch(InLigneSpawnerUtilitiesEventService service);
-    }
-    public class InLigneSpawnerUtilitiesEvent : IBulletCollisionOberser
-    {
-        private IZombiesSpawnServiceUtilitiesEvent zp;
-        private InLigneSpawnerUtilitiesEventService service;
-        public InLigneSpawnerUtilitiesEvent(IZombiesSpawnServiceUtilitiesEvent zombiesSpawnServiceUtilitiesEvent, InLigneSpawnerUtilitiesEventService service)
-        {
-            zp = zombiesSpawnServiceUtilitiesEvent;
-            this.service = service;
-        }
-        public void OnBulletCollision(ProjectileObjet projectile, Area2D aera2D)
-        {
-            zp.DesactiverEnemyPasEnSandwitch(service);
-        }
-    }
-
-
     public class InLigneSpawnerUtilitiesEventService
     {
         public void DesactiverEnemyPasEnSandwitch(InLigneSpawnerObjet[] inLigneSpawnersObjet)
