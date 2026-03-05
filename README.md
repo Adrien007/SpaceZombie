@@ -1,7 +1,7 @@
 
 ---
 
-# **Zombie Blaster** 🎮
+# **Zombie Blaster** 🎮 **WIP**
 
 **Zombie Blaster** is a fast-paced, arcade-style 2D shoot'em up game inspired by classic titles like *Chicken Invaders*. Developed using **Godot Engine** with **C#**, this project is both a nostalgic homage and a modernized gameplay experience.
 
