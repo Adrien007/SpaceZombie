@@ -3,7 +3,6 @@ using SpaceZombie.Ammunitions;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
 using SpaceZombie.Mondes.Utilitaires;
-using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Joueurs
 {
@@ -16,7 +15,10 @@ namespace SpaceZombie.Joueurs
         [Export] public float vitesse = 200f;
         [Export] private Area2D area;
         [Export] private CannonJoueur cannons;
+        [Export] private Panel invinsibilityPanel;
         [Export] private AudioStreamPlayer sonPrendsHit;
+        [Export] private AudioStreamPlayer sonMeurt;
+        [Export] private AudioStreamPlayer sonInvicible;
 
         public JoueurEtat jState;
         private Vector2 playAeraSize;
@@ -36,6 +38,10 @@ namespace SpaceZombie.Joueurs
 
             area.AreaEntered += OnAreaEntered;
             GameEvents.Instance.LevelUp += LevelUpCannon;
+
+            sonInvicible.Finished += OnSoundInvicibilityFinished;
+
+            invinsibilityPanel.Visible = false;
         }
 
         public override void _PhysicsProcess(double delta)
@@ -76,7 +82,7 @@ namespace SpaceZombie.Joueurs
                 if (!jState.IsDead && !jState.IsInvicible)
                 {
                     jState.IsInvicible = true;
-                    jState.InvincibilityTimer.Start();
+                    sonInvicible.Play();
                     jState.Hp = RetirerHp(jState.Hp, projectile.Projectile.Damage);
                     if (jState.Hp <= 0)
                     {
@@ -88,8 +94,9 @@ namespace SpaceZombie.Joueurs
                     }
                     else
                     {
-                        GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
+                        //GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
                         sonPrendsHit.Play();
+                        invinsibilityPanel.Visible = true;
                     }
                 }
                 projectile.Disable();
@@ -114,12 +121,7 @@ namespace SpaceZombie.Joueurs
         public void Initialize(int hp,
                                 IResetEtatNotifier resetEtatNotifier)
         {
-            Timer invisibilityTimer = new Timer();
-            invisibilityTimer.Name = "invisibilityTimer";
-            invisibilityTimer.WaitTime = 1;
-            invisibilityTimer.OneShot = true;
-            this.AddChild(invisibilityTimer);
-            jState = new JoueurEtat(hp, invisibilityTimer);
+            jState = new JoueurEtat(hp);
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
             resetEtatNotifier.Register(this);
@@ -156,6 +158,12 @@ namespace SpaceZombie.Joueurs
         {
 
         }
+
+        private void OnSoundInvicibilityFinished()
+        {
+            invinsibilityPanel.Visible = false;
+            jState.IsInvicible = false;
+        }
     }
 
 
@@ -170,29 +178,21 @@ namespace SpaceZombie.Joueurs
         private bool isDead;
         private bool deadSoundPlayed;
         private bool endLevel;
-        private Timer invincibilityTimer;
 
         public int Hp { get => hp; set => hp = value; }
         public bool IsInvicible { get => isInvicible; set => isInvicible = value; }
         public bool IsDead { get => isDead; set => isDead = value; }
         public bool DeadSoundPlayed { get => deadSoundPlayed; set => deadSoundPlayed = value; }
         public bool EndLevel { get => endLevel; set => endLevel = value; }
-        public Timer InvincibilityTimer { get => invincibilityTimer; }
 
 
-        public JoueurEtat(int hp, Timer invincibilityTimer)
+        public JoueurEtat(int hp)
         {
             this.hp = hp;
             isInvicible = false;
             isDead = false;
             deadSoundPlayed = false;
             endLevel = false;
-            this.invincibilityTimer = invincibilityTimer;
-
-            if (invincibilityTimer != null)
-            {
-                invincibilityTimer.Timeout += () => { isInvicible = false; };
-            }
         }
     }
 }

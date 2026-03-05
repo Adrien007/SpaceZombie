@@ -1,15 +1,19 @@
 [gd_scene format=3 uid="uid://cccdrmtfnmbgi"]
 
 [ext_resource type="Script" uid="uid://cuwcuwe3vhqrj" path="res://Scripts/Enemies/EnemyObjet.cs" id="1_pj2xj"]
+[ext_resource type="AudioStream" uid="uid://bawdh02qwskfx" path="res://Sounds/EnemyTakeHit.wav" id="2_t4g6b"]
+[ext_resource type="AudioStream" uid="uid://c7ttyxbooiea" path="res://Sounds/ZombieDye.wav" id="3_30yes"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r77uo"]
 radius = 20.0
 
-[node name="Enemy" type="Node2D" unique_id=1779648409 node_paths=PackedStringArray("area", "panel")]
+[node name="Enemy" type="Node2D" unique_id=1779648409 node_paths=PackedStringArray("area", "panel", "sonPrendsHit", "sonMeurt")]
 rotation = 1.5707964
 script = ExtResource("1_pj2xj")
 area = NodePath("Area2D")
 panel = NodePath("Panel")
+sonPrendsHit = NodePath("AudioStreamPlayer_prendHit")
+sonMeurt = NodePath("AudioStreamPlayer_meurt")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=684169035]
 collision_layer = 536870912
@@ -31,3 +35,9 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="AudioStreamPlayer_prendHit" type="AudioStreamPlayer" parent="." unique_id=1660751954]
+stream = ExtResource("2_t4g6b")
+
+[node name="AudioStreamPlayer_meurt" type="AudioStreamPlayer" parent="." unique_id=134708970]
+stream = ExtResource("3_30yes")

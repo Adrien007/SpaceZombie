@@ -38,7 +38,7 @@ namespace SpaceZombie.Cannons
                 projectileBuffer.Enqueue(newProjectile());
             }
         }
-        public void Fire(Vector2 direction)
+        public virtual void Fire(Vector2 direction)
         {
             getNextProjectile().Fire(direction, GlobalPosition, GlobalRotation);
         }

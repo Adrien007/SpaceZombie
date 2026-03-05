@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://ml5x1jekyni1"]
+
+[ext_resource type="Script" uid="uid://cjwvae4cwq4hp" path="res://Scripts/Cannons/CannonEnemy.cs" id="1_yg1w1"]
+[ext_resource type="AudioStream" uid="uid://cildhgqchw1l8" path="res://Sounds/EnemyAttack.wav" id="2_pgct2"]
+
+[node name="Cannon" type="Node2D" unique_id=1369072580 node_paths=PackedStringArray("sonFire", "sonFire")]
+script = ExtResource("1_yg1w1")
+sonFire = NodePath("AudioStreamPlayer")
+sonFire = NodePath("AudioStreamPlayer")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1010575138]
+stream = ExtResource("2_pgct2")

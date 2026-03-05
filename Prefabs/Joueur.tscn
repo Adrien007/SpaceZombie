@@ -3,16 +3,35 @@
 [ext_resource type="Script" uid="uid://ceppxdbu03qif" path="res://Scripts/Joueurs/Joueur.cs" id="1_0i1yc"]
 [ext_resource type="PackedScene" uid="uid://b42c0nlqmpudy" path="res://Prefabs/cannon_joueur.tscn" id="2_trojc"]
 [ext_resource type="AudioStream" uid="uid://b7hx8meu7j2ev" path="res://Sounds/PlayerHitTaken.wav" id="3_trojc"]
+[ext_resource type="AudioStream" uid="uid://dp8mp0boiqlsj" path="res://Sounds/PlayerInvisibility.mp3" id="4_qpr61"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
 
-[node name="Joueur" type="Node2D" unique_id=1982290760 node_paths=PackedStringArray("enfant", "area", "cannons", "sonPrendsHit")]
+[sub_resource type="Gradient" id="Gradient_qpr61"]
+interpolation_mode = 2
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kfqi4"]
+gradient = SubResource("Gradient_qpr61")
+repeat = 2
+metadata/_snap_enabled = true
+metadata/_snap_count = 66
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_klc7x"]
+texture = SubResource("GradientTexture2D_kfqi4")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+region_rect = Rect2(0, 0, 64, 64)
+modulate_color = Color(0.8, 1, 1, 0.50980395)
+
+[node name="Joueur" type="Node2D" unique_id=1982290760 node_paths=PackedStringArray("enfant", "area", "cannons", "invinsibilityPanel", "sonPrendsHit", "sonInvicible")]
 script = ExtResource("1_0i1yc")
 enfant = NodePath("Panel")
 area = NodePath("Panel/Area2D")
 cannons = NodePath("Panel/CannonJoueur")
-sonPrendsHit = NodePath("AudioStreamPlayer")
+invinsibilityPanel = NodePath("Panel/Panel")
+sonPrendsHit = NodePath("AudioStreamPlayer_prendsHit")
+sonInvicible = NodePath("AudioStreamPlayer_invinsible")
 
 [node name="Panel" type="Panel" parent="." unique_id=1282621038]
 anchors_preset = 7
@@ -37,5 +56,17 @@ collision_mask = 2147483648
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Panel/Area2D" unique_id=1078271631]
 shape = SubResource("CircleShape2D_0i1yc")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1546965647]
+[node name="Panel" type="Panel" parent="Panel" unique_id=1587003468]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_klc7x")
+
+[node name="AudioStreamPlayer_prendsHit" type="AudioStreamPlayer" parent="." unique_id=1546965647]
 stream = ExtResource("3_trojc")
+
+[node name="AudioStreamPlayer_invinsible" type="AudioStreamPlayer" parent="." unique_id=1479470932]
+stream = ExtResource("4_qpr61")

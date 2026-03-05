@@ -2,5 +2,6 @@
 
 [ext_resource type="Script" uid="uid://d36jfm0jeyrse" path="res://Scripts/Cannons/CannonObjet.cs" id="1_jtkx7"]
 
-[node name="Cannon" type="Node2D" unique_id=1369072580]
+[node name="Cannon" type="Node2D" unique_id=1369072580 node_paths=PackedStringArray("sonFire")]
 script = ExtResource("1_jtkx7")
+sonFire = NodePath("")

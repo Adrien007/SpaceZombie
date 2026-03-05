@@ -21,6 +21,7 @@ namespace SpaceZombie.Enemies
         private List<Node2D> enemiesAvailable;
         private CannonObjet cannon0;
         private EnemyFireService service;
+        private AudioStreamPlayer sonFire;
         private Timer rateOfFire;
 
         public EnemyAttackManager(Control mainAera,
@@ -30,8 +31,8 @@ namespace SpaceZombie.Enemies
             resetEtatNotifier.Register(this);
             enemiesAvailable = new List<Node2D>();
             this.service = service;
-            PackedScene cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
-            cannon0 = cannonPrefab.Instantiate<CannonObjet>();
+            PackedScene cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon_enemy.tscn");
+            cannon0 = cannonPrefab.Instantiate<CannonEnemy>();
             mainAera.AddChild(cannon0);
             cannon0.Initialize(0, "projectile_enemy", new Projectile(1, 200f, false), resetEtatNotifier);
 

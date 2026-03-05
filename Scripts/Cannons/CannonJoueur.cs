@@ -12,7 +12,8 @@ namespace SpaceZombie.Cannons
 		[Export] private int espaceEntreCannon = 40;
 		[Export] private float angleCannonEnPercentageDePi = 0.02f;
 		[Export] public float tempsRelaod = 1.0f;
-		private Timer reloadTimer;
+        [Export] private AudioStreamPlayer sonFire;
+        private Timer reloadTimer;
 		private PackedScene cannonPrefab;
 		private Projectile projectile;
 		private int level = 1;
@@ -62,7 +63,8 @@ namespace SpaceZombie.Cannons
 		{
 			if (reloadTimer.TimeLeft == 0)
 			{
-				foreach (CannonObjet cannon in cannons)
+                sonFire.Play(0.79f);
+                foreach (CannonObjet cannon in cannons)
 				{
 					cannon.Fire(GetGlobalDirection(cannon.Rotation));
 				}
