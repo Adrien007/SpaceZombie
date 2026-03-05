@@ -22,7 +22,8 @@ Take control of a spaceship at the bottom of the screen and defend the universe 
 ## 🕹️ **Controls**
 - **Move Left:** Arrow Left / A  
 - **Move Right:** Arrow Right / D  
-- **Shoot:** Spacebar  
+- **Shoot:** Spacebar
+- Controller support **WIP**
 *Note: Movement is horizontal only.*
 
 ---
