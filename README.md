@@ -110,3 +110,4 @@ Take control of a spaceship at the bottom of the screen and defend the universe 
 Grab your spaceship, aim for intergalactic excellence, and blast your way to victory! 🐔✨
 
 ### 🔗 [Project Repository](https://github.com/Adrien007/SpaceZombie)  
+### 🔗 [Project Release](https://github.com/Adrien007/SpaceZombie/releases)
