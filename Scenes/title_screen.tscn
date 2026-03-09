@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://dqdl0p8fg2rt2"]
 
 [ext_resource type="Script" uid="uid://by12bheanyax6" path="res://Scripts/title_screen.gd" id="1_klylv"]
+[ext_resource type="Texture2D" uid="uid://dgjw0y6lpgsqf" path="res://images/space_zombie_background.png" id="2_p3fck"]
+[ext_resource type="Theme" uid="uid://bgp1n4uijfn6m" path="res://images/white_theme.tres" id="3_4gxqj"]
 
 [sub_resource type="Gradient" id="Gradient_klylv"]
 offsets = PackedFloat32Array(0.042168673, 0.5200803, 0.9538153)
@@ -8,6 +10,8 @@ colors = PackedColorArray(0, 0, 0, 0.6627451, 0.035155974, 0.08001632, 0.2570254
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_p3fck"]
 gradient = SubResource("Gradient_klylv")
+
+[sub_resource type="Theme" id="Theme_4gxqj"]
 
 [node name="TitleScreen" type="Control" unique_id=22300465]
 layout_mode = 3
@@ -18,7 +22,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_klylv")
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1211892094]
+visibility_layer = 526337
+position = Vector2(578.5, 326.5)
+scale = Vector2(1.1486285, 1.1981481)
+texture = ExtResource("2_p3fck")
+
 [node name="TextureRect" type="TextureRect" parent="." unique_id=75149529]
+visible = false
+visibility_layer = 1023
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,13 +41,14 @@ grow_vertical = 2
 texture = SubResource("GradientTexture1D_p3fck")
 
 [node name="Title" type="Label" parent="." unique_id=2802375]
-modulate = Color(0, 1, 1, 1)
+visibility_layer = 512
 layout_mode = 0
-offset_right = 1150.0
+offset_right = 1154.0
 offset_bottom = 340.0
-theme_override_colors/font_color = Color(0.15966657, 0.35595918, 0, 1)
-theme_override_colors/font_shadow_color = Color(0.25117916, 0.07615139, 0.03541747, 1)
-theme_override_colors/font_outline_color = Color(0.34509805, 0.5058824, 0, 1)
+scale = Vector2(1.000962, 0.99473596)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.234375, 0.20727539, 0.20727539, 1)
+theme_override_colors/font_outline_color = Color(0.915625, 0.77255857, 0.77255857, 1)
 theme_override_constants/shadow_offset_x = 6
 theme_override_constants/shadow_offset_y = 6
 theme_override_constants/outline_size = 12
@@ -46,43 +59,53 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Control1" type="Control" parent="." unique_id=286732091]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="StartButton" type="Button" parent="Control1" unique_id=1698263586]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control1" unique_id=1477861956]
 layout_mode = 0
-offset_left = 495.0
-offset_top = 341.0
-offset_right = 654.0
-offset_bottom = 397.0
+offset_left = 503.99997
+offset_top = 374.0
+offset_right = 573.0
+offset_bottom = 497.0
+scale = Vector2(2.0016174, 1.3681407)
+theme = ExtResource("3_4gxqj")
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="StartButton" type="Button" parent="Control1/VBoxContainer" unique_id=1698263586]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
+theme = SubResource("Theme_4gxqj")
 text = "START"
+autowrap_mode = 1
 
-[node name="Quit" type="Button" parent="Control1" unique_id=1344365612]
-layout_mode = 0
-offset_left = 495.0
-offset_top = 519.0
-offset_right = 654.0
-offset_bottom = 575.0
-text = "QUIT"
-
-[node name="ButtonEnglish" type="Button" parent="Control1" unique_id=1984175847]
-layout_mode = 0
-offset_left = 496.0
-offset_top = 401.0
-offset_right = 653.0
-offset_bottom = 455.0
-text = "English"
-
-[node name="ButtonFrancais" type="Button" parent="Control1" unique_id=1014296910]
-layout_mode = 0
-offset_left = 496.0
-offset_top = 460.0
-offset_right = 653.0
-offset_bottom = 510.0
+[node name="ButtonFrancais" type="Button" parent="Control1/VBoxContainer" unique_id=1014296910]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
 text = "Français"
+autowrap_mode = 1
 
-[connection signal="pressed" from="Control1/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="Control1/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="Control1/ButtonEnglish" to="." method="_on_button_english_pressed"]
-[connection signal="pressed" from="Control1/ButtonFrancais" to="." method="_on_button_francais_pressed"]
+[node name="ButtonEnglish" type="Button" parent="Control1/VBoxContainer" unique_id=1984175847]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
+text = "English"
+autowrap_mode = 1
+
+[node name="Quit" type="Button" parent="Control1/VBoxContainer" unique_id=1344365612]
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+text = "QUIT"
+autowrap_mode = 1
+
+[connection signal="pressed" from="Control1/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Control1/VBoxContainer/ButtonFrancais" to="." method="_on_button_francais_pressed"]
+[connection signal="pressed" from="Control1/VBoxContainer/ButtonEnglish" to="." method="_on_button_english_pressed"]
+[connection signal="pressed" from="Control1/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
