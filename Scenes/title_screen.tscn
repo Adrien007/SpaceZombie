@@ -2,6 +2,13 @@
 
 [ext_resource type="Script" uid="uid://by12bheanyax6" path="res://Scripts/title_screen.gd" id="1_klylv"]
 
+[sub_resource type="Gradient" id="Gradient_klylv"]
+offsets = PackedFloat32Array(0.042168673, 0.5200803, 0.9538153)
+colors = PackedColorArray(0, 0, 0, 0.6627451, 0.035155974, 0.08001632, 0.25702548, 1, 0, 0, 0, 0.8392157)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_p3fck"]
+gradient = SubResource("Gradient_klylv")
+
 [node name="TitleScreen" type="Control" unique_id=22300465]
 layout_mode = 3
 anchors_preset = 15
@@ -11,37 +18,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_klylv")
 
-[node name="StartButton" type="Button" parent="." unique_id=1698263586]
-layout_mode = 0
-offset_left = 495.0
-offset_top = 341.0
-offset_right = 654.0
-offset_bottom = 397.0
-text = "Start"
-
-[node name="Quit" type="Button" parent="." unique_id=1344365612]
-layout_mode = 0
-offset_left = 495.0
-offset_top = 519.0
-offset_right = 654.0
-offset_bottom = 575.0
-text = "Quit"
-
-[node name="ButtonEnglish" type="Button" parent="." unique_id=1984175847]
-layout_mode = 0
-offset_left = 496.0
-offset_top = 401.0
-offset_right = 653.0
-offset_bottom = 455.0
-text = "English"
-
-[node name="ButtonFrancais" type="Button" parent="." unique_id=1014296910]
-layout_mode = 0
-offset_left = 496.0
-offset_top = 460.0
-offset_right = 653.0
-offset_bottom = 510.0
-text = "Français"
+[node name="TextureRect" type="TextureRect" parent="." unique_id=75149529]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_p3fck")
 
 [node name="Title" type="Label" parent="." unique_id=2802375]
 modulate = Color(0, 1, 1, 1)
@@ -60,7 +45,44 @@ text = "SPACE ZOMBIE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="ButtonEnglish" to="." method="_on_button_english_pressed"]
-[connection signal="pressed" from="ButtonFrancais" to="." method="_on_button_francais_pressed"]
+[node name="Control1" type="Control" parent="." unique_id=286732091]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StartButton" type="Button" parent="Control1" unique_id=1698263586]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 341.0
+offset_right = 654.0
+offset_bottom = 397.0
+text = "Start"
+
+[node name="Quit" type="Button" parent="Control1" unique_id=1344365612]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 519.0
+offset_right = 654.0
+offset_bottom = 575.0
+text = "Quit"
+
+[node name="ButtonEnglish" type="Button" parent="Control1" unique_id=1984175847]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 401.0
+offset_right = 653.0
+offset_bottom = 455.0
+text = "English"
+
+[node name="ButtonFrancais" type="Button" parent="Control1" unique_id=1014296910]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 460.0
+offset_right = 653.0
+offset_bottom = 510.0
+text = "Français"
+
+[connection signal="pressed" from="Control1/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Control1/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Control1/ButtonEnglish" to="." method="_on_button_english_pressed"]
+[connection signal="pressed" from="Control1/ButtonFrancais" to="." method="_on_button_francais_pressed"]
