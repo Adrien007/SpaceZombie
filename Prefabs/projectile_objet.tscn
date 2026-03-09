@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cipr5kh7xvovh"]
+[gd_scene format=3 uid="uid://cipr5kh7xvovh"]
 
 [ext_resource type="Script" uid="uid://r6s0r2y4e8rl" path="res://Scripts/Ammunitions/ProjectileObjet.cs" id="1_bf0py"]
 

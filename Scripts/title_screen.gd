@@ -13,12 +13,6 @@ func _on_quit_pressed() -> void:
 
 func _on_button_english_pressed() -> void:
 	TranslationServer.set_locale("en")
-	updateUI()
 
 func _on_button_francais_pressed() -> void:
 	TranslationServer.set_locale("fr")
-	updateUI()
-	
-func updateUI():
-	$StartButton.text = tr("START")
-	$Quit.text = tr("QUIT")
