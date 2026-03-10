@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cujpjvmemi7lo"]
+
+[ext_resource type="Script" uid="uid://wwykxgx4dfk4" path="res://Scripts/Ui/FloatingText.cs" id="1_b2aiq"]
+[ext_resource type="LabelSettings" uid="uid://dl21rffbdd2u5" path="res://Prefabs/new_label_settings_2.tres" id="1_cif0v"]
+
+[node name="FloatingText" type="Node2D" unique_id=2134537451 node_paths=PackedStringArray("label")]
+script = ExtResource("1_b2aiq")
+label = NodePath("Label")
+
+[node name="Label" type="Label" parent="." unique_id=453522767]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "+100"
+label_settings = ExtResource("1_cif0v")

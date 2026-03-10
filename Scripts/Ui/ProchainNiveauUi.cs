@@ -23,7 +23,8 @@ namespace SpaceZombie.Ui
 
         public void UpdateLabelTexte(string txt)
         {
-            label.Text = txt;
+
+            label.Text = " : " + txt;
         }
     }
 }
