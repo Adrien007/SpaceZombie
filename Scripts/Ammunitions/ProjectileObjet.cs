@@ -13,7 +13,7 @@ namespace SpaceZombie.Ammunitions
         private Projectile projectile;
         private Vector2 directionXY;
 
-        public Projectile Projectile { get => projectile; }
+		public Projectile Projectile { get => projectile; }
 
         public override void _Ready()
         {
@@ -37,13 +37,13 @@ namespace SpaceZombie.Ammunitions
             Enable();
         }
 
-        public override void _PhysicsProcess(double delta)
-        {
-            if (Visible)
-            {
-                GlobalPosition += directionXY * projectile.Vitesse * (float)delta;
-            }
-        }
+		public override void _PhysicsProcess(double delta)
+		{
+			if (Visible)
+			{
+				GlobalPosition += directionXY * projectile.Vitesse * (float)delta;
+			}
+		}
 
         private void OnAreaExited(Area2D aera2D)
         {
