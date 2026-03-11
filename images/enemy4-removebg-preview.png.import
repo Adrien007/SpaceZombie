@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drri6gij7yfsb"
-path="res://.godot/imported/enemy_4-removebg-preview.png-3fba4dfa0b480b202a9888425bf92421.ctex"
+uid="uid://coxhx37d4vlu5"
+path="res://.godot/imported/enemy4-removebg-preview.png-c2c90f2c8d178db7b03176d053e823cc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/enemy_4-removebg-preview.png"
-dest_files=["res://.godot/imported/enemy_4-removebg-preview.png-3fba4dfa0b480b202a9888425bf92421.ctex"]
+source_file="res://images/enemy4-removebg-preview.png"
+dest_files=["res://.godot/imported/enemy4-removebg-preview.png-c2c90f2c8d178db7b03176d053e823cc.ctex"]
 
 [params]
 
