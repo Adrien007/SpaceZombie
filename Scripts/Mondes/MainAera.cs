@@ -4,66 +4,54 @@ using SpaceZombie.Enemies;
 using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using SpaceZombie.Niveaux;
-using SpaceZombie.Scores.GameScore;
+using SpaceZombie.Ui;
 using SpaceZombie.Utilitaires.Layers;
 using System;
 
 namespace SpaceZombie.Mondes.Utilitaires
 {
-	public partial class MainAera : Control
-	{
-		[Export] private AeraPlayBound area;
-		[Export] private Joueur joueur;
-		[Export] private ZombiesSpawn zombiesSpawn;
-		private LevelManager lm;
-		private EnemyEventSystem ees;
-		private JoueurEventSystem jes;
-		private static LayerDictionnary ld;
-		public override void _Ready()
-		{
-			AeraPlayBoundAccessor.Initialize(area);
+    public partial class MainAera : Control
+    {
+        [Export] private AeraPlayBound area;
+        [Export] private Joueur joueur;
+        [Export] private ZombiesSpawn zombiesSpawn;
+        [Export] private ProchainNiveauUi prochainNiveauUi;
+        private static LayerDictionnary ld;
+        public override void _Ready()
+        {
+            AeraPlayBoundAccessor.Initialize(area);
 
-			ld = new LayerDictionnary();
-			ees = new EnemyEventSystem(new BulletCollisionManager(64, new BulletCollisionOnEnemyService()));
-			jes = new JoueurEventSystem(new BulletCollisionManager(32, new BulletCollisionOnPlayerService()));
-		}
-		public void Initialiser()
-		{
-			area.InitialiserSize(this.Size);
+            ld = new LayerDictionnary();
 
-			var endLevelSystemEnemySide = new EndLevelSystem();
-			endLevelSystemEnemySide.EndLevelSignal += ChangerNiveauLogic;
-			var endLevelSystemPlayerSide = new EndLevelSystemPlayer();
-			endLevelSystemPlayerSide.EndLevelSignal += QUITTER;
+            GameEvents.Instance.PlayerDied += QUITTER;
+        }
+        public void Initialiser()
+        {
+            GetTree().Paused = true;
 
-			ees.Register(zombiesSpawn, endLevelSystemEnemySide);
-			jes.Register(endLevelSystemPlayerSide);
+            area.InitialiserSize(this.Size);
 
-			lm = new LevelManager(endLevelSystemEnemySide, endLevelSystemEnemySide, zombiesSpawn);
+            var res = new ResetEtatManager();
 
-			joueur.InitialiserSize(this.Size);
-			joueur.InitialiserPosition(this.Position);
-			joueur.Initialize(this, 14, new Ammunitions.Projectile(1, 250f, false), ees);
+            joueur.InitialiserSize(this.Size);
+            joueur.InitialiserPosition(this.Position);
+            joueur.Initialize(3, res);
 
-			//lm.DemarrerPremierNiveau();
-			lm.DemarrerNiveau(0, 1);
-		}
+            Timer enemyFireOptionsTimer = new Timer();
+            EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1), enemyFireOptionsTimer);
+            EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
+            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, res, enemyFireService);
 
-		public override void _PhysicsProcess(double delta)
-		{
-			ees.Notify();
-		}
+            var lm = new LevelManager(zombiesSpawn, enemyFireOptions, enemyAttackManager);
+            lm.SetNiveau(0, 0);
 
-		private void QUITTER()
-		{
-			GetTree().Quit();
-		}
-		private void ChangerNiveauLogic()
-		{
-			//Resetter toutes les objets et position.
-			//Desactiver input
-			lm.CreerNiveau();
-			//ReactiverInput
-		}
-	}
+            var ltm = new LevelTransitionManager(GetTree(), prochainNiveauUi, lm, res);
+            ltm.ChangerNiveauLogic();
+        }
+
+        private void QUITTER()
+        {
+            GetTree().Quit();
+        }
+    }
 }

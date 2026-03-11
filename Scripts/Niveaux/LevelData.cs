@@ -1,8 +1,8 @@
 //LevelData.cs
 using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Godot;
 
 namespace SpaceZombie.Niveaux.Configs.V
 {
@@ -23,7 +23,9 @@ namespace SpaceZombie.Niveaux.Configs.V
 		public int NbEnemiesParLigne { get; set; }
 		public bool DeplaceEnBlock { get; set; }
 		public List<Line> Lines { get; set; }
-	}
+		public float TpsRecharge { get; set; }
+		public int NbProjectilePerAttack { get; set; }
+    }
 
 	public class Line
 	{
@@ -39,9 +41,13 @@ namespace SpaceZombie.Niveaux.Configs.V
 	{
 		public static GameData Deserialize()
 		{
-			string json = File.ReadAllText("Scripts/Niveaux/ConfigNiveaux.json");
+			var path = "res://Scripts/Niveaux/ConfigNiveaux.json";
+			var file = Godot.FileAccess.Open(path, Godot.FileAccess.ModeFlags.Read);
+			string json = file.GetAsText();
+			file.Close();
 			GameData data = JsonSerializer.Deserialize<GameData>(json);
 			return data;
+
 		}
 	}
 }

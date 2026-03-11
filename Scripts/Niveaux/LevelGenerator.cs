@@ -409,8 +409,11 @@ namespace SpaceZombie.Niveaux.Configs.V
 
 		public NiveauZombiesSpawnSettings GenerateLevel(int stage, int levelNumber)
 		{
-			return GenererNiveauService(gd.Stages[stage].Levels[levelNumber], stage);
-		}
+            Level setting = gd.Stages[stage].Levels[levelNumber];
+            NiveauZombiesSpawnSettings lvSettings =  GenererNiveauService(setting, stage);
+            lvSettings.EnemyAttackSettings = ObtenirEnemyAttack(setting);
+            return lvSettings;
+        }
 
 		private NiveauZombiesSpawnSettings GenererNiveauService(Level setting, int stage)
 		{
@@ -433,6 +436,14 @@ namespace SpaceZombie.Niveaux.Configs.V
 				DeplaceEnBlock = setting.DeplaceEnBlock,
 				LigneSettings = ligneSettings
 			};
+		}
+		private NiveauEnemyAttackSettings ObtenirEnemyAttack(Level setting)
+		{
+			return new NiveauEnemyAttackSettings()
+            {
+                FireRate = setting.TpsRecharge,
+                NbProjectilePerAttack = setting.NbProjectilePerAttack
+            };
 		}
 
 		#region Commun

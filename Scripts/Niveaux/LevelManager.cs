@@ -1,68 +1,92 @@
 //LevelManager.cs
 using System;
+using System.Linq;
 using SpaceZombie.Enemies;
 using SpaceZombie.Events;
 using SpaceZombie.Niveaux.Configs;
 using SpaceZombie.Niveaux.Configs.V;
+using SpaceZombie.Scores.GameScore;
 
 namespace SpaceZombie.Niveaux
 {
 	public class LevelManager
 	{
+		public delegate void FinCreationNiveauSignalEventHandler();
+		public event FinCreationNiveauSignalEventHandler FinCreationNiveau;
+
 		private int stage = 0;
 		private int globalLevel = 0;
 		private int levelLocal = 0;
+		private int nbEnemy;
 		private NiveauCreatorManager ncr;
 		private GameDataIterator gdi;
-		private IEndLevelSystem endLevelSystem;
-		private INbEnemy endLevelNbEnemy;
 		private ZombiesSpawn zombiesSpawn;
-
+		private IEnemyFireOptionsSettings enemyFireAttackOption;
+		private IEnemyAttackManagerSetEnemy enemyAttackManager;
+		private InLigneSpawnerUtilitiesEventService spawnService;
+		private IScoreManager sm;
 		public int Stage { get => stage; }
 		public int GlobalLevel { get => globalLevel; }
 
-		public LevelManager(IEndLevelSystem endLevelSystem, INbEnemy endLevelNbEnemy, ZombiesSpawn zombiesSpawn)
+		public LevelManager(ZombiesSpawn zombiesSpawn,
+							IEnemyFireOptionsSettings enemyFireAttackOption, IEnemyAttackManagerSetEnemy enemyAttackManager)
 		{
 			var gd = ExempleDeserialisation.Deserialize();
 			gdi = new GameDataIterator(gd);
 			ncr = new NiveauCreatorManager(gd);
-			this.endLevelSystem = endLevelSystem;
-			this.endLevelNbEnemy = endLevelNbEnemy;
+			spawnService = new InLigneSpawnerUtilitiesEventService();
+			sm = new ScoreManager(0);
 			this.zombiesSpawn = zombiesSpawn;
-
-			this.endLevelSystem.EndLevelSignal += OnEndLevelSignal;
+			this.enemyFireAttackOption = enemyFireAttackOption;
+			this.enemyAttackManager = enemyAttackManager;
+			GameEvents.Instance.EnemyDied += OnEnemyDied;
 		}
 
-		private void OnEndLevelSignal()
+		private void OnEnemyDied(EnemyObjet enemy)
 		{
-			if (!gdi.HasNext())
+			nbEnemy -= 1;
+			if (nbEnemy <= 0)
 			{
-				throw new InvalidOperationException("No more levels available.");
+				if (!gdi.HasNext())
+				{
+					throw new InvalidOperationException("No more levels available.");
+				}
+				globalLevel++;
+				var stageLevelLocal = gdi.Next();
+				stage = stageLevelLocal.Item1;
+				levelLocal = stageLevelLocal.Item2;
+				GameEvents.Instance.EmitSignal(nameof(GameEvents.EndLevel));
+				GameEvents.Instance.EmitSignal(nameof(GameEvents.LevelUp));
 			}
-			globalLevel++;
-			var stageLevelLocal = gdi.Next();
-			stage = stageLevelLocal.Item1;
-			levelLocal = stageLevelLocal.Item2;
+			else
+			{
+				if (!enemy.enemyFlagLogic.scoreGiven)
+				{
+					enemy.enemyFlagLogic.scoreGiven = true; // Set the score given flag to true
+					sm.Score += enemy.Enemy.Score;
+				}
+			}
+			zombiesSpawn.DesactiverEnemyPasEnSandwitch(spawnService);
+		}
 
-			//CreerNiveau(stage, levelLocal);
-		}
-		public void DemarrerPremierNiveau()
+		public void SetNiveau(int stage, int levelLocal)
 		{
-			CreerNiveau(stage, globalLevel);
-		}
-		public void DemarrerNiveau(int stage, int globalLevel)
-		{
-			CreerNiveau(stage, globalLevel);
+			this.stage = stage;
+			this.levelLocal = levelLocal;
+			this.globalLevel = levelLocal;
 		}
 		public void CreerNiveau()
 		{
 			CreerNiveau(stage, levelLocal);
+			FinCreationNiveau.Invoke();
 		}
 		private void CreerNiveau(int stage, int niveau)
 		{
 			var niveauSettings = ncr.CreerNiveau(stage, niveau);
-			endLevelNbEnemy.NbEnemy = CountNumberOfEnemy(niveauSettings);
+			nbEnemy = CountNumberOfEnemy(niveauSettings);
 			ncr.AppliquerNiveau(zombiesSpawn, niveauSettings);
+			enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Godot.Node2D>());
+			enemyFireAttackOption.NewSettings(niveauSettings.EnemyAttackSettings.NbProjectilePerAttack, niveauSettings.EnemyAttackSettings.FireRate);
 		}
 
 		private int CountNumberOfEnemy(NiveauZombiesSpawnSettings niveau)

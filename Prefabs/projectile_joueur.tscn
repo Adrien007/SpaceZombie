@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://dytasmxwku5da"]
+
+[ext_resource type="Script" uid="uid://r6s0r2y4e8rl" path="res://Scripts/Ammunitions/ProjectileObjet.cs" id="1_latg6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cd5g1"]
+size = Vector2(8, 27)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_latg6"]
+bg_color = Color(0.44735456, 0.829746, 0.9999997, 1)
+border_width_left = 3
+border_width_top = 4
+border_width_right = 3
+border_width_bottom = 4
+border_color = Color(0, 0.7647059, 1, 1)
+
+[node name="ProjectileJoueur" type="Node2D" unique_id=1653588355 node_paths=PackedStringArray("area")]
+script = ExtResource("1_latg6")
+area = NodePath("Area2D")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2089616074]
+collision_layer = 536870912
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=610072969]
+shape = SubResource("RectangleShape2D_cd5g1")
+
+[node name="Panel" type="Panel" parent="Area2D/CollisionShape2D" unique_id=260343174]
+offset_left = -5.0
+offset_top = -15.0
+offset_right = 5.0
+offset_bottom = 15.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_latg6")
+metadata/_edit_use_anchors_ = true

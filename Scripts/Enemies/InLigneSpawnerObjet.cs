@@ -90,7 +90,7 @@ namespace SpaceZombie.Enemies
             float minX = AeraPlayBoundAccessor.GetInstance().Position.X;
             float maxX = AeraPlayBoundAccessor.GetInstance().Position.X + AeraPlayBoundAccessor.GetInstance().Size.X;// - CustumSizeX;
             // Check if the container hits the boundaries
-            if (enemySlots[0].Position.X < minX || (enemySlots[enemySlots.Length-1].Position.X + enemySlots[enemySlots.Length-1].Size.X) > maxX)
+            if (enemySlots[0].Position.X < minX || (enemySlots[enemySlots.Length - 1].Position.X + enemySlots[enemySlots.Length - 1].Size.X) > maxX)
             {
                 directionX *= -1; // Reverse direction
             }
@@ -140,7 +140,7 @@ namespace SpaceZombie.Enemies
             {
                 EnemySlot enemySlot = mapper.EnemySlotPrefab.Instantiate<EnemySlot>();
                 enemySlots[i] = enemySlot;
-                AddChild(enemySlot);
+                CallDeferred("add_child", enemySlot);// AddChild(enemySlot);
 
                 // Position child
                 enemySlots[i].Position = new Vector2(currentX, 0);
@@ -175,10 +175,16 @@ namespace SpaceZombie.Enemies
                 for (int i = GetChildCount() - 1; i >= 0; i--)
                 {
                     Node child = GetChild(i);
-                    RemoveChild(child);
-                    child.QueueFree(); // Safely delete the child node
+                    CallDeferred(Node.MethodName.RemoveChild, child);//RemoveChild(child);
+                    child.CallDeferred(Node.MethodName.QueueFree);//child.QueueFree();
+
                 }
             }
+        }
+
+        public EnemySlot[] GetAllEnemySlot()
+        {
+            return enemySlots;
         }
     }
     public class InLigneSpawnerObjetAttributsMapper
