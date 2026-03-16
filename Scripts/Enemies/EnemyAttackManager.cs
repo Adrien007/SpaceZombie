@@ -33,7 +33,7 @@ namespace SpaceZombie.Enemies
             PackedScene cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
             cannon0 = cannonPrefab.Instantiate<CannonObjet>();
             mainAera.AddChild(cannon0);
-            cannon0.Initialize(0, "projectile_enemy", new Projectile(1, 200f, false), resetEtatNotifier);
+            cannon0.Initialize("projectile_enemy", new Projectile(1, 200f, false), resetEtatNotifier);
 
             rateOfFire = service.GetTimerRateOfFire();
             mainAera.AddChild(rateOfFire);

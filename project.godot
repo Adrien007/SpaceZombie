@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="SpaceZombie"
-run/main_scene="uid://brykq8xlynqwd"
+run/main_scene="uid://fgwdlfhafogy"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
 config/icon="res://icon.svg"
 
@@ -58,6 +58,7 @@ shot_fire={
 [layer_names]
 
 2d_physics/layer_1="OutOfBound"
+2d_physics/layer_29="ProjectileEnemy"
 2d_physics/layer_30="Enemy"
 2d_physics/layer_31="ProjectileJoueur"
 2d_physics/layer_32="Joueur"

@@ -143,7 +143,7 @@ namespace SpaceZombie.Cannons
 		{
 			var cannon = cannonPrefab.Instantiate<CannonObjet>();
 			AddChild(cannon);
-			cannon.Initialize(0, "projectile_joueur", projectile, resetEtatNotifier);
+			cannon.Initialize("projectile_joueur", projectile, resetEtatNotifier);
 			cannon.Rotation = Vector2.Up.Angle();
 			cannons.Add(cannon);
 		}

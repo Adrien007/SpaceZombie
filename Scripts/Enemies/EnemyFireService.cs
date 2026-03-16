@@ -51,7 +51,7 @@ namespace SpaceZombie.Enemies
     public class EnemyFireOptions : IEnemyFireOptionsSettings
     {
         private Random rng;
-        private Timer rateOfFire;
+        private Timer rateOfFire = new Timer();
 
         private int nbOfElementToSelectPerShotFire;
 
@@ -60,10 +60,9 @@ namespace SpaceZombie.Enemies
 
         public int NbOfElementToSelect { get => nbOfElementToSelectPerShotFire; }
 
-        public EnemyFireOptions(Random rng, Timer rateOfFire)
+        public EnemyFireOptions(Random rng)
         {
             this.rng = rng;
-            this.rateOfFire = rateOfFire;
         }
 
         public void NewSettings(int nbOfElementToSelectPerShotFire, float tempsRelaod)

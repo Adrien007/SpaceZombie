@@ -12,28 +12,28 @@ namespace SpaceZombie.Cannons
     {
         private Queue<ProjectileObjet> projectileBuffer;
         PackedScene projectileScene;
-        Node mainAera;
         Projectile projectile;
+        Node mainAera;
         IResetEtatNotifier resetEtatNotifier;
 
         public override void _Ready()
         {
+            mainAera = GetTree().CurrentScene.FindChild("MainAera");
             base._Ready();
         }
-        public void Initialize(int level, string projectileName,
+        public void Initialize(string projectileName,
                                 Projectile projectile,
                                 IResetEtatNotifier resetEtatNotifier)
         {
-            mainAera = GetTree().CurrentScene.FindChild("MainAera");
             this.projectile = projectile;
             this.resetEtatNotifier = resetEtatNotifier;
             projectileScene = (PackedScene)ResourceLoader.Load($"res://Prefabs/{projectileName}.tscn");
-            InitializeBuffer();
+            CallDeferred("InitializeBuffer");
         }
         private void InitializeBuffer()
         {
             projectileBuffer = new Queue<ProjectileObjet>();
-            for (int i = 0; i <= 15; i++)
+            for (int i = 0; i <= 8; i++)
             {
                 projectileBuffer.Enqueue(newProjectile());
             }

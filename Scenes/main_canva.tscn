@@ -54,7 +54,7 @@ prochainNiveauUi = NodePath("NextLevelCtr")
 layout_mode = 1
 
 [node name="Joueur" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=290880064 instance=ExtResource("1_0dl77")]
-position = Vector2(561.5, 619)
+position = Vector2(561.5, 595)
 
 [node name="RespawnPosition" type="Control" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=501859680]
 layout_mode = 1

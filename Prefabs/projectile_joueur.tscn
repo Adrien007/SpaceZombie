@@ -18,7 +18,8 @@ script = ExtResource("1_latg6")
 area = NodePath("Area2D")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2089616074]
-collision_layer = 536870912
+z_index = -1
+collision_layer = 1073741824
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=610072969]
 shape = SubResource("RectangleShape2D_cd5g1")

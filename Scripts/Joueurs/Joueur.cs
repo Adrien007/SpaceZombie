@@ -1,37 +1,33 @@
 using Godot;
 using SpaceZombie.Ammunitions;
+using SpaceZombie.Boss;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
 using SpaceZombie.Mondes.Utilitaires;
-using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Joueurs
 {
     /// <summary>
     /// Represents a player in the game, handling movement and shooting mechanics.
     /// </summary>
-    public partial class Joueur : Node2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver
+    public partial class Joueur : Area2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver
     {
-        [Export] private Control enfant;
+        //[Export] private Control enfant;
         [Export] public float vitesse = 200f;
-        [Export] private Area2D area;
         [Export] private CannonJoueur cannons;
-
         public JoueurEtat jState;
         private Vector2 playAeraSize;
         private Vector2 playAeraPosition;
-        private int longueurX;
         private Vector2 nouvellePosition;
         private float directionX = 0;
 
         public override void _Ready()
         {
             base._Ready();
-            longueurX = (int)enfant.Size.X;
-            playAeraSize = enfant.Size;
+            playAeraSize = GetViewportRect().Size;
             playAeraPosition = Position;
 
-            area.AreaEntered += OnAreaEntered;
+            AreaEntered += OnAreaEntered;
             GameEvents.Instance.LevelUp += LevelUpCannon;
         }
 
@@ -52,7 +48,7 @@ namespace SpaceZombie.Joueurs
             Position += new Vector2(directionX * vitesse * (float)delta, 0);
 
             // Clamp the position within the play area
-            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X, playAeraPosition.X + playAeraSize.X - longueurX);
+            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X, playAeraPosition.X + playAeraSize.X);
             nouvellePosition.Y = Position.Y;
 
             Position = nouvellePosition;
@@ -66,27 +62,40 @@ namespace SpaceZombie.Joueurs
 
         private void OnAreaEntered(Area2D area)
         {
-            if (area.GetParent() is ProjectileObjet projectile)
+            if (!jState.IsDead && !jState.IsInvicible)
             {
-                if (!jState.IsDead && !jState.IsInvicible)
+                Node parent = area.GetParent();
+                if (parent is ProjectileObjet projectile)
                 {
-                    jState.IsInvicible = true;
-                    jState.InvincibilityTimer.Start();
-                    jState.Hp = RetirerHp(jState.Hp, projectile.Projectile.Damage);
-                    if (jState.Hp <= 0)
-                    {
-                        jState.IsDead = true;
-                        jState.DeadSoundPlayed = true;
-                        GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
-                        CallDeferred(nameof(Disable));
-                        GameEvents.Instance.EmitSignal(nameof(GameEvents.PlayerDied));
-                    }
-                    else
-                    {
-                        GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
-                    }
+                    GD.Print($"Joueur - TakeDamage : Projectile");
+                    TakeDamage(projectile.Projectile.Damage);
+                    projectile.Disable();
+
                 }
-                projectile.Disable();
+                else if (parent is BossLazerZone lazerZone)
+                {
+                    GD.Print($"Joueur - TakeDamage : ZoneLazer");
+                    TakeDamage(lazerZone.damage);
+                }
+            }
+        }
+
+        public void TakeDamage(int damage)
+        {
+            jState.IsInvicible = true;
+            jState.InvincibilityTimer.Start();
+            jState.Hp = RetirerHp(jState.Hp, damage);
+            if (jState.Hp <= 0)
+            {
+                jState.IsDead = true;
+                jState.DeadSoundPlayed = true;
+                GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
+                CallDeferred(nameof(Disable));
+                GameEvents.Instance.EmitSignal(nameof(GameEvents.PlayerDied));
+            }
+            else
+            {
+                GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
             }
         }
 
@@ -129,14 +138,14 @@ namespace SpaceZombie.Joueurs
         }
         private float PositionCentreX()
         {
-            return playAeraPosition.X + playAeraSize.X * 0.5f - longueurX;
+            return playAeraPosition.X + playAeraSize.X * 0.5f;
         }
 
         public void Disable()
         {
             Visible = false;
-            area.Monitorable = false;
-            area.Monitoring = false;
+            Monitorable = false;
+            Monitoring = false;
         }
 
         public void OnResetToInitaialState()

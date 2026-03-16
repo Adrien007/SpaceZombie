@@ -6,31 +6,28 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
 
-[node name="Joueur" type="Node2D" unique_id=1982290760 node_paths=PackedStringArray("enfant", "area", "cannons")]
+[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("cannons") groups=["Joueur"]]
+collision_layer = 2147483648
+collision_mask = 805306368
+monitorable = false
 script = ExtResource("1_0i1yc")
-enfant = NodePath("Panel")
-area = NodePath("Panel/Area2D")
 cannons = NodePath("Panel/CannonJoueur")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078271631]
+shape = SubResource("CircleShape2D_0i1yc")
+
 [node name="Panel" type="Panel" parent="." unique_id=1282621038]
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
+anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = -40.0
+offset_top = -20.0
 offset_right = 20.0
+offset_bottom = 20.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 
 [node name="CannonJoueur" parent="Panel" unique_id=1857421205 instance=ExtResource("2_trojc")]
 position = Vector2(20, 0)
-
-[node name="Area2D" type="Area2D" parent="Panel" unique_id=404862405]
-position = Vector2(20, 20)
-collision_layer = 2147483648
-collision_mask = 2147483648
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Panel/Area2D" unique_id=1078271631]
-shape = SubResource("CircleShape2D_0i1yc")
