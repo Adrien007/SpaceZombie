@@ -2,11 +2,11 @@
 
 namespace SpaceZombie.Ammunitions
 {
-	public class Projectile
-	{
-		private int damage;
-		private float vitesse;
-		private bool canHitMultipleObjects;
+    public class Projectile
+    {
+        private int damage;
+        private float vitesse;
+        private bool canHitMultipleObjects;
 
         public int Damage { get => damage; }
         public float Vitesse { get => vitesse; }

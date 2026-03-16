@@ -45,14 +45,14 @@ namespace SpaceZombie.Enemies.Utilitaires
         {
             for (int i = 0; i < firtsVisibleIndex; i++)
             {
-                enemies[i].Visible = false; 
+                enemies[i].Visible = false;
             }
         }
         private static void DesactiverIndexApresDernierVisible(EnemySlot[] enemies, int lastVisibleIndex)
         {
             for (int i = lastVisibleIndex + 1; i < enemies.Length; i++)
             {
-                enemies[i].Visible = false; 
+                enemies[i].Visible = false;
             }
         }
     }

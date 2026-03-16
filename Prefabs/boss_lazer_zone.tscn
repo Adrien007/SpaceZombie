@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://b7uoylkqt1bey"]
+
+[ext_resource type="Script" uid="uid://dk3lan0sx8sgt" path="res://Scripts/Boss/BossLazerZone.cs" id="1_y147c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y147c"]
+bg_color = Color(0.78031605, 0, 0.050708726, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jpkyw"]
+size = Vector2(100, 400)
+
+[sub_resource type="Animation" id="Animation_jpkyw"]
+resource_name = "Fire"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3, 4.4999, 4.5, 4.9999, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.78031605, 0, 0.050708726, 0), Color(0.78031605, 0, 0.050708726, 0.5), Color(0.78031605, 0, 0.050708726, 0), Color(0.78031605, 0, 0.050708726, 0), Color(0.78031605, 0, 0.050708726, 1), Color(0.78031605, 0, 0.050708726, 1), Color(0.78031605, 0, 0.050708726, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(4.5, 4.955),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"EnableCollision"
+}, {
+"args": [],
+"method": &"DisableCollision"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_y866w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.78031605, 0, 0.050708726, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_y866w"]
+_data = {
+&"Fire": SubResource("Animation_jpkyw"),
+&"RESET": SubResource("Animation_y866w")
+}
+
+[node name="BossLazerZone" type="Panel" unique_id=1235244731 groups=["Joueur"]]
+offset_right = 100.0
+offset_bottom = 400.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_y147c")
+script = ExtResource("1_y147c")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1171264221]
+collision_layer = 268435456
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1693270544]
+shape = SubResource("RectangleShape2D_jpkyw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1822871638]
+libraries/ = SubResource("AnimationLibrary_y866w")

@@ -13,7 +13,7 @@ panel = NodePath("Panel")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=684169035]
 collision_layer = 536870912
-collision_mask = 536870912
+collision_mask = 1073741824
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=46704071]

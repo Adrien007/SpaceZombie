@@ -24,6 +24,8 @@ namespace SpaceZombie.Mondes.Utilitaires
             ld = new LayerDictionnary();
 
             GameEvents.Instance.PlayerDied += QUITTER;
+
+            GameEvents.Instance.PlayerDied += QUITTER;
         }
         public void Initialiser()
         {
@@ -37,8 +39,7 @@ namespace SpaceZombie.Mondes.Utilitaires
             joueur.InitialiserPosition(this.Position);
             joueur.Initialize(3, res);
 
-            Timer enemyFireOptionsTimer = new Timer();
-            EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1), enemyFireOptionsTimer);
+            EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1));
             EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
             EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, res, enemyFireService);
 

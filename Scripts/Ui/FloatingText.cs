@@ -12,7 +12,7 @@ namespace SpaceZombie.Ui
 
         public override void _Ready()
         {
-            
+
         }
 
         public void ShowText(string text)

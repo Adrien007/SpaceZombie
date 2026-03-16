@@ -2,6 +2,7 @@
 using Godot;
 using SpaceZombie.Events;
 using SpaceZombie.Utilitaires.Layers;
+using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Ammunitions
 {
@@ -13,7 +14,7 @@ namespace SpaceZombie.Ammunitions
         private Projectile projectile;
         private Vector2 directionXY;
 
-		public Projectile Projectile { get => projectile; }
+        public Projectile Projectile { get => projectile; }
 
         public override void _Ready()
         {
@@ -29,21 +30,23 @@ namespace SpaceZombie.Ammunitions
         }
 
         //private const float CORRECTION_ANGLE = Mathf.Pi * 0.5f;
+        //private const float CORRECTION_ANGLE = Mathf.Pi * 0.5f;
         public void Fire(Vector2 directionXY, Vector2 globalPosition, float globalRotation)
         {
             this.directionXY = directionXY;
             this.GlobalPosition = globalPosition;
             this.GlobalRotation = globalRotation;// + CORRECTION_ANGLE;
+            this.GlobalRotation = globalRotation;// + CORRECTION_ANGLE;
             Enable();
         }
 
-		public override void _PhysicsProcess(double delta)
-		{
-			if (Visible)
-			{
-				GlobalPosition += directionXY * projectile.Vitesse * (float)delta;
-			}
-		}
+        public override void _PhysicsProcess(double delta)
+        {
+            if (Visible)
+            {
+                GlobalPosition += directionXY * projectile.Vitesse * (float)delta;
+            }
+        }
 
         private void OnAreaExited(Area2D aera2D)
         {
@@ -56,6 +59,7 @@ namespace SpaceZombie.Ammunitions
                 // Defer the call to Disable() to avoid issues during signal processing
                 CallDeferred(nameof(Disable));
                 OutOfBoundignal.Invoke(this);
+                OutOfBoundignal.Invoke(this);
             }
         }
 
@@ -63,11 +67,15 @@ namespace SpaceZombie.Ammunitions
         {
             //area.Monitoring = false;
             area.CallDeferred(Area2D.MethodName.SetMonitorable, false);
+            //area.Monitoring = false;
+            area.CallDeferred(Area2D.MethodName.SetMonitorable, false);
             Visible = false;
         }
         private void Enable()
         {
             Visible = true;
+            area.CallDeferred(Area2D.MethodName.SetMonitorable, true);
+            //area.Monitoring = true;
             area.CallDeferred(Area2D.MethodName.SetMonitorable, true);
             //area.Monitoring = true;
         }

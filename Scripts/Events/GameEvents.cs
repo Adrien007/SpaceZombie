@@ -32,7 +32,7 @@ namespace SpaceZombie.Events
 
         [Signal]
         public delegate void PlayerScoreUpdatedEventHandler(int playerScore);
-        
+
         [Signal]
         public delegate void PlayerHealthUpdatedEventHandler(int playerScore);
     }
