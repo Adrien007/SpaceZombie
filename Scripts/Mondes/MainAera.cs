@@ -24,6 +24,8 @@ namespace SpaceZombie.Mondes.Utilitaires
             ld = new LayerDictionnary();
 
             GameEvents.Instance.PlayerDied += QUITTER;
+
+            GameEvents.Instance.PlayerDied += QUITTER;
         }
         public void Initialiser()
         {
