@@ -9,8 +9,8 @@
 [ext_resource type="Script" uid="uid://dyd3bw3m7n1ge" path="res://Scripts/Enemies/InLigneSpawnerObjet.cs" id="5_ylj3c"]
 [ext_resource type="PackedScene" uid="uid://cgpw88utk0j4p" path="res://Prefabs/enemy_slot.tscn" id="7_wwtlw"]
 [ext_resource type="Script" uid="uid://bmrula5s1hvpo" path="res://Scripts/Ui/ProchainNiveauUi.cs" id="9_tpj28"]
-[ext_resource type="LabelSettings" uid="uid://41wxbbc2j0eo" path="res://Prefabs/new_label_settings.tres" id="10_ahn3c"]
-[ext_resource type="PackedScene" uid="uid://sls8dni2f3o7" path="res://Prefabs/ui_game.tscn" id="10_ib1eq"]
+[ext_resource type="LabelSettings" uid="uid://41wxbbc2j0eo" path="res://Prefabs/Ui/new_label_settings.tres" id="10_ahn3c"]
+[ext_resource type="PackedScene" uid="uid://sls8dni2f3o7" path="res://Prefabs/Ui/ui_game.tscn" id="10_ib1eq"]
 
 [node name="MainCanva" type="Control" unique_id=206631295 node_paths=PackedStringArray("mainAera")]
 layout_mode = 3

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dch6kuwgx1577"]
 
 [ext_resource type="Script" uid="uid://fvsawggkbeqo" path="res://Scripts/Ui/FloatingTextManager.cs" id="1_dlfp3"]
-[ext_resource type="PackedScene" uid="uid://cujpjvmemi7lo" path="res://Prefabs/floating_text.tscn" id="2_ueek8"]
+[ext_resource type="PackedScene" uid="uid://cujpjvmemi7lo" path="res://Prefabs/Ui/floating_text.tscn" id="2_ueek8"]
 
 [node name="FloatingTextManager" type="Node" unique_id=1496613480]
 script = ExtResource("1_dlfp3")

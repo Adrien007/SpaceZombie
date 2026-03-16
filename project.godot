@@ -56,6 +56,10 @@ shot_fire={
 ]
 }
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://Trad/Untitled spreadsheet - Sheet1.fr.translation", "res://Trad/Untitled spreadsheet - Sheet1.en.translation")
+
 [layer_names]
 
 2d_physics/layer_1="OutOfBound"

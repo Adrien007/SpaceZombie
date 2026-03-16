@@ -17,12 +17,12 @@ namespace SpaceZombie.Joueurs
         [Export] private Area2D area;
         [Export] private CannonJoueur cannons;
 
-        public JoueurEtat jState;
-        private Vector2 playAeraSize;
-        private Vector2 playAeraPosition;
-        private int longueurX;
-        private Vector2 nouvellePosition;
-        private float directionX = 0;
+		public JoueurEtat jState;
+		private Vector2 playAeraSize;
+		private Vector2 playAeraPosition;
+		private int longueurX;
+		private Vector2 nouvellePosition;
+		private float directionX = 0;
 
         public override void _Ready()
         {
@@ -36,27 +36,27 @@ namespace SpaceZombie.Joueurs
             GameEvents.Instance.EnemyDied += ScoreUpdateListener;
         }
 
-        public override void _PhysicsProcess(double delta)
-        {
-            // Get movement direction from input
-            directionX = 0f;
-            if (Input.IsActionPressed("move_left"))
-            {
-                directionX = -1f; // Move left
-            }
-            else if (Input.IsActionPressed("move_right"))
-            {
-                directionX = 1f; // Move right
-            }
+		public override void _PhysicsProcess(double delta)
+		{
+			// Get movement direction from input
+			directionX = 0f;
+			if (Input.IsActionPressed("move_left"))
+			{
+				directionX = -1f; // Move left
+			}
+			else if (Input.IsActionPressed("move_right"))
+			{
+				directionX = 1f; // Move right
+			}
 
-            // Move the object along the X-axis based on input
-            Position += new Vector2(directionX * vitesse * (float)delta, 0);
+			// Move the object along the X-axis based on input
+			Position += new Vector2(directionX * vitesse * (float)delta, 0);
 
-            // Clamp the position within the play area
-            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X, playAeraPosition.X + playAeraSize.X - longueurX);
-            nouvellePosition.Y = Position.Y;
+			// Clamp the position within the play area
+			nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X, playAeraPosition.X + playAeraSize.X - longueurX);
+			nouvellePosition.Y = Position.Y;
 
-            Position = nouvellePosition;
+			Position = nouvellePosition;
 
             // Check if spacebar is pressed and reload timer is not active
             if (Input.IsActionPressed("shot_fire"))
@@ -171,37 +171,37 @@ namespace SpaceZombie.Joueurs
     }
 
 
-    public interface IVie
-    {
-        int Hp { get; set; }
-    }
-    public class JoueurEtat : IVie
-    {
-        private int hp;
-        private bool isInvicible;
-        private bool isDead;
-        private bool deadSoundPlayed;
-        private bool endLevel;
+	public interface IVie
+	{
+		int Hp { get; set; }
+	}
+	public class JoueurEtat : IVie
+	{
+		private int hp;
+		private bool isInvicible;
+		private bool isDead;
+		private bool deadSoundPlayed;
+		private bool endLevel;
         private int score;
         private Timer invincibilityTimer;
 
-        public int Hp { get => hp; set => hp = value; }
-        public bool IsInvicible { get => isInvicible; set => isInvicible = value; }
-        public bool IsDead { get => isDead; set => isDead = value; }
-        public bool DeadSoundPlayed { get => deadSoundPlayed; set => deadSoundPlayed = value; }
-        public bool EndLevel { get => endLevel; }
-        public int Score { get => score; set => score = value; }
-        public Timer InvincibilityTimer { get => invincibilityTimer; }
+		public int Hp { get => hp; set => hp = value; }
+		public bool IsInvicible { get => isInvicible; set => isInvicible = value; }
+		public bool IsDead { get => isDead; set => isDead = value; }
+		public bool DeadSoundPlayed { get => deadSoundPlayed; set => deadSoundPlayed = value; }
+		public bool EndLevel { get => endLevel; set => endLevel = value; }
+		public int Score { get => score; set => score = value; }
+		public Timer InvincibilityTimer { get => invincibilityTimer; }
 
 
-        public JoueurEtat(int hp, Timer invincibilityTimer)
-        {
-            this.hp = hp;
-            isInvicible = false;
-            isDead = false;
-            deadSoundPlayed = false;
-            endLevel = false;
-            this.invincibilityTimer = invincibilityTimer;
+		public JoueurEtat(int hp, Timer invincibilityTimer)
+		{
+			this.hp = hp;
+			isInvicible = false;
+			isDead = false;
+			deadSoundPlayed = false;
+			endLevel = false;
+			this.invincibilityTimer = invincibilityTimer;
 
             if (invincibilityTimer != null)
             {

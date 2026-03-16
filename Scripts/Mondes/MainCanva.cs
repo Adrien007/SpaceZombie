@@ -3,17 +3,17 @@ using Godot;
 
 namespace SpaceZombie.Mondes.Utilitaires
 {
-    public partial class MainCanva : Control
-    {
-        [Export] private MainAera mainAera;
-        public override void _Ready()
-        {
-            CallDeferred(nameof(DeferredInit));
-        }
+	public partial class MainCanva : Control
+	{
+		[Export] private MainAera mainAera;
+		public override void _Ready()
+		{
+			CallDeferred(nameof(DeferredInit));
+		}
 
-        private void DeferredInit()
-        {
-            mainAera.Initialiser();
-        }
-    }
+		private void DeferredInit()
+		{
+			mainAera.Initialiser();
+		}
+	}
 }

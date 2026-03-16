@@ -5,7 +5,6 @@ using SpaceZombie.Enemies;
 using SpaceZombie.Events;
 using SpaceZombie.Niveaux.Configs;
 using SpaceZombie.Niveaux.Configs.V;
-using SpaceZombie.Scores.GameScore;
 
 namespace SpaceZombie.Niveaux
 {
@@ -24,7 +23,6 @@ namespace SpaceZombie.Niveaux
 		private IEnemyFireOptionsSettings enemyFireAttackOption;
 		private IEnemyAttackManagerSetEnemy enemyAttackManager;
 		private InLigneSpawnerUtilitiesEventService spawnService;
-		private IScoreManager sm;
 		public int Stage { get => stage; }
 		public int GlobalLevel { get => globalLevel; }
 
@@ -35,7 +33,6 @@ namespace SpaceZombie.Niveaux
 			gdi = new GameDataIterator(gd);
 			ncr = new NiveauCreatorManager(gd);
 			spawnService = new InLigneSpawnerUtilitiesEventService();
-			sm = new ScoreManager(0);
 			this.zombiesSpawn = zombiesSpawn;
 			this.enemyFireAttackOption = enemyFireAttackOption;
 			this.enemyAttackManager = enemyAttackManager;
@@ -63,7 +60,6 @@ namespace SpaceZombie.Niveaux
 				if (!enemy.enemyFlagLogic.scoreGiven)
 				{
 					enemy.enemyFlagLogic.scoreGiven = true; // Set the score given flag to true
-					sm.Score += enemy.Enemy.Score;
 				}
 			}
 			zombiesSpawn.DesactiverEnemyPasEnSandwitch(spawnService);
