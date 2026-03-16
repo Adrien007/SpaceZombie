@@ -36,7 +36,7 @@ namespace SpaceZombie.Enemies
                     enemyFlagLogic.deadSoundPlayed = true;
                     GD.Print("[SoundSystemEnemy] Play 'enemy Die' sound.");
                     Disable();
-                    GameEvents.Instance.EmitSignal(nameof(GameEvents.EnemyDied), this);
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.EnemyDied, this);
                 }
                 else
                 {

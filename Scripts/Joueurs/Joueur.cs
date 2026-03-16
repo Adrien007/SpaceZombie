@@ -33,6 +33,7 @@ namespace SpaceZombie.Joueurs
 
             area.AreaEntered += OnAreaEntered;
             GameEvents.Instance.LevelUp += LevelUpCannon;
+            GameEvents.Instance.EnemyDied += ScoreUpdateListener;
         }
 
 		public override void _PhysicsProcess(double delta)
@@ -73,13 +74,15 @@ namespace SpaceZombie.Joueurs
                     jState.IsInvicible = true;
                     jState.InvincibilityTimer.Start();
                     jState.Hp = RetirerHp(jState.Hp, projectile.Projectile.Damage);
+                    UpdateScore(-1000);
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
                     if (jState.Hp <= 0)
                     {
                         jState.IsDead = true;
                         jState.DeadSoundPlayed = true;
                         GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
                         CallDeferred(nameof(Disable));
-                        GameEvents.Instance.EmitSignal(nameof(GameEvents.PlayerDied));
+                        GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerDied);
                     }
                     else
                     {
@@ -118,6 +121,8 @@ namespace SpaceZombie.Joueurs
             Position = nouvellePosition;
             resetEtatNotifier.Register(this);
             cannons.Initialize(resetEtatNotifier);
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
         }
         public void InitialiserSize(Vector2 size)
         {
@@ -149,6 +154,20 @@ namespace SpaceZombie.Joueurs
         {
 
         }
+
+#region score section
+        private void ScoreUpdateListener(Enemies.EnemyObjet enemy)
+        {
+            UpdateScore(enemy.Enemy.Score);
+            Ui.FloatingTextManager.Instance.ShowScore(enemy.GlobalPosition + new Vector2(GD.RandRange(-10, 10), GD.RandRange(-5, 5)), enemy.Enemy.Score);
+        }
+        private void UpdateScore(int newScore)
+        {
+            jState.AddScore(newScore);
+            //GD.Print($"Player score = {jState.Score}");
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
+        }
+#endregion
     }
 
 
@@ -163,13 +182,15 @@ namespace SpaceZombie.Joueurs
 		private bool isDead;
 		private bool deadSoundPlayed;
 		private bool endLevel;
-		private Timer invincibilityTimer;
+        private int score;
+        private Timer invincibilityTimer;
 
 		public int Hp { get => hp; set => hp = value; }
 		public bool IsInvicible { get => isInvicible; set => isInvicible = value; }
 		public bool IsDead { get => isDead; set => isDead = value; }
 		public bool DeadSoundPlayed { get => deadSoundPlayed; set => deadSoundPlayed = value; }
 		public bool EndLevel { get => endLevel; set => endLevel = value; }
+		public int Score { get => score; set => score = value; }
 		public Timer InvincibilityTimer { get => invincibilityTimer; }
 
 
@@ -182,10 +203,16 @@ namespace SpaceZombie.Joueurs
 			endLevel = false;
 			this.invincibilityTimer = invincibilityTimer;
 
-			if (invincibilityTimer != null)
-			{
-				invincibilityTimer.Timeout += () => { isInvicible = false; };
-			}
-		}
-	}
+            if (invincibilityTimer != null)
+            {
+                invincibilityTimer.Timeout += () => { isInvicible = false; };
+            }
+        }
+
+        /// <summary>
+		/// Add or sustract score (with negative input).
+		/// </summary>
+		/// <param name="newScore">score to add (>=0) or to remove (<0).</param>
+        public void AddScore(int newScore) { score += newScore; }
+    }
 }

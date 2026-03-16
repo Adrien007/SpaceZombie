@@ -1,0 +1,6 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://dl21rffbdd2u5"]
+
+[resource]
+stacked_outline_count = 1
+stacked_outline_0/size = 2
+stacked_outline_0/color = Color(0, 0.6784314, 0.19215687, 1)
