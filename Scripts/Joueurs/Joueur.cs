@@ -125,7 +125,6 @@ namespace SpaceZombie.Joueurs
             Timer invisibilityTimer = new Timer();
             invisibilityTimer.Name = "invisibilityTimer";
             invisibilityTimer.WaitTime = 1;
-            invisibilityTimer.WaitTime = 1;
             invisibilityTimer.OneShot = true;
             this.AddChild(invisibilityTimer);
             jState = new JoueurEtat(hp, invisibilityTimer);
@@ -160,7 +159,6 @@ namespace SpaceZombie.Joueurs
         {
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
-            cannons.StopReloadTimer();
             cannons.StopReloadTimer();
         }
         public void StartTimerState()

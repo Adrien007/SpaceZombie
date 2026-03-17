@@ -4,7 +4,6 @@ using SpaceZombie.Ammunitions;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
 using SpaceZombie.Utilitaires.Layers;
-using SpaceZombie.Utilitaires.Layers;
 using System;
 using System.Collections.Generic;
 
@@ -32,7 +31,6 @@ namespace SpaceZombie.Enemies
             enemiesAvailable = new List<Node2D>();
             this.service = service;
             PackedScene cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
-            cannon0 = cannonPrefab.Instantiate<CannonObjet>();
             cannon0 = cannonPrefab.Instantiate<CannonObjet>();
             mainAera.AddChild(cannon0);
             cannon0.Initialize("projectile_enemy", new Projectile(1, 200f, false), resetEtatNotifier);
