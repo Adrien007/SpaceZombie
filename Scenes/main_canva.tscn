@@ -4,13 +4,20 @@
 [ext_resource type="PackedScene" uid="uid://jtkmbfleqcdn" path="res://Prefabs/Aera_play_bound.tscn" id="1_0pure"]
 [ext_resource type="Script" uid="uid://cju7fti0f4g4y" path="res://Scripts/Mondes/MainAera.cs" id="1_3lruc"]
 [ext_resource type="Script" uid="uid://diavschd7g0co" path="res://Scripts/Mondes/MainCanva.cs" id="1_gx84c"]
+[ext_resource type="Texture2D" uid="uid://mpvjh2r5aq08" path="res://images/Purple Nebula 1 - 1024x1024.png" id="2_tfmai"]
+[ext_resource type="Shader" uid="uid://horw6ysklkk6" path="res://Scenes/main_canva_background_scroll.gdshader" id="3_p5n5s"]
 [ext_resource type="Script" uid="uid://yd71tlnwfeq2" path="res://Scripts/Enemies/EnemySlot.cs" id="3_v3cb1"]
+[ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="4_kf714"]
 [ext_resource type="Script" uid="uid://ldnssl3fut00" path="res://Scripts/Enemies/ZombiesSpawn.cs" id="5_4gd4g"]
 [ext_resource type="Script" uid="uid://dyd3bw3m7n1ge" path="res://Scripts/Enemies/InLigneSpawnerObjet.cs" id="5_ylj3c"]
 [ext_resource type="PackedScene" uid="uid://cgpw88utk0j4p" path="res://Prefabs/enemy_slot.tscn" id="7_wwtlw"]
 [ext_resource type="Script" uid="uid://bmrula5s1hvpo" path="res://Scripts/Ui/ProchainNiveauUi.cs" id="9_tpj28"]
 [ext_resource type="LabelSettings" uid="uid://41wxbbc2j0eo" path="res://Prefabs/Ui/new_label_settings.tres" id="10_ahn3c"]
 [ext_resource type="PackedScene" uid="uid://sls8dni2f3o7" path="res://Prefabs/Ui/ui_game.tscn" id="10_ib1eq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7awwb"]
+shader = ExtResource("3_p5n5s")
+shader_parameter/speed = 0.1
 
 [node name="MainCanva" type="Control" unique_id=206631295 node_paths=PackedStringArray("mainAera")]
 layout_mode = 3
@@ -21,6 +28,26 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gx84c")
 mainAera = NodePath("HBoxContainer/VBoxContainer/MainAera")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1661909455]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_tfmai")
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=163970705]
+material = SubResource("ShaderMaterial_7awwb")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_kf714")
+stretch_mode = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=401651653]
 layout_mode = 1
