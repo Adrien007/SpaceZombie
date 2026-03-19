@@ -128,6 +128,7 @@ namespace SpaceZombie.Joueurs
             invisibilityTimer.OneShot = true;
             this.AddChild(invisibilityTimer);
             jState = new JoueurEtat(hp, invisibilityTimer);
+            nouvellePosition = Position;
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
             resetEtatNotifier.Register(this);

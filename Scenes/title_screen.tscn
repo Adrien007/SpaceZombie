@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://dqdl0p8fg2rt2"]
 
 [ext_resource type="Script" uid="uid://by12bheanyax6" path="res://Scripts/title_screen.gd" id="1_klylv"]
-[ext_resource type="Texture2D" uid="uid://dgjw0y6lpgsqf" path="res://images/space_zombie_background.png" id="2_p3fck"]
+[ext_resource type="Shader" uid="uid://dy10i5hb2xs0l" path="res://Scenes/title_screen_moving.gdshader" id="2_twnyg"]
 [ext_resource type="Theme" uid="uid://bgp1n4uijfn6m" path="res://images/white_theme.tres" id="3_4gxqj"]
+[ext_resource type="Texture2D" uid="uid://chfwe3kosxfjn" path="res://images/starfield_stars_tile.png" id="3_55kwv"]
 
-[sub_resource type="Gradient" id="Gradient_klylv"]
-offsets = PackedFloat32Array(0.042168673, 0.5200803, 0.9538153)
-colors = PackedColorArray(0, 0, 0, 0.6627451, 0.035155974, 0.08001632, 0.25702548, 1, 0, 0, 0, 0.8392157)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_p3fck"]
-gradient = SubResource("Gradient_klylv")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_12m1t"]
+shader = ExtResource("2_twnyg")
+shader_parameter/speed = 0.008
+shader_parameter/scroll_duration = 8.0
+shader_parameter/pause_duration = 0.1
 
 [sub_resource type="Theme" id="Theme_4gxqj"]
 
@@ -22,23 +22,25 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_klylv")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1211892094]
-visibility_layer = 526337
-position = Vector2(578.5, 326.5)
-scale = Vector2(1.1486285, 1.1981481)
-texture = ExtResource("2_p3fck")
-
-[node name="TextureRect" type="TextureRect" parent="." unique_id=75149529]
-visible = false
-visibility_layer = 1023
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1231218953]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("GradientTexture1D_p3fck")
+color = Color(0.011794689, 0.014277004, 0.05593227, 1)
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1292333842]
+material = SubResource("ShaderMaterial_12m1t")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_55kwv")
+stretch_mode = 1
 
 [node name="Title" type="Label" parent="." unique_id=2802375]
 visibility_layer = 512
@@ -85,14 +87,7 @@ theme = SubResource("Theme_4gxqj")
 text = "START"
 autowrap_mode = 1
 
-[node name="ButtonFrancais" type="Button" parent="Control1/VBoxContainer" unique_id=1014296910]
-layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.0
-text = "Français"
-autowrap_mode = 1
-
-[node name="ButtonEnglish" type="Button" parent="Control1/VBoxContainer" unique_id=1984175847]
+[node name="ButtonLanguage" type="Button" parent="Control1/VBoxContainer" unique_id=1984175847]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
@@ -106,6 +101,5 @@ text = "QUIT"
 autowrap_mode = 1
 
 [connection signal="pressed" from="Control1/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="Control1/VBoxContainer/ButtonFrancais" to="." method="_on_button_francais_pressed"]
-[connection signal="pressed" from="Control1/VBoxContainer/ButtonEnglish" to="." method="_on_button_english_pressed"]
+[connection signal="pressed" from="Control1/VBoxContainer/ButtonLanguage" to="." method="_on_button_language_pressed"]
 [connection signal="pressed" from="Control1/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
