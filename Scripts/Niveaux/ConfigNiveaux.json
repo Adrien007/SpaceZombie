@@ -7,7 +7,7 @@
         [
           {
             "LevelNumber": 1,
-            "NbEnemiesParLigne": 1,
+            "NbEnemiesParLigne": 18,
             "DeplaceEnBlock": true,
             "Lines": 
             [

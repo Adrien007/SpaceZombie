@@ -7,12 +7,13 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
 
-[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("cannons")]
+[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("cannons", "panel")]
 collision_layer = 2147483648
 collision_mask = 805306368
 monitorable = false
 script = ExtResource("1_0i1yc")
 cannons = NodePath("Panel/CannonJoueur")
+panel = NodePath("Panel")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078271631]
 visible = false

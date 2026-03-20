@@ -30,6 +30,7 @@ script = ExtResource("1_gx84c")
 mainAera = NodePath("HBoxContainer/VBoxContainer/MainAera")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1661909455]
+z_index = -1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -103,7 +104,9 @@ custom_minimum_size = Vector2(0, 300)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
+offset_bottom = 320.0
 grow_horizontal = 2
+alignment = 1
 script = ExtResource("5_4gd4g")
 inLigneSpawnersObjet = [NodePath("ColonneSpawner"), NodePath("ColonneSpawner2"), NodePath("ColonneSpawner3"), NodePath("ColonneSpawner4"), NodePath("ColonneSpawner5"), NodePath("ColonneSpawner6")]
 
@@ -481,7 +484,6 @@ offset_bottom = 45.0
 
 [node name="NextLevelCtr" type="Control" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=1259785756 node_paths=PackedStringArray("p", "label")]
 process_mode = 2
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -499,7 +501,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.3, 0.3, 0.3, 0.98039216)
+color = Color(0.3, 0.3, 0.3, 0)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/MainAera/NextLevelCtr/ColorRect" unique_id=391683345]
 layout_mode = 1
@@ -516,9 +518,9 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="nextLevel" type="Label" parent="HBoxContainer/VBoxContainer/MainAera/NextLevelCtr/ColorRect/HBoxContainer" unique_id=768441727]
+[node name="nextwave" type="Label" parent="HBoxContainer/VBoxContainer/MainAera/NextLevelCtr/ColorRect/HBoxContainer" unique_id=768441727]
 layout_mode = 2
-text = "NEXTLEVEL"
+text = "NEXTWAVE"
 label_settings = ExtResource("10_ahn3c")
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -34,7 +34,7 @@ namespace SpaceZombie.Enemies
         {
             //Alignment = AlignmentMode.Center;
             CustomMinimumSize = new Vector2(0, 50);
-            SizeFlagsHorizontal = SizeFlags.Fill;//.ShrinkCenter;
+            SizeFlagsHorizontal = SizeFlags.ShrinkCenter;//SizeFlags.Fill;//.ShrinkCenter;
             SizeFlagsVertical = SizeFlags.Fill;
 
             enemySlots = [];
@@ -165,6 +165,11 @@ namespace SpaceZombie.Enemies
             }
 
             DesactiverEnemyPasEnSandwitch();
+        }
+
+        public void SetStartPosition()
+        {
+            var offset = enemySlots[dernierIndexVisible].Position.X - enemySlots[indexPremierVisible].Position.X;
         }
 
         private void ClearAllChildren()

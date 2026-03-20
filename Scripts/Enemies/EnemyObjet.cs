@@ -57,7 +57,6 @@ namespace SpaceZombie.Enemies
                 Disable();
                 //DisableCallDefered();
             }
-            this.panel.Modulate = mapper.Color;
             this.enemy = mapper.Enemy;
         }
 
@@ -96,13 +95,13 @@ namespace SpaceZombie.Enemies
     public class EnemyObjetMapper
     {
         public bool Visible { get; set; }
-        public Color Color { get; set; }
+        public PackedScene EnemyObj { get; set; }
         public Enemy Enemy { get; set; }
 
-        public EnemyObjetMapper(bool visible, Color color, Enemy enemy)
+        public EnemyObjetMapper(bool visible, PackedScene enemyObj, Enemy enemy)
         {
             Visible = visible;
-            Color = color;
+            EnemyObj = enemyObj;
             Enemy = enemy;
         }
     }

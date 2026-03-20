@@ -25,11 +25,11 @@ namespace SpaceZombie.Mondes.Utilitaires
 
             GameEvents.Instance.PlayerDied += QUITTER;
         }
-        public void Initialiser()
+        public void Initialiser(Vector2 outOfBoundSize)
         {
             GetTree().Paused = true;
 
-            area.InitialiserSize(this.Size);
+            area.InitialiserSize(outOfBoundSize);
 
             var res = new ResetEtatManager();
 

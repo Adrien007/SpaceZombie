@@ -16,17 +16,22 @@ namespace SpaceZombie.Joueurs
         //[Export] private Control enfant;
         [Export] public float vitesse = 200f;
         [Export] private CannonJoueur cannons;
+        [Export] private Control panel;
+
         public JoueurEtat jState;
         private Vector2 playAeraSize;
         private Vector2 playAeraPosition;
         private Vector2 nouvellePosition;
         private float directionX = 0;
+        private float demiXsize = 0;
 
         public override void _Ready()
         {
             base._Ready();
             playAeraSize = GetViewportRect().Size;
             playAeraPosition = Position;
+
+            demiXsize = (int)(panel.Size.X * 0.5f);
 
             AreaEntered += OnAreaEntered;
             GameEvents.Instance.LevelUp += LevelUpCannon;
@@ -50,17 +55,16 @@ namespace SpaceZombie.Joueurs
             Position += new Vector2(directionX * vitesse * (float)delta, 0);
 
             // Clamp the position within the play area
-            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X, playAeraPosition.X + playAeraSize.X);
+            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X + demiXsize, playAeraPosition.X + playAeraSize.X - demiXsize);
             nouvellePosition.Y = Position.Y;
 
             Position = nouvellePosition;
 
             // Check if spacebar is pressed and reload timer is not active
             if (Input.IsActionPressed("shot_fire"))
-                if (Input.IsActionPressed("shot_fire"))
-                {
-                    cannons.Fire();
-                }
+            {
+                cannons.Fire();
+            }
         }
 
         private void OnAreaEntered(Area2D area)
