@@ -11,6 +11,9 @@ namespace SpaceZombie.Enemies
 
         public void SetEnemyObjet(EnemyObjetMapper mapper)
         {
+            EnemyObjet enObj = mapper.EnemyObj.Instantiate<EnemyObjet>();
+            this.AddChild(enObj);
+            enemyObj = enObj;
             enemyObj.SetEnemy(mapper);
             enemyObj.Position = this.Size * 0.5f;
         }

@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://dqdl0p8fg2rt2"]
 
-[ext_resource type="Script" uid="uid://by12bheanyax6" path="res://Scripts/title_screen.gd" id="1_klylv"]
+[ext_resource type="Script" uid="uid://by12bheanyax6" path="res://Scripts/TitleScreen/title_screen.gd" id="1_klylv"]
 [ext_resource type="Shader" uid="uid://dy10i5hb2xs0l" path="res://Scenes/title_screen_moving.gdshader" id="2_twnyg"]
 [ext_resource type="Theme" uid="uid://bgp1n4uijfn6m" path="res://images/white_theme.tres" id="3_4gxqj"]
 [ext_resource type="Texture2D" uid="uid://chfwe3kosxfjn" path="res://images/starfield_stars_tile.png" id="3_55kwv"]
+[ext_resource type="AudioStream" uid="uid://csblwr6117qh6" path="res://Sounds/IntroPlusBossFight.mp3" id="4_55kwv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_12m1t"]
 shader = ExtResource("2_twnyg")
@@ -60,6 +61,10 @@ text = "SPACE ZOMBIE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="IntroPlusBossFight" type="AudioStreamPlayer" parent="." unique_id=1667132778]
+stream = ExtResource("4_55kwv")
+parameters/looping = true
+
 [node name="Control1" type="Control" parent="." unique_id=286732091]
 layout_mode = 1
 anchors_preset = 15
@@ -91,7 +96,7 @@ autowrap_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
-text = "English"
+text = "ENGLISH"
 autowrap_mode = 1
 
 [node name="Quit" type="Button" parent="Control1/VBoxContainer" unique_id=1344365612]

@@ -12,6 +12,7 @@ namespace SpaceZombie.Cannons
         [Export] private int espaceEntreCannon = 40;
         [Export] private float angleCannonEnPercentageDePi = 0.02f;
         [Export] public float tempsRelaod = 1.0f;
+        [Export] private AudioStreamPlayer sonFire;
         private Timer reloadTimer;
         private PackedScene cannonPrefab;
         private Projectile projectile;
@@ -35,7 +36,7 @@ namespace SpaceZombie.Cannons
             reloadTimer.Timeout += OnReloadTimeout;
             Rotation = Vector2.Up.Angle();
             InitializeMiddleCannon();
-            level = 4;
+            level = 10;
         }
 
         private void InitializeMiddleCannon()
@@ -62,6 +63,7 @@ namespace SpaceZombie.Cannons
         {
             if (reloadTimer.TimeLeft == 0)
             {
+                sonFire.Play(0.79f);
                 foreach (CannonObjet cannon in cannons)
                 {
                     cannon.Fire(GetGlobalDirection(cannon.Rotation));
@@ -166,6 +168,7 @@ namespace SpaceZombie.Cannons
         public void StopReloadTimer()
         {
             reloadTimer.Stop();
+            sonFire.Stop();
         }
 
         // Reload timer timeout handler

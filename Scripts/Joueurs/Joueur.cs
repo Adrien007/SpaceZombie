@@ -16,11 +16,18 @@ namespace SpaceZombie.Joueurs
         //[Export] private Control enfant;
         [Export] public float vitesse = 200f;
         [Export] private CannonJoueur cannons;
+        [Export] private Control panel;
+        [Export] private ColorRect invinsibilityPanel;
+        [Export] private AudioStreamPlayer sonPrendsHit;
+        [Export] private AudioStreamPlayer sonMeurt;
+        [Export] private AudioStreamPlayer sonInvicible;
+
         public JoueurEtat jState;
         private Vector2 playAeraSize;
         private Vector2 playAeraPosition;
         private Vector2 nouvellePosition;
         private float directionX = 0;
+        private float demiXsize = 0;
 
         public override void _Ready()
         {
@@ -28,9 +35,14 @@ namespace SpaceZombie.Joueurs
             playAeraSize = GetViewportRect().Size;
             playAeraPosition = Position;
 
+            demiXsize = (int)(panel.Size.X * 0.5f);
+
             AreaEntered += OnAreaEntered;
             GameEvents.Instance.LevelUp += LevelUpCannon;
             GameEvents.Instance.EnemyDied += ScoreUpdateListener;
+
+            sonInvicible.Finished += OnSoundInvicibilityFinished;
+            invinsibilityPanel.Visible = false;
         }
 
         public override void _PhysicsProcess(double delta)
@@ -50,30 +62,29 @@ namespace SpaceZombie.Joueurs
             Position += new Vector2(directionX * vitesse * (float)delta, 0);
 
             // Clamp the position within the play area
-            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X, playAeraPosition.X + playAeraSize.X);
+            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X + demiXsize, playAeraPosition.X + playAeraSize.X - demiXsize);
             nouvellePosition.Y = Position.Y;
 
             Position = nouvellePosition;
 
             // Check if spacebar is pressed and reload timer is not active
             if (Input.IsActionPressed("shot_fire"))
-                if (Input.IsActionPressed("shot_fire"))
-                {
-                    cannons.Fire();
-                }
+            {
+                cannons.Fire();
+            }
         }
 
         private void OnAreaEntered(Area2D area)
         {
             if (!jState.IsDead && !jState.IsInvicible)
             {
+                GD.Print($"{!jState.IsDead} && {!jState.IsInvicible}");
                 Node parent = area.GetParent();
                 if (parent is ProjectileObjet projectile)
                 {
                     GD.Print($"Joueur - TakeDamage : Projectile");
                     TakeDamage(projectile.Projectile.Damage);
                     projectile.Disable();
-
                 }
                 else if (parent is BossLazerZone lazerZone)
                 {
@@ -85,10 +96,8 @@ namespace SpaceZombie.Joueurs
 
         public void TakeDamage(int damage)
         {
-            jState.IsInvicible = true;
-            jState.InvincibilityTimer.Start();
             jState.Hp = RetirerHp(jState.Hp, damage);
-            UpdateScore(-1000);
+            UpdateScore(-5000);
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
             if (jState.Hp <= 0)
             {
@@ -100,7 +109,11 @@ namespace SpaceZombie.Joueurs
             }
             else
             {
-                GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
+                //GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
+                jState.IsInvicible = true;
+                sonPrendsHit.Play();
+                sonInvicible.Play();
+                invinsibilityPanel.Visible = true;
             }
         }
 
@@ -119,15 +132,9 @@ namespace SpaceZombie.Joueurs
             cannons.LevelUp();
         }
 
-        public void Initialize(int hp,
-                                IResetEtatNotifier resetEtatNotifier)
+        public void Initialize(int hp, IResetEtatNotifier resetEtatNotifier)
         {
-            Timer invisibilityTimer = new Timer();
-            invisibilityTimer.Name = "invisibilityTimer";
-            invisibilityTimer.WaitTime = 1;
-            invisibilityTimer.OneShot = true;
-            this.AddChild(invisibilityTimer);
-            jState = new JoueurEtat(hp, invisibilityTimer);
+            jState = new JoueurEtat(hp);
             nouvellePosition = Position;
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
@@ -161,11 +168,17 @@ namespace SpaceZombie.Joueurs
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
             cannons.StopReloadTimer();
+            sonInvicible.Stop();
+            invinsibilityPanel.Visible = false;
         }
         public void StartTimerState()
         {
+        }
 
-
+        private void OnSoundInvicibilityFinished()
+        {
+            invinsibilityPanel.Visible = false;
+            jState.IsInvicible = false;
         }
 
         #region score section
@@ -196,7 +209,6 @@ namespace SpaceZombie.Joueurs
         private bool deadSoundPlayed;
         private bool endLevel;
         private int score;
-        private Timer invincibilityTimer;
 
         public int Hp { get => hp; set => hp = value; }
         public bool IsInvicible { get => isInvicible; set => isInvicible = value; }
@@ -204,22 +216,15 @@ namespace SpaceZombie.Joueurs
         public bool DeadSoundPlayed { get => deadSoundPlayed; set => deadSoundPlayed = value; }
         public bool EndLevel { get => endLevel; set => endLevel = value; }
         public int Score { get => score; set => score = value; }
-        public Timer InvincibilityTimer { get => invincibilityTimer; }
 
 
-        public JoueurEtat(int hp, Timer invincibilityTimer)
+        public JoueurEtat(int hp)
         {
             this.hp = hp;
             isInvicible = false;
             isDead = false;
             deadSoundPlayed = false;
             endLevel = false;
-            this.invincibilityTimer = invincibilityTimer;
-
-            if (invincibilityTimer != null)
-            {
-                invincibilityTimer.Timeout += () => { isInvicible = false; };
-            }
         }
 
         /// <summary>

@@ -21,10 +21,17 @@ namespace SpaceZombie.Enemies
     {
         public List<EnemyObjet> GetAllEnemy(ObtainEnemyObjectService service);
     }
-    public partial class ZombiesSpawn : VBoxContainer, IZombiesSpawnService
+    public partial class ZombiesSpawn : Control, IZombiesSpawnService
     {
         [Export] private InLigneSpawnerObjet[] inLigneSpawnersObjet;
         public bool DeplaceEnBlock { get; set; }
+        private InLigneSpawnerUtilitiesEventService service;
+
+        public override void _Ready()
+        {
+            GameEvents.Instance.EnemyDied += DesactiverEnemyPasEnSandwitchListener;
+            service = new InLigneSpawnerUtilitiesEventService();
+        }
 
         public void SetLignePhysicAttributes(int indexLigne, InLigneSpawnerObjetAttributsMapper mapper)
         {
@@ -37,9 +44,10 @@ namespace SpaceZombie.Enemies
         public void SetEnemyObjet(int indexLigne, EnemyObjetMapper[] mapper)
         {
             InLigneSpawnerObjetService.SetEnemyObjet(indexLigne, mapper, inLigneSpawnersObjet);
+            InLigneSpawnerObjetService.SetStartPosition(indexLigne, inLigneSpawnersObjet, this.Size);
         }
 
-        public void DesactiverEnemyPasEnSandwitch(InLigneSpawnerUtilitiesEventService service)
+        private void DesactiverEnemyPasEnSandwitchListener(EnemyObjet enemy)
         {
             service.DesactiverEnemyPasEnSandwitch(inLigneSpawnersObjet);
         }
@@ -92,6 +100,13 @@ namespace SpaceZombie.Enemies
 
             InLigneSpawnerObjet spawner = inLigneSpawnersObjet[indexLigne];
             spawner.SetEnemyObjet(mapper);
+        }
+        public static void SetStartPosition(int indexLigne, InLigneSpawnerObjet[] inLigneSpawnersObjet, Vector2 size)
+        {
+            ArgumentOutOfRangeCheck(indexLigne, inLigneSpawnersObjet);
+
+            InLigneSpawnerObjet spawner = inLigneSpawnersObjet[indexLigne];
+            spawner.SetStartPosition(size);
         }
     }
 }

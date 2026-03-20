@@ -9,6 +9,7 @@ stacked_outline_0/size = 5
 stacked_outline_0/color = Color(0, 0.6784314, 0.19215687, 1)
 
 [node name="FloatingText" type="Node2D" unique_id=2134537451 node_paths=PackedStringArray("label")]
+process_mode = 3
 script = ExtResource("1_b2aiq")
 label = NodePath("Label")
 

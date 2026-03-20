@@ -22,7 +22,6 @@ namespace SpaceZombie.Niveaux
         private ZombiesSpawn zombiesSpawn;
         private IEnemyFireOptionsSettings enemyFireAttackOption;
         private IEnemyAttackManagerSetEnemy enemyAttackManager;
-        private InLigneSpawnerUtilitiesEventService spawnService;
         public int Stage { get => stage; }
         public int GlobalLevel { get => globalLevel; }
 
@@ -32,7 +31,6 @@ namespace SpaceZombie.Niveaux
             var gd = ExempleDeserialisation.Deserialize();
             gdi = new GameDataIterator(gd);
             ncr = new NiveauCreatorManager(gd);
-            spawnService = new InLigneSpawnerUtilitiesEventService();
             this.zombiesSpawn = zombiesSpawn;
             this.enemyFireAttackOption = enemyFireAttackOption;
             this.enemyAttackManager = enemyAttackManager;
@@ -62,7 +60,6 @@ namespace SpaceZombie.Niveaux
                     enemy.enemyFlagLogic.scoreGiven = true; // Set the score given flag to true
                 }
             }
-            zombiesSpawn.DesactiverEnemyPasEnSandwitch(spawnService);
         }
 
         public void SetNiveau(int stage, int levelLocal)
