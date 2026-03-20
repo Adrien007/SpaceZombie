@@ -11,6 +11,8 @@ namespace SpaceZombie.Enemies
         [Export] private Area2D area;
         [Export] private Panel panel;
         private Enemy enemy;
+        [Export] private AudioStreamPlayer sonPrendsHit;
+        [Export] private AudioStreamPlayer sonMeurt;
 
         public Enemy Enemy { get => enemy; }
         public EnemyFlagLogic enemyFlagLogic { get; private set; }
@@ -34,13 +36,15 @@ namespace SpaceZombie.Enemies
                 {
                     enemyFlagLogic.isDead = true;
                     enemyFlagLogic.deadSoundPlayed = true;
-                    GD.Print("[SoundSystemEnemy] Play 'enemy Die' sound.");
+                    //GD.Print("[SoundSystemEnemy] Play 'enemy Die' sound.");
+                    sonMeurt.Play(0.62f);
                     Disable();
                     GameEvents.Instance.EmitSignal(GameEvents.SignalName.EnemyDied, this);
                 }
                 else
                 {
-                    GD.Print("[SoundSystemEnemy] Play 'enemy hit' sound.");
+                    //GD.Print("[SoundSystemEnemy] Play 'enemy hit' sound.");
+                    sonPrendsHit.Play();
                 }
                 Callable.From(projectile.Disable).CallDeferred();
             }

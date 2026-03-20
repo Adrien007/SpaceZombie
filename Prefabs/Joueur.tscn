@@ -1,19 +1,30 @@
 [gd_scene format=3 uid="uid://cctan0cxox4el"]
 
 [ext_resource type="Script" uid="uid://ceppxdbu03qif" path="res://Scripts/Joueurs/Joueur.cs" id="1_0i1yc"]
+[ext_resource type="AudioStream" uid="uid://omewyt457dmx" path="res://Sounds/PlayerInvisibility.mp3" id="2_kfqi4"]
 [ext_resource type="Texture2D" uid="uid://71qelkwnmbek" path="res://images/vaisseau-removebg-preview.png" id="2_qpr61"]
 [ext_resource type="PackedScene" uid="uid://b42c0nlqmpudy" path="res://Prefabs/cannon_joueur.tscn" id="2_trojc"]
+[ext_resource type="AudioStream" uid="uid://dmfv56vwlsvvo" path="res://Sounds/PlayerHitTaken.wav" id="3_klc7x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
 
-[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("cannons", "panel")]
+[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("cannons", "panel", "invinsibilityPanel", "sonPrendsHit", "sonInvicible")]
 collision_layer = 2147483648
 collision_mask = 805306368
 monitorable = false
 script = ExtResource("1_0i1yc")
 cannons = NodePath("Panel/CannonJoueur")
 panel = NodePath("Panel")
+invinsibilityPanel = NodePath("Panel/Panel")
+sonPrendsHit = NodePath("PlayerHitTaken")
+sonInvicible = NodePath("PlayerInvisibility")
+
+[node name="PlayerInvisibility" type="AudioStreamPlayer" parent="." unique_id=1547663225]
+stream = ExtResource("2_kfqi4")
+
+[node name="PlayerHitTaken" type="AudioStreamPlayer" parent="." unique_id=1609743315]
+stream = ExtResource("3_klc7x")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078271631]
 visible = false
@@ -36,3 +47,12 @@ expand_mode = 1
 
 [node name="CannonJoueur" parent="Panel" unique_id=1857421205 instance=ExtResource("2_trojc")]
 position = Vector2(20, 0)
+
+[node name="Panel" type="ColorRect" parent="Panel" unique_id=1345368400]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.7882353, 0.22352941, 0.4392157)

@@ -1,6 +1,8 @@
 extends Control
-
 var is_english = true
+
+func _ready() -> void:
+    $IntroPlusBossFight.play(21.50)
 
 func _on_start_button_pressed() -> void:
     get_tree().change_scene_to_file("res://Scenes/main_canva.tscn")
