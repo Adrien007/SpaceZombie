@@ -35,7 +35,7 @@ namespace SpaceZombie.Cannons
             reloadTimer.Timeout += OnReloadTimeout;
             Rotation = Vector2.Up.Angle();
             InitializeMiddleCannon();
-            level = 4;
+            level = 10;
         }
 
         private void InitializeMiddleCannon()

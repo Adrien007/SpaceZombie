@@ -12,6 +12,7 @@
             "Lines": 
             [
               { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [1] },
+              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [1] },
               { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [1] }
             ],
             "TpsRecharge": 4,

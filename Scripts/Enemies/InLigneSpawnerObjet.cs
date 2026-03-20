@@ -48,7 +48,6 @@ namespace SpaceZombie.Enemies
             indexPremierVisible = InLigneSpawnerUtilities.TrouverPremierIndexVisible(enemySlots);
             dernierIndexVisible = InLigneSpawnerUtilities.TrouverDernierIndexVisible(enemySlots, indexPremierVisible);
             InLigneSpawnerUtilities.DesactiverEnemyPasEnSandwitch(enemySlots, indexPremierVisible, dernierIndexVisible);
-            //InLigneSpawnerUtilities.DesactiverEnemyPasEnSandwitch(enemySlots);
         }
         public int GetPremierIndexVisible()
         {
@@ -63,20 +62,10 @@ namespace SpaceZombie.Enemies
             return enemySlots.Length - 1;
         }
 
-        // public override void _PhysicsProcess(double delta)
-        // {
-        //     if (!isFixe)
-        //     {
-        //         if (indexPremierVisible >= 0)
-        //             positionPermierIndexVisible = enemySlots[indexPremierVisible].Position;
-        //         MoveChildsAlongXAxis((float)delta);
-        //         //MoveLineAlongXAxis((float)delta);
-
-        //     }
-        // }
         public void MoveChildsAlongXAxis(float delta, float minX, float maxX, int premierIndex, int deuxiemeIndex)
         {
-            if (enemySlots[premierIndex].Position.X < minX || (enemySlots[deuxiemeIndex].Position.X + enemySlots[deuxiemeIndex].Size.X) > maxX)
+            //GD.Print($"{enemySlots[premierIndex].Position.X} + {this.OffsetLeft} < {minX} || {enemySlots[deuxiemeIndex].Position.X} + {enemySlots[deuxiemeIndex].Size.X} + {this.OffsetLeft} > {maxX}");
+            if ((enemySlots[premierIndex].Position.X + this.OffsetLeft) < minX || (enemySlots[deuxiemeIndex].Position.X + enemySlots[deuxiemeIndex].Size.X + this.OffsetLeft) > maxX)
             {
                 directionX *= -1; // Reverse direction
             }
@@ -85,55 +74,19 @@ namespace SpaceZombie.Enemies
                 enemySlots[i].Position += new Vector2(directionX * speed * (float)delta, 0);
             }
         }
-        private void MoveChildsAlongXAxis(float delta)
-        {
-            float minX = AeraPlayBoundAccessor.GetInstance().Position.X;
-            float maxX = AeraPlayBoundAccessor.GetInstance().Position.X + AeraPlayBoundAccessor.GetInstance().Size.X;// - CustumSizeX;
-            // Check if the container hits the boundaries
-            if (enemySlots[0].Position.X < minX || (enemySlots[enemySlots.Length - 1].Position.X + enemySlots[enemySlots.Length - 1].Size.X) > maxX)
-            {
-                directionX *= -1; // Reverse direction
-            }
-            for (int i = 0; i < enemySlots.Length; i++)
-            {
-                enemySlots[i].Position += new Vector2(directionX * speed * (float)delta, 0);
-            }
-        }
-        private void MoveLineAlongXAxis(float delta)
-        {
-            // Move the object along the X-axis based on input
-            Position += new Vector2(directionX * speed * delta, 0);
-
-            float minX = AeraPlayBoundAccessor.GetInstance().Position.X;
-            float maxX = AeraPlayBoundAccessor.GetInstance().Position.X + AeraPlayBoundAccessor.GetInstance().Size.X - Size.X;
-            // Check if the container hits the boundaries
-            if (Position.X <= minX || Position.X >= maxX)
-            {
-                directionX *= -1; // Reverse direction
-            }
-
-            nouvellePosition.X = Mathf.Clamp(Position.X, minX, maxX);
-            nouvellePosition.Y = Position.Y;
-
-            Position = nouvellePosition;
-        }
-
 
         public void SetPhysicAttributes(InLigneSpawnerObjetAttributsMapper mapper)
         {
             isFixe = mapper.IsFixe;
             directionX = mapper.directionX;
             speed = mapper.speed;
-
-            // if (mapper.StartPosition != Vector2.Zero)
-            // {
-            //     Position = mapper.StartPosition;
-            // }
         }
         public void SetEnemySlot(InLigneSpawnerObjetSetEnemySlotMapper mapper)
         {
             ClearAllChildren();
+            this.Position = new Vector2(0, this.Position.Y);
             enemySlots = new EnemySlot[mapper.NbSlots];
+            CustumSizeX = 0;
             float currentX = 0;
             float Spacing = 4;
             for (int i = 0; i < mapper.NbSlots; i++)
@@ -167,9 +120,13 @@ namespace SpaceZombie.Enemies
             DesactiverEnemyPasEnSandwitch();
         }
 
-        public void SetStartPosition()
+        public void SetStartPosition(Vector2 size)
         {
-            var offset = enemySlots[dernierIndexVisible].Position.X - enemySlots[indexPremierVisible].Position.X;
+            this.Size = new Vector2(size.X, this.Size.Y);
+            this.Position = new Vector2(0, this.Position.Y);
+            float offset = this.Size.X - CustumSizeX;
+            this.Position = new Vector2(offset * 0.5f, Position.Y);
+            this.Size = new Vector2(CustumSizeX, this.Size.Y);
         }
 
         private void ClearAllChildren()
@@ -182,7 +139,6 @@ namespace SpaceZombie.Enemies
                     Node child = GetChild(i);
                     CallDeferred(Node.MethodName.RemoveChild, child);//RemoveChild(child);
                     child.CallDeferred(Node.MethodName.QueueFree);//child.QueueFree();
-
                 }
             }
         }

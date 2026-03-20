@@ -35,14 +35,14 @@ namespace SpaceZombie.Mondes.Utilitaires
 
             joueur.InitialiserSize(this.Size);
             joueur.InitialiserPosition(this.Position);
-            joueur.Initialize(3, res);
+            joueur.Initialize(99, res);
 
             EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1));
             EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
             EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, res, enemyFireService);
 
             var lm = new LevelManager(zombiesSpawn, enemyFireOptions, enemyAttackManager);
-            lm.SetNiveau(0, 0);
+            lm.SetNiveau(0, 1);
 
             var ltm = new LevelTransitionManager(GetTree(), prochainNiveauUi, lm, res);
             ltm.ChangerNiveauLogic();

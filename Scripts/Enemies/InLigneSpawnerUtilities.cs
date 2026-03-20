@@ -31,7 +31,7 @@ namespace SpaceZombie.Enemies.Utilitaires
         }
         public static int TrouverDernierIndexVisible(EnemySlot[] enemies, int firtsVisibleIndex)
         {
-            int lastVisibleIndex = enemies.Length - 1; // If all are visible, return the last (visible) index;
+            int lastVisibleIndex = firtsVisibleIndex;
             for (int i = firtsVisibleIndex + 1; i < enemies.Length; i++)
             {
                 if (enemies[i].EstEnemieVisible)

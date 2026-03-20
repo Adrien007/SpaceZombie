@@ -73,10 +73,10 @@ namespace SpaceZombie.Enemies
         private void DisableCallDefered()
         {
             area.Monitoring = false;
-            Visible = false;
         }
         public void Disable()
         {
+            Visible = false;
             CallDeferred(nameof(DisableCallDefered));
         }
 
@@ -87,6 +87,7 @@ namespace SpaceZombie.Enemies
         }
         private void Enable()
         {
+            Visible = true;
             CallDeferred(nameof(EnableCallDefered));
         }
     }
