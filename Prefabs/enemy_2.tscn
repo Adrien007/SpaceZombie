@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://pyc07fo7d61k"]
+
+[ext_resource type="Script" uid="uid://cuwcuwe3vhqrj" path="res://Scripts/Enemies/EnemyObjet.cs" id="1_c2t8o"]
+[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/EnemyTakeHit.wav" id="2_8i732"]
+[ext_resource type="AudioStream" uid="uid://chaslu53mxywl" path="res://Sounds/ZombieDye.wav" id="3_67510"]
+[ext_resource type="Texture2D" uid="uid://b3360n28io83p" path="res://images/enemy2.png" id="4_8i732"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r77uo"]
+radius = 20.0
+
+[node name="Enemy" type="Node2D" unique_id=1779648409 node_paths=PackedStringArray("area", "panel", "sonPrendsHit", "sonMeurt")]
+rotation = 1.5707964
+script = ExtResource("1_c2t8o")
+area = NodePath("Area2D")
+panel = NodePath("Panel")
+sonPrendsHit = NodePath("EnemyTakeHit")
+sonMeurt = NodePath("ZombieDye")
+
+[node name="EnemyTakeHit" type="AudioStreamPlayer" parent="." unique_id=2126247250]
+stream = ExtResource("2_8i732")
+
+[node name="ZombieDye" type="AudioStreamPlayer" parent="." unique_id=415602154]
+stream = ExtResource("3_67510")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=684169035]
+collision_layer = 536870912
+collision_mask = 1073741824
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=46704071]
+shape = SubResource("CircleShape2D_r77uo")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=912926879]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.999994
+offset_top = 19.0
+offset_right = 209.0
+offset_bottom = 269.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5707964
+scale = Vector2(0.174, 0.174)
+texture = ExtResource("4_8i732")
+
+[node name="Panel" type="Panel" parent="." unique_id=1073823520]
+visible = false
+modulate = Color(18.892157, 0, 0, 1)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bax3rkvm68tce"]
+
+[ext_resource type="Script" uid="uid://cuwcuwe3vhqrj" path="res://Scripts/Enemies/EnemyObjet.cs" id="1_4ef3x"]
+[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/EnemyTakeHit.wav" id="2_x3qlu"]
+[ext_resource type="AudioStream" uid="uid://chaslu53mxywl" path="res://Sounds/ZombieDye.wav" id="3_ajg87"]
+[ext_resource type="Texture2D" uid="uid://dqnmobd88qcyd" path="res://images/enemy4.png" id="4_x3qlu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r77uo"]
+radius = 20.0
+
+[node name="Enemy" type="Node2D" unique_id=1779648409 node_paths=PackedStringArray("area", "panel", "sonPrendsHit", "sonMeurt")]
+rotation = 1.5707964
+script = ExtResource("1_4ef3x")
+area = NodePath("Area2D")
+panel = NodePath("Panel")
+sonPrendsHit = NodePath("EnemyTakeHit")
+sonMeurt = NodePath("ZombieDye")
+
+[node name="EnemyTakeHit" type="AudioStreamPlayer" parent="." unique_id=2126247250]
+stream = ExtResource("2_x3qlu")
+
+[node name="ZombieDye" type="AudioStreamPlayer" parent="." unique_id=415602154]
+stream = ExtResource("3_ajg87")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=684169035]
+collision_layer = 536870912
+collision_mask = 1073741824
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=46704071]
+shape = SubResource("CircleShape2D_r77uo")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=402144947]
+offset_left = -15.999999
+offset_top = 20.0
+offset_right = 312.0
+offset_bottom = 271.0
+rotation = -1.5707964
+scale = Vector2(0.122, 0.122)
+texture = ExtResource("4_x3qlu")
+
+[node name="Panel" type="Panel" parent="." unique_id=1073823520]
+visible = false
+modulate = Color(18.892157, 0, 0, 1)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
