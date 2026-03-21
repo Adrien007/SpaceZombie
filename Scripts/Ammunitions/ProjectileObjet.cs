@@ -1,29 +1,29 @@
 //ProjectileObjet.cs
 using Godot;
 using SpaceZombie.Events;
+using SpaceZombie.Utilitaires;
 using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Ammunitions
 {
-    public partial class ProjectileObjet : Node2D, IResetEtatObserver
+    public partial class ProjectileObjet : Area2D, IResetEtatObserver
     {
         public delegate void HitSignalEventHandler(ProjectileObjet projectileObj);
         public event HitSignalEventHandler OutOfBoundignal;
-        [Export] private Area2D area;
         private Projectile projectile;
         private Vector2 directionXY;
+        private int traverse = 0;
 
         public Projectile Projectile { get => projectile; }
 
         public override void _Ready()
         {
-            base._Ready();
-            Disable();
+            Visible = false;
         }
         public void Initialize(Projectile projectile,
                                 IResetEtatNotifier resetEtatNotifier)
         {
-            area.AreaExited += OnAreaExited;
+            AreaEntered += OnAreaEntered;
             this.projectile = projectile;
             resetEtatNotifier.Register(this);
         }
@@ -37,39 +37,52 @@ namespace SpaceZombie.Ammunitions
             Enable();
         }
 
-        public override void _PhysicsProcess(double delta)
+        public override void _Process(double delta)
         {
-            if (Visible)
-            {
-                GlobalPosition += directionXY * projectile.Vitesse * (float)delta;
-            }
+            // VisibleOnScreenEnabler2D Disable le Process quand le node est à l'extérieur de l'écran.
+            GlobalPosition += directionXY * projectile.Vitesse * (float)delta;
         }
 
-        private void OnAreaExited(Area2D aera2D)
+        private void OnAreaEntered(Area2D area)
         {
-            //GD.Print("AreaExited: " + aera2D.CollisionLayer);
-            const uint layer1 = 1u << 0; // Layer 1 is the 1st bit (index 0)
-            if ((aera2D.CollisionLayer & layer1) != 0)
+            if (area is IDamagable damagableNode)
             {
-                //GD.Print("OnAreaExited + " + this.Name);
-                //GD.Print("AreaExited: " + aera2D.GetType() + "  " + aera2D.CollisionLayer);
-                // Defer the call to Disable() to avoid issues during signal processing
-                CallDeferred(nameof(Disable));
-                OutOfBoundignal.Invoke(this);
+                //GD.Print($"Travere Projectile : {projectile.Traverse}, Traverse : {traverse}");
+                //GD.Print($"Projectile {GetInstanceId()}, Hit : {area.Name} {area.GetInstanceId()}");
+                damagableNode.TakeDamage(projectile.Damage);
+                if (projectile.Traverse <= traverse)
+                {
+                    CallDeferred(nameof(Disable));
+                }
+                else
+                {
+                    traverse += 1;
+                }
             }
         }
 
         public void Disable()
         {
-            //area.Monitoring = false;
-            area.CallDeferred(Area2D.MethodName.SetMonitorable, false);
-            Visible = false;
+            if (Visible)
+            {
+                Visible = false;
+                CallDeferred(Area2D.MethodName.SetMonitoring, false);
+            }
         }
         private void Enable()
         {
-            Visible = true;
-            area.CallDeferred(Area2D.MethodName.SetMonitorable, true);
-            //area.Monitoring = true;
+            if (!Visible)
+            {
+                traverse = 0;
+                Visible = true;
+                CallDeferred(Area2D.MethodName.SetMonitoring, true);
+            }
+        }
+
+        public void MovedOutOfBound()
+        {
+            Disable();
+            OutOfBoundignal.Invoke(this);
         }
 
         public void OnResetToInitaialState()

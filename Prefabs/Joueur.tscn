@@ -11,8 +11,8 @@ radius = 20.0
 
 [node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("cannons", "panel", "invinsibilityPanel", "sonPrendsHit", "sonInvicible")]
 collision_layer = 2147483648
-collision_mask = 805306368
-monitorable = false
+collision_mask = 268435456
+monitoring = false
 script = ExtResource("1_0i1yc")
 cannons = NodePath("Panel/CannonJoueur")
 panel = NodePath("Panel")
@@ -20,15 +20,15 @@ invinsibilityPanel = NodePath("Panel/Panel")
 sonPrendsHit = NodePath("PlayerHitTaken")
 sonInvicible = NodePath("PlayerInvisibility")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078271631]
+visible = false
+shape = SubResource("CircleShape2D_0i1yc")
+
 [node name="PlayerInvisibility" type="AudioStreamPlayer" parent="." unique_id=1547663225]
 stream = ExtResource("2_kfqi4")
 
 [node name="PlayerHitTaken" type="AudioStreamPlayer" parent="." unique_id=1609743315]
 stream = ExtResource("3_klc7x")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078271631]
-visible = false
-shape = SubResource("CircleShape2D_0i1yc")
 
 [node name="Panel" type="TextureRect" parent="." unique_id=1496588683]
 anchors_preset = 8

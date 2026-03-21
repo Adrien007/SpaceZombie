@@ -16,13 +16,15 @@ namespace SpaceZombie.Mondes.Utilitaires
         [Export] private Joueur joueur;
         [Export] private ZombiesSpawn zombiesSpawn;
         [Export] private ProchainNiveauUi prochainNiveauUi;
+        [Export] public Upgrade upgrade;
+        [Export] private MenuUpgrade menuUpgrade;
         private static LayerDictionnary ld;
+
         public override void _Ready()
         {
             AeraPlayBoundAccessor.Initialize(area);
-
-            ld = new LayerDictionnary();
-
+            menuUpgrade.Upgrade += Upgrade;
+            GameEvents.Instance.ChooseUpgrade += ChooseUpgrade;
             GameEvents.Instance.PlayerDied += QUITTER;
         }
         public void Initialiser(Vector2 outOfBoundSize)
@@ -37,15 +39,29 @@ namespace SpaceZombie.Mondes.Utilitaires
             joueur.InitialiserPosition(this.Position);
             joueur.Initialize(99, res);
 
+            upgrade.InitializePlayAreaSize(Size);
+
             EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1));
             EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
             EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, res, enemyFireService);
 
-            var lm = new LevelManager(zombiesSpawn, enemyFireOptions, enemyAttackManager);
+            var lm = new LevelManager(zombiesSpawn, enemyFireOptions, enemyAttackManager, upgrade);
             lm.SetNiveau(0, 1);
 
             var ltm = new LevelTransitionManager(GetTree(), prochainNiveauUi, lm, res);
             ltm.ChangerNiveauLogic();
+        }
+
+        private void ChooseUpgrade()
+        {
+            GetTree().Paused = true;
+            menuUpgrade.ChooseUpgrade();
+        }
+
+        private void Upgrade(int option)
+        {
+            joueur.Upgrade(option);
+            GetTree().Paused = false;
         }
 
         private void QUITTER()

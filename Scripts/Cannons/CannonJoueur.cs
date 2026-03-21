@@ -16,8 +16,6 @@ namespace SpaceZombie.Cannons
         private Timer reloadTimer;
         private PackedScene cannonPrefab;
         private Projectile projectile;
-        private int level = 1;
-        private int maxLevel = 10;
         private int cannonMilieuPair;
         private int cannonMilieuImpair;
 
@@ -28,7 +26,7 @@ namespace SpaceZombie.Cannons
         public override void _Ready()
         {
             cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
-            projectile = new Projectile(1, 250f, false);
+            projectile = new Projectile(1, 250f);
             reloadTimer = new Timer();
             AddChild(reloadTimer);
             reloadTimer.WaitTime = tempsRelaod;
@@ -36,7 +34,6 @@ namespace SpaceZombie.Cannons
             reloadTimer.Timeout += OnReloadTimeout;
             Rotation = Vector2.Up.Angle();
             InitializeMiddleCannon();
-            level = 10;
         }
 
         private void InitializeMiddleCannon()
@@ -78,28 +75,24 @@ namespace SpaceZombie.Cannons
             return new Vector2(Mathf.Cos(rotation), Mathf.Sin(rotation)).Normalized();
         }
 
-        public void LevelUp()
+        public void UpgradeDamage()
         {
-            if (level < maxLevel)
-            {
-                LevelUpTempsReload();
-                LevelUpVitesse();
-                CallDeferred(nameof(LevelUpCannon));
-            }
+            projectile.UpgradeDamage();
         }
 
-        private void LevelUpTempsReload()
+        public void UpgradeVitesse()
         {
             tempsRelaod -= 0.1f;
             reloadTimer.WaitTime = tempsRelaod;
+            projectile.UpgradeVitesse(0.1f);
         }
 
-        private void LevelUpVitesse()
+        public void UpgradeTraverse()
         {
-            projectile.upgradeVitesse(0.1f);
+            projectile.UpgradeTraverse();
         }
 
-        private void LevelUpCannon()
+        public void UpgradeCanons()
         {
             AddCannon();
             if (cannons.Count <= maxCannonAuMilieu)
@@ -153,16 +146,17 @@ namespace SpaceZombie.Cannons
         public void Initialize(IResetEtatNotifier resetEtatNotifier)
         {
             this.resetEtatNotifier = resetEtatNotifier;
-            InitializeLevel();
-        }
-
-        private void InitializeLevel()
-        {
             AddCannon();
-            for (int i = 1; i < level && i < maxLevel; i++)
-            {
-                LevelUpCannon();
-            }
+            UpgradeCanons();
+            UpgradeCanons();
+            UpgradeCanons();
+            UpgradeCanons();
+            UpgradeCanons();
+            UpgradeVitesse();
+            UpgradeVitesse();
+            UpgradeVitesse();
+            UpgradeVitesse();
+            UpgradeVitesse();
         }
 
         public void StopReloadTimer()

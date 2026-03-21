@@ -4,6 +4,7 @@ using SpaceZombie.Boss;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
 using SpaceZombie.Mondes.Utilitaires;
+using SpaceZombie.Utilitaires;
 using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Joueurs
@@ -11,7 +12,7 @@ namespace SpaceZombie.Joueurs
     /// <summary>
     /// Represents a player in the game, handling movement and shooting mechanics.
     /// </summary>
-    public partial class Joueur : Area2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver
+    public partial class Joueur : Area2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver, IDamagable
     {
         //[Export] private Control enfant;
         [Export] public float vitesse = 200f;
@@ -28,17 +29,15 @@ namespace SpaceZombie.Joueurs
         private Vector2 nouvellePosition;
         private float directionX = 0;
         private float demiXsize = 0;
+        private int level = 1;
 
         public override void _Ready()
         {
-            base._Ready();
             playAeraSize = GetViewportRect().Size;
             playAeraPosition = Position;
 
             demiXsize = (int)(panel.Size.X * 0.5f);
 
-            AreaEntered += OnAreaEntered;
-            GameEvents.Instance.LevelUp += LevelUpCannon;
             GameEvents.Instance.EnemyDied += ScoreUpdateListener;
 
             sonInvicible.Finished += OnSoundInvicibilityFinished;
@@ -74,47 +73,31 @@ namespace SpaceZombie.Joueurs
             }
         }
 
-        private void OnAreaEntered(Area2D area)
+        public void TakeDamage(int damage)
         {
             if (!jState.IsDead && !jState.IsInvicible)
             {
-                GD.Print($"{!jState.IsDead} && {!jState.IsInvicible}");
-                Node parent = area.GetParent();
-                if (parent is ProjectileObjet projectile)
+                jState.Hp = RetirerHp(jState.Hp, damage);
+                UpdateScore(-5000);
+                GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
+                if (jState.Hp <= 0)
                 {
-                    GD.Print($"Joueur - TakeDamage : Projectile");
-                    TakeDamage(projectile.Projectile.Damage);
-                    projectile.Disable();
+                    jState.IsDead = true;
+                    jState.DeadSoundPlayed = true;
+                    GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
+                    CallDeferred(nameof(Disable));
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerDied);
                 }
-                else if (parent is BossLazerZone lazerZone)
+                else
                 {
-                    GD.Print($"Joueur - TakeDamage : ZoneLazer");
-                    TakeDamage(lazerZone.damage);
+                    //GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
+                    jState.IsInvicible = true;
+                    sonPrendsHit.Play();
+                    sonInvicible.Play();
+                    invinsibilityPanel.Visible = true;
                 }
             }
-        }
 
-        public void TakeDamage(int damage)
-        {
-            jState.Hp = RetirerHp(jState.Hp, damage);
-            UpdateScore(-5000);
-            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
-            if (jState.Hp <= 0)
-            {
-                jState.IsDead = true;
-                jState.DeadSoundPlayed = true;
-                GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
-                CallDeferred(nameof(Disable));
-                GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerDied);
-            }
-            else
-            {
-                //GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
-                jState.IsInvicible = true;
-                sonPrendsHit.Play();
-                sonInvicible.Play();
-                invinsibilityPanel.Visible = true;
-            }
         }
 
         private static int RetirerHp(int hp, int hitValue)
@@ -127,9 +110,23 @@ namespace SpaceZombie.Joueurs
             return hp;
         }
 
-        private void LevelUpCannon()
+        public void Upgrade(int option)
         {
-            cannons.LevelUp();
+            //GD.Print($"Upgrade : {option}");
+            switch (option)
+            {
+                case (int)UpgradeOptions.Damage: cannons.UpgradeDamage(); break;
+                case (int)UpgradeOptions.AttackSpeed: cannons.UpgradeVitesse(); break;
+                case (int)UpgradeOptions.AddProjectile: cannons.UpgradeCanons(); break;
+                case (int)UpgradeOptions.Passthrough: cannons.UpgradeTraverse(); break;
+                case (int)UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
+            }
+            level += 1;
+        }
+
+        private void UpgradeMoveSpeed()
+        {
+            vitesse *= 1.2f;
         }
 
         public void Initialize(int hp, IResetEtatNotifier resetEtatNotifier)

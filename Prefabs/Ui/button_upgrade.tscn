@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://do7aytseveunf"]
+
+[ext_resource type="Script" uid="uid://cv0ctyboxonyq" path="res://Scripts/Ui/ButtonUpgrade.cs" id="1_4248d"]
+[ext_resource type="Texture2D" uid="uid://dspwjjyo5dq8k" path="res://images/attack_piercing.png" id="2_obr01"]
+[ext_resource type="StyleBox" path="res://Prefabs/Ui/noFocus_upgrade_menu.tres" id="2_ut8is"]
+[ext_resource type="StyleBox" path="res://Prefabs/Ui/focus_upgrade_menu.tres" id="3_26mg6"]
+[ext_resource type="Shader" uid="uid://c2ivj52281cpu" path="res://Prefabs/Ui/menu_upgrade.gdshader" id="4_26mg6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_26mg6"]
+shader = ExtResource("4_26mg6")
+
+[node name="ButtonUpgrade" type="PanelContainer" unique_id=1197431899 node_paths=PackedStringArray("title", "icon")]
+offset_right = 150.0
+offset_bottom = 160.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+localize_numeral_system = false
+theme_override_styles/panel = ExtResource("2_ut8is")
+script = ExtResource("1_4248d")
+noFocusStyle = ExtResource("2_ut8is")
+focusStyle = ExtResource("3_26mg6")
+title = NodePath("VBoxContainer/Title")
+icon = NodePath("VBoxContainer/Icon")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1347762651]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=135755184]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Passthrough +1"
+horizontal_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer" unique_id=91800520]
+material = SubResource("ShaderMaterial_26mg6")
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+texture = ExtResource("2_obr01")
+stretch_mode = 2
