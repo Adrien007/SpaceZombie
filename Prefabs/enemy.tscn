@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cccdrmtfnmbgi"]
 
 [ext_resource type="Script" uid="uid://cuwcuwe3vhqrj" path="res://Scripts/Enemies/EnemyObjet.cs" id="1_pj2xj"]
-[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/EnemyTakeHit.wav" id="2_t4g6b"]
+[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/ZombieTakeHit.wav" id="2_t4g6b"]
 [ext_resource type="AudioStream" uid="uid://chaslu53mxywl" path="res://Sounds/ZombieDye.wav" id="3_30yes"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r77uo"]

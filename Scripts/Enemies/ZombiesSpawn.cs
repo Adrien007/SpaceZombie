@@ -29,8 +29,14 @@ namespace SpaceZombie.Enemies
 
         public override void _Ready()
         {
+            SetPhysicsProcess(false);
             GameEvents.Instance.EnemyDied += DesactiverEnemyPasEnSandwitchListener;
-            service = new InLigneSpawnerUtilitiesEventService();
+        }
+
+        public void Initialize()
+        {
+            service = new InLigneSpawnerUtilitiesEventService(GetRect());
+            SetPhysicsProcess(true);
         }
 
         public void SetLignePhysicAttributes(int indexLigne, InLigneSpawnerObjetAttributsMapper mapper)
@@ -47,7 +53,7 @@ namespace SpaceZombie.Enemies
             InLigneSpawnerObjetService.SetStartPosition(indexLigne, inLigneSpawnersObjet, this.Size);
         }
 
-        private void DesactiverEnemyPasEnSandwitchListener(EnemyObjet enemy)
+        private void DesactiverEnemyPasEnSandwitchListener()
         {
             service.DesactiverEnemyPasEnSandwitch(inLigneSpawnersObjet);
         }
@@ -60,16 +66,15 @@ namespace SpaceZombie.Enemies
 
         public override void _PhysicsProcess(double delta)
         {
-            InLigneSpawnerUtilitiesEventService.DeplacerLigne(inLigneSpawnersObjet, (float)delta, DeplaceEnBlock);
+            service.DeplacerLigne(inLigneSpawnersObjet, (float)delta, DeplaceEnBlock);
+        }
+
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+            GameEvents.Instance.EnemyDied -= DesactiverEnemyPasEnSandwitchListener;
         }
     }
-
-
-
-
-
-
-
 
     public static class InLigneSpawnerObjetService
     {

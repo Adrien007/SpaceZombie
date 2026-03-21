@@ -1,12 +1,11 @@
 //ProjectileObjet.cs
 using Godot;
-using SpaceZombie.Events;
+using SpaceZombie.Joueurs;
 using SpaceZombie.Utilitaires;
-using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Ammunitions
 {
-    public partial class ProjectileObjet : Area2D, IResetEtatObserver
+    public partial class ProjectileObjet : Area2D
     {
         public delegate void HitSignalEventHandler(ProjectileObjet projectileObj);
         public event HitSignalEventHandler OutOfBoundignal;
@@ -20,20 +19,18 @@ namespace SpaceZombie.Ammunitions
         {
             Visible = false;
         }
-        public void Initialize(Projectile projectile,
-                                IResetEtatNotifier resetEtatNotifier)
+        public void Initialize(Projectile projectile)
         {
             AreaEntered += OnAreaEntered;
             this.projectile = projectile;
-            resetEtatNotifier.Register(this);
         }
 
         //private const float CORRECTION_ANGLE = Mathf.Pi * 0.5f;
         public void Fire(Vector2 directionXY, Vector2 globalPosition, float globalRotation)
         {
             this.directionXY = directionXY;
-            this.GlobalPosition = globalPosition;
-            this.GlobalRotation = globalRotation;// + CORRECTION_ANGLE;
+            GlobalPosition = globalPosition;
+            GlobalRotation = globalRotation;// + CORRECTION_ANGLE;
             Enable();
         }
 
@@ -45,19 +42,22 @@ namespace SpaceZombie.Ammunitions
 
         private void OnAreaEntered(Area2D area)
         {
-            if (area is IDamagable damagableNode)
+            if (area is IDamagable damagable)
             {
                 //GD.Print($"Travere Projectile : {projectile.Traverse}, Traverse : {traverse}");
                 //GD.Print($"Projectile {GetInstanceId()}, Hit : {area.Name} {area.GetInstanceId()}");
-                damagableNode.TakeDamage(projectile.Damage);
-                if (projectile.Traverse <= traverse)
+                if (!damagable.IsDodging)
                 {
-                    traverse = 0;
-                    CallDeferred(nameof(Disable));
-                }
-                else
-                {
-                    traverse += 1;
+                    damagable.TakeDamage(projectile.Damage);
+                    if (projectile.Traverse <= traverse)
+                    {
+                        traverse = 0;
+                        CallDeferred(nameof(Disable));
+                    }
+                    else
+                    {
+                        traverse += 1;
+                    }
                 }
             }
         }
@@ -85,14 +85,5 @@ namespace SpaceZombie.Ammunitions
             Disable();
             OutOfBoundignal.Invoke(this);
         }
-
-        public void OnResetToInitaialState()
-        {
-            if (!Visible)//Si est un projectile NON tire; Pas besoin de le reset.
-                return;
-            Disable();//Le fait de Disable, on disable le area.Monitoring, ce qui semble appeler OnAreaExited.
-        }
-
-        public void StartTimerState() { /*This class has no timer*/ }
     }
 }

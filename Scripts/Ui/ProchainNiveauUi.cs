@@ -13,7 +13,7 @@ namespace SpaceZombie.Ui
         public override void _Ready()
         {
             timer = new Timer();
-            timer.OneShot = true;
+            timer.OneShot = false;
             timer.WaitTime = 3f;
             this.AddChild(timer);
         }

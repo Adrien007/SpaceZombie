@@ -11,14 +11,16 @@ public partial class MenuUpgrade : PanelContainer
     [Export] Label selectionTip;
     [Export] ButtonUpgrade option1;
     [Export] ButtonUpgrade option2;
-    [Export] string selectionButtonName;
+    [Export] string buttonNameEn;
+    [Export] string buttonNameFr;
 
     private RandomNumberGenerator random = new RandomNumberGenerator();
     public override void _Ready()
     {
         option1.Upgrade += SelectUpgrade;
         option2.Upgrade += SelectUpgrade;
-        selectionTip.Text = string.Format(Tr("UPGRADE_INPUT"), selectionButtonName);
+        string buttonName = TranslationServer.GetLocale() == "en" ? buttonNameEn : buttonNameFr;
+        selectionTip.Text = string.Format(Tr("UPGRADE_INPUT"), buttonName);
     }
 
     private void SelectUpgrade(int option)
@@ -42,7 +44,7 @@ public partial class MenuUpgrade : PanelContainer
         Visible = true;
     }
 
-    int GetPercentage(float percentage)
+    private int GetPercentage(float percentage)
     {
         return (int)(percentage * 100);
     }
@@ -58,13 +60,13 @@ public partial class MenuUpgrade : PanelContainer
                 button.SetUpgrage((int)option, Tr("UPGRADE_DAMAGE"), damageTexture);
                 break;
             case UpgradeOptions.AttackSpeed:
-                button.SetUpgrage((int)option, string.Format(Tr("UPGRADE_ATTACK_SPEED"), GetPercentage(joueur.cannons.upgradeAttackSpeed)), attackSpeedTexture);
+                button.SetUpgrage((int)option, string.Format(Tr("UPGRADE_ATTACK_SPEED"), GetPercentage(joueur.canons.upgradeAttackSpeed)), attackSpeedTexture);
                 break;
             case UpgradeOptions.Passthrough:
                 button.SetUpgrage((int)option, Tr("UPGRADE_PASSTHROUGH"), passthroughTexture);
                 break;
-            case UpgradeOptions.MoveSpeed:
-                button.SetUpgrage((int)option, string.Format(Tr("UPGRADE_MOVE_SPEED"), GetPercentage(joueur.upgradeMoveSpeed)), moveSpeedTexture);
+            case UpgradeOptions.Dodge:
+                button.SetUpgrage((int)option, Tr("UPGRADE_DODGE"), dodgeTexture);
                 break;
         }
     }
@@ -74,5 +76,5 @@ public partial class MenuUpgrade : PanelContainer
     private static readonly Texture2D damageTexture = ResourceLoader.Load<Texture2D>("res://images/attack_damage_icon.png");
     private static readonly Texture2D attackSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/attack_speed_icon.png");
     private static readonly Texture2D passthroughTexture = ResourceLoader.Load<Texture2D>("res://images/attack_piercing.png");
-    private static readonly Texture2D moveSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/move_speed_icon.png");
+    private static readonly Texture2D dodgeTexture = ResourceLoader.Load<Texture2D>("res://images/dodge_icon.png");
 }

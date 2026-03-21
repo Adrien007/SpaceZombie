@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d4edle7lh0vmn"]
+
+[ext_resource type="Script" uid="uid://7860j8fo6cxy" path="res://Scripts/Joueurs/UpgradeLoader.cs" id="1_jug4v"]
+
+[node name="UpgradeLoader" type="Node2D" unique_id=1493212070]
+script = ExtResource("1_jug4v")
