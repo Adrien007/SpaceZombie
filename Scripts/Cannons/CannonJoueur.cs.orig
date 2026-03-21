@@ -8,10 +8,6 @@ namespace SpaceZombie.Cannons
 {
     public partial class CannonJoueur : Node2D
     {
-        [Export] private int maxCannonAuMilieu = 4;
-        [Export] private int espaceEntreCannon = 40;
-        [Export] private float angleCannonEnPercentageDePi = 0.02f;
-        [Export] public float tempsRelaod = 1.0f;
         [Export] private AudioStreamPlayer sonFire;
         [Export] public int initialDamage = 1;
         [Export] public float initialReloadSpeedInSeconds = 1.0f;
@@ -33,7 +29,11 @@ namespace SpaceZombie.Cannons
         public override void _Ready()
         {
             cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
+<<<<<<< HEAD
             projectile = new Projectile(initialDamage, initialProjectileSpeed);
+=======
+            projectile = new Projectile(1, 250f);
+>>>>>>> 2e3bd26 (Ajout des upgrades)
             reloadTimer = new Timer();
             AddChild(reloadTimer);
             reloadTimer.WaitTime = initialReloadSpeedInSeconds;
@@ -88,9 +88,15 @@ namespace SpaceZombie.Cannons
 
         public void UpgradeVitesse()
         {
+<<<<<<< HEAD
             initialReloadSpeedInSeconds -= initialReloadSpeedInSeconds * upgradeAttackSpeed;
             reloadTimer.WaitTime = initialReloadSpeedInSeconds;
             //projectile.UpgradeVitesse(upgradeAttackSpeed);
+=======
+            tempsRelaod -= 0.1f;
+            reloadTimer.WaitTime = tempsRelaod;
+            projectile.UpgradeVitesse(0.1f);
+>>>>>>> 2e3bd26 (Ajout des upgrades)
         }
 
         public void UpgradeTraverse()
@@ -153,6 +159,19 @@ namespace SpaceZombie.Cannons
         {
             this.resetEtatNotifier = resetEtatNotifier;
             AddCannon();
+<<<<<<< HEAD
+=======
+            UpgradeCanons();
+            UpgradeCanons();
+            UpgradeCanons();
+            UpgradeCanons();
+            UpgradeCanons();
+            UpgradeVitesse();
+            UpgradeVitesse();
+            UpgradeVitesse();
+            UpgradeVitesse();
+            UpgradeVitesse();
+>>>>>>> 2e3bd26 (Ajout des upgrades)
         }
 
         public void StopReloadTimer()

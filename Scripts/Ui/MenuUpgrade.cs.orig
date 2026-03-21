@@ -8,17 +8,25 @@ public partial class MenuUpgrade : PanelContainer
 {
     [Signal]
     public delegate void UpgradeEventHandler(int option);
+<<<<<<< HEAD
     [Export] Label selectionTip;
     [Export] ButtonUpgrade option1;
     [Export] ButtonUpgrade option2;
     [Export] string selectionButtonName;
+=======
+    [Export] ButtonUpgrade option1;
+    [Export] ButtonUpgrade option2;
+>>>>>>> 2e3bd26 (Ajout des upgrades)
 
     private RandomNumberGenerator random = new RandomNumberGenerator();
     public override void _Ready()
     {
         option1.Upgrade += SelectUpgrade;
         option2.Upgrade += SelectUpgrade;
+<<<<<<< HEAD
         selectionTip.Text = string.Format(Tr("UPGRADE_INPUT"), selectionButtonName);
+=======
+>>>>>>> 2e3bd26 (Ajout des upgrades)
     }
 
     private void SelectUpgrade(int option)
@@ -28,11 +36,16 @@ public partial class MenuUpgrade : PanelContainer
         EmitSignal(SignalName.Upgrade, option);
     }
 
+<<<<<<< HEAD
     public void ChooseUpgrade(Joueur joueur)
+=======
+    public void ChooseUpgrade()
+>>>>>>> 2e3bd26 (Ajout des upgrades)
     {
         ProcessMode = ProcessModeEnum.WhenPaused;
         int firstPick = random.RandiRange(0, 4);
         List<UpgradeOptions> options = Enum.GetValues<UpgradeOptions>().ToList();
+<<<<<<< HEAD
         SetOption(option1, options[firstPick], joueur);
 
         int secondPick = random.RandiRange(0, 3);
@@ -75,4 +88,16 @@ public partial class MenuUpgrade : PanelContainer
     private static readonly Texture2D attackSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/attack_speed_icon.png");
     private static readonly Texture2D passthroughTexture = ResourceLoader.Load<Texture2D>("res://images/attack_piercing.png");
     private static readonly Texture2D moveSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/move_speed_icon.png");
+=======
+        option1.SetUpgrage(options[firstPick]);
+
+        int secondPick = random.RandiRange(0, 3);
+        option2.SetUpgrage(options.Except([option1.upgrade]).ToList()[secondPick]);
+
+        option1.GrabFocus();
+        Visible = true;
+
+        //GD.Print($"option1 : {(int)option1.upgrade}, option2 : {(int)option2.upgrade}");
+    }
+>>>>>>> 2e3bd26 (Ajout des upgrades)
 }

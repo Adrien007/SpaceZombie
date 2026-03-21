@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://csksfstlrsvpj"]
+
+<<<<<<< HEAD
+[ext_resource type="PackedScene" uid="uid://do7aytseveunf" path="res://Prefabs/Ui/button_upgrade.tscn" id="1_t188m"]
+=======
+[ext_resource type="PackedScene" path="res://Prefabs/Ui/button_upgrade.tscn" id="1_t188m"]
+>>>>>>> 2e3bd26 (Ajout des upgrades)
+[ext_resource type="Script" uid="uid://smhtqya2jdam" path="res://Scripts/Ui/MenuUpgrade.cs" id="1_uokam"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h311p"]
+bg_color = Color(1, 0.8666667, 0, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_h311p"]
+subpixel_positioning = 0
+
+<<<<<<< HEAD
+[node name="MenuUpgrade" type="PanelContainer" unique_id=1716258266 node_paths=PackedStringArray("selectionTip", "option1", "option2")]
+=======
+[node name="MenuUpgrade" type="PanelContainer" unique_id=1716258266 node_paths=PackedStringArray("option1", "option2")]
+>>>>>>> 2e3bd26 (Ajout des upgrades)
+offset_right = 260.0
+offset_bottom = 155.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_h311p")
+script = ExtResource("1_uokam")
+<<<<<<< HEAD
+selectionTip = NodePath("MarginContainer/VBoxContainer/SelectionTip")
+option1 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option1")
+option2 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option2")
+selectionButtonName = "\"Enter\""
+=======
+option1 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option1")
+option2 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option2")
+>>>>>>> 2e3bd26 (Ajout des upgrades)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1646650328]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1642538308]
+layout_mode = 2
+<<<<<<< HEAD
+theme_override_constants/separation = 0
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2109354322]
+=======
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2109354322]
+>>>>>>> 2e3bd26 (Ajout des upgrades)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_h311p")
+theme_override_font_sizes/font_size = 26
+<<<<<<< HEAD
+text = "UPGRADE_SELECTION"
+horizontal_alignment = 1
+
+[node name="SelectionTip" type="Label" parent="MarginContainer/VBoxContainer" unique_id=58729600]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Press enter to select"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=535737354]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+=======
+text = "Choose one upgrage"
+horizontal_alignment = 1
+
+>>>>>>> 2e3bd26 (Ajout des upgrades)
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=352759549]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Option1" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2026033037 instance=ExtResource("1_t188m")]
+layout_mode = 2
+focus_neighbor_left = NodePath("../Option2")
+focus_neighbor_right = NodePath("../Option2")
+
+[node name="Option2" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1197431899 instance=ExtResource("1_t188m")]
+layout_mode = 2
+focus_neighbor_left = NodePath("../Option1")
+focus_neighbor_right = NodePath("../Option1")

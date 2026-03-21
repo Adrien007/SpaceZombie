@@ -1,0 +1,268 @@
+using Godot;
+using SpaceZombie.Ammunitions;
+using SpaceZombie.Boss;
+using SpaceZombie.Cannons;
+using SpaceZombie.Events;
+using SpaceZombie.Mondes.Utilitaires;
+using SpaceZombie.Utilitaires;
+using SpaceZombie.Utilitaires.Layers;
+
+namespace SpaceZombie.Joueurs
+{
+    /// <summary>
+    /// Represents a player in the game, handling movement and shooting mechanics.
+    /// </summary>
+    public partial class Joueur : Area2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver, IDamagable
+    {
+        [Export] public CannonJoueur cannons;
+        [Export] private Control panel;
+        [Export] private ColorRect invinsibilityPanel;
+        [Export] private AudioStreamPlayer sonPrendsHit;
+        [Export] private AudioStreamPlayer sonMeurt;
+        [Export] private AudioStreamPlayer sonInvicible;
+        [Export] public int hp = 3;
+        [Export] public float moveSpeed = 200f;
+        [Export] public float upgradeMoveSpeed = 0.2f;
+        [Export] bool godMode = false;
+        public JoueurEtat jState;
+        private Vector2 playAeraSize;
+        private Vector2 playAeraPosition;
+        private Vector2 nouvellePosition;
+        private float directionX = 0;
+        private float demiXsize = 0;
+        private int level = 1;
+
+        public override void _Ready()
+        {
+            playAeraSize = GetViewportRect().Size;
+            playAeraPosition = Position;
+
+            demiXsize = (int)(panel.Size.X * 0.5f);
+
+            GameEvents.Instance.EnemyDied += ScoreUpdateListener;
+
+            sonInvicible.Finished += OnSoundInvicibilityFinished;
+            invinsibilityPanel.Visible = false;
+        }
+
+        public override void _PhysicsProcess(double delta)
+        {
+            // Get movement direction from input
+            directionX = 0f;
+            if (Input.IsActionPressed("move_left"))
+            {
+                directionX = -1f; // Move left
+            }
+            else if (Input.IsActionPressed("move_right"))
+            {
+                directionX = 1f; // Move right
+            }
+
+            // Move the object along the X-axis based on input
+            Position += new Vector2(directionX * moveSpeed * (float)delta, 0);
+
+            // Clamp the position within the play area
+            nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X + demiXsize, playAeraPosition.X + playAeraSize.X - demiXsize);
+            nouvellePosition.Y = Position.Y;
+
+            Position = nouvellePosition;
+
+            // Check if spacebar is pressed and reload timer is not active
+            if (Input.IsActionPressed("shot_fire"))
+            {
+                cannons.Fire();
+            }
+        }
+
+        public void TakeDamage(int damage)
+        {
+            if (!jState.IsDead && !jState.IsInvicible)
+            {
+                jState.Hp = RetirerHp(jState.Hp, damage);
+                UpdateScore(-5000);
+                GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
+                if (jState.Hp <= 0)
+                {
+                    jState.IsDead = true;
+                    jState.DeadSoundPlayed = true;
+                    GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
+                    CallDeferred(nameof(Disable));
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerDied);
+                }
+                else
+                {
+                    //GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
+                    jState.IsInvicible = true;
+                    sonPrendsHit.Play();
+                    sonInvicible.Play();
+                    invinsibilityPanel.Visible = true;
+                }
+            }
+
+        }
+
+        private static int RetirerHp(int hp, int hitValue)
+        {
+            hp -= hitValue;
+            if (hp < 0)
+            {
+                hp = 0;
+            }
+            return hp;
+        }
+
+<<<<<<< HEAD
+        public void Upgrade(UpgradeOptions option)
+=======
+        public void Upgrade(int option)
+>>>>>>> 2e3bd26 (Ajout des upgrades)
+        {
+            //GD.Print($"Upgrade : {option}");
+            switch (option)
+            {
+<<<<<<< HEAD
+                case UpgradeOptions.Damage: cannons.UpgradeDamage(); break;
+                case UpgradeOptions.AttackSpeed: cannons.UpgradeVitesse(); break;
+                case UpgradeOptions.AddProjectile: cannons.UpgradeCanons(); break;
+                case UpgradeOptions.Passthrough: cannons.UpgradeTraverse(); break;
+                case UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
+            }
+=======
+                case (int)UpgradeOptions.Damage: cannons.UpgradeDamage(); break;
+                case (int)UpgradeOptions.AttackSpeed: cannons.UpgradeVitesse(); break;
+                case (int)UpgradeOptions.AddProjectile: cannons.UpgradeCanons(); break;
+                case (int)UpgradeOptions.Passthrough: cannons.UpgradeTraverse(); break;
+                case (int)UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
+            }
+            level += 1;
+        }
+
+        private void UpgradeMoveSpeed()
+        {
+            vitesse *= 1.2f;
+>>>>>>> 2e3bd26 (Ajout des upgrades)
+        }
+
+        private void UpgradeMoveSpeed()
+        {
+            moveSpeed += moveSpeed * upgradeMoveSpeed;
+        }
+
+        public void Initialize(IResetEtatNotifier resetEtatNotifier)
+        {
+            jState = new JoueurEtat(hp);
+            nouvellePosition = Position;
+            nouvellePosition.X = PositionCentreX();
+            Position = nouvellePosition;
+            resetEtatNotifier.Register(this);
+            cannons.Initialize(resetEtatNotifier);
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
+            if (godMode) SetGodMode();
+        }
+        public void InitialiserSize(Vector2 size)
+        {
+            playAeraSize = size;
+        }
+        public void InitialiserPosition(Vector2 position)
+        {
+            playAeraPosition = position;
+        }
+
+        private void SetGodMode()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                cannons.UpgradeCanons();
+                cannons.UpgradeVitesse();
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                cannons.UpgradeTraverse();
+                cannons.UpgradeDamage();
+            }
+            moveSpeed = 500f;
+        }
+        private float PositionCentreX()
+        {
+            return playAeraPosition.X + playAeraSize.X * 0.5f;
+        }
+
+        public void Disable()
+        {
+            Visible = false;
+            Monitorable = false;
+            Monitoring = false;
+        }
+
+        public void OnResetToInitaialState()
+        {
+            nouvellePosition.X = PositionCentreX();
+            Position = nouvellePosition;
+            cannons.StopReloadTimer();
+            sonInvicible.Stop();
+            invinsibilityPanel.Visible = false;
+        }
+        public void StartTimerState()
+        {
+        }
+
+        private void OnSoundInvicibilityFinished()
+        {
+            invinsibilityPanel.Visible = false;
+            jState.IsInvicible = false;
+        }
+
+        #region score section
+        private void ScoreUpdateListener(Enemies.EnemyObjet enemy)
+        {
+            UpdateScore(enemy.Enemy.Score);
+            Ui.FloatingTextManager.Instance.ShowScore(enemy.GlobalPosition + new Vector2(GD.RandRange(-10, 10), GD.RandRange(-5, 5)), enemy.Enemy.Score);
+        }
+        private void UpdateScore(int newScore)
+        {
+            jState.AddScore(newScore);
+            //GD.Print($"Player score = {jState.Score}");
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
+        }
+        #endregion
+    }
+
+
+    public interface IVie
+    {
+        int Hp { get; set; }
+    }
+    public class JoueurEtat : IVie
+    {
+        private int hp;
+        private bool isInvicible;
+        private bool isDead;
+        private bool deadSoundPlayed;
+        private bool endLevel;
+        private int score;
+
+        public int Hp { get => hp; set => hp = value; }
+        public bool IsInvicible { get => isInvicible; set => isInvicible = value; }
+        public bool IsDead { get => isDead; set => isDead = value; }
+        public bool DeadSoundPlayed { get => deadSoundPlayed; set => deadSoundPlayed = value; }
+        public bool EndLevel { get => endLevel; set => endLevel = value; }
+        public int Score { get => score; set => score = value; }
+
+
+        public JoueurEtat(int hp)
+        {
+            this.hp = hp;
+            isInvicible = false;
+            isDead = false;
+            deadSoundPlayed = false;
+            endLevel = false;
+        }
+
+        /// <summary>
+        /// Add or sustract score (with negative input).
+        /// </summary>
+        /// <param name="newScore">score to add (>=0) or to remove (<0).</param>
+        public void AddScore(int newScore) { score += newScore; }
+    }
+}
