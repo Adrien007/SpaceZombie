@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://cd3npaxw0mfkb"]
+
+[ext_resource type="Script" uid="uid://cuwcuwe3vhqrj" path="res://Scripts/Enemies/EnemyObjet.cs" id="1_5upuc"]
+[ext_resource type="Texture2D" uid="uid://drs0ogred61bx" path="res://images/enemy3.png" id="2_beskb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r77uo"]
+radius = 20.0
+
+[node name="Enemy" type="Node2D" unique_id=1779648409 node_paths=PackedStringArray("area", "panel")]
+rotation = 1.5707964
+script = ExtResource("1_5upuc")
+area = NodePath("Area2D")
+panel = NodePath("")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=684169035]
+collision_layer = 536870912
+collision_mask = 1073741824
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=46704071]
+shape = SubResource("CircleShape2D_r77uo")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1123310810]
+offset_left = -20.0
+offset_top = 20.0
+offset_right = 233.0
+offset_bottom = 273.0
+rotation = -1.5707964
+scale = Vector2(0.158, 0.158)
+texture = ExtResource("2_beskb")
