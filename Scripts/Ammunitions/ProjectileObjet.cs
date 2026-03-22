@@ -52,6 +52,7 @@ namespace SpaceZombie.Ammunitions
                 damagableNode.TakeDamage(projectile.Damage);
                 if (projectile.Traverse <= traverse)
                 {
+                    traverse = 0;
                     CallDeferred(nameof(Disable));
                 }
                 else

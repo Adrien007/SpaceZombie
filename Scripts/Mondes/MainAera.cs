@@ -55,12 +55,12 @@ namespace SpaceZombie.Mondes.Utilitaires
         private void ChooseUpgrade()
         {
             GetTree().Paused = true;
-            menuUpgrade.ChooseUpgrade();
+            menuUpgrade.ChooseUpgrade(joueur);
         }
 
         private void Upgrade(int option)
         {
-            joueur.Upgrade(option);
+            joueur.Upgrade((UpgradeOptions)option);
             GetTree().Paused = false;
         }
 

@@ -47,6 +47,7 @@ expand_mode = 1
 
 [node name="CannonJoueur" parent="Panel" unique_id=1857421205 instance=ExtResource("2_trojc")]
 position = Vector2(20, 0)
+initialProjectileSpeed = 800.0
 
 [node name="Panel" type="ColorRect" parent="Panel" unique_id=1345368400]
 layout_mode = 1

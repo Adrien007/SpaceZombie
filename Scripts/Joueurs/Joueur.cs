@@ -14,22 +14,21 @@ namespace SpaceZombie.Joueurs
     /// </summary>
     public partial class Joueur : Area2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver, IDamagable
     {
-        //[Export] private Control enfant;
-        [Export] public float vitesse = 200f;
-        [Export] private CannonJoueur cannons;
+        [Export] public CannonJoueur cannons;
         [Export] private Control panel;
         [Export] private ColorRect invinsibilityPanel;
         [Export] private AudioStreamPlayer sonPrendsHit;
         [Export] private AudioStreamPlayer sonMeurt;
         [Export] private AudioStreamPlayer sonInvicible;
-
+        [Export] public float moveSpeed = 200f;
+        [Export] public float upgradeMoveSpeed = 0.2f;
+        [Export] bool godMode = false;
         public JoueurEtat jState;
         private Vector2 playAeraSize;
         private Vector2 playAeraPosition;
         private Vector2 nouvellePosition;
         private float directionX = 0;
         private float demiXsize = 0;
-        private int level = 1;
 
         public override void _Ready()
         {
@@ -58,7 +57,7 @@ namespace SpaceZombie.Joueurs
             }
 
             // Move the object along the X-axis based on input
-            Position += new Vector2(directionX * vitesse * (float)delta, 0);
+            Position += new Vector2(directionX * moveSpeed * (float)delta, 0);
 
             // Clamp the position within the play area
             nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X + demiXsize, playAeraPosition.X + playAeraSize.X - demiXsize);
@@ -110,23 +109,22 @@ namespace SpaceZombie.Joueurs
             return hp;
         }
 
-        public void Upgrade(int option)
+        public void Upgrade(UpgradeOptions option)
         {
             //GD.Print($"Upgrade : {option}");
             switch (option)
             {
-                case (int)UpgradeOptions.Damage: cannons.UpgradeDamage(); break;
-                case (int)UpgradeOptions.AttackSpeed: cannons.UpgradeVitesse(); break;
-                case (int)UpgradeOptions.AddProjectile: cannons.UpgradeCanons(); break;
-                case (int)UpgradeOptions.Passthrough: cannons.UpgradeTraverse(); break;
-                case (int)UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
+                case UpgradeOptions.Damage: cannons.UpgradeDamage(); break;
+                case UpgradeOptions.AttackSpeed: cannons.UpgradeVitesse(); break;
+                case UpgradeOptions.AddProjectile: cannons.UpgradeCanons(); break;
+                case UpgradeOptions.Passthrough: cannons.UpgradeTraverse(); break;
+                case UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
             }
-            level += 1;
         }
 
         private void UpgradeMoveSpeed()
         {
-            vitesse *= 1.2f;
+            moveSpeed += moveSpeed * upgradeMoveSpeed;
         }
 
         public void Initialize(int hp, IResetEtatNotifier resetEtatNotifier)
@@ -139,6 +137,7 @@ namespace SpaceZombie.Joueurs
             cannons.Initialize(resetEtatNotifier);
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
+            if (godMode) SetGodMode();
         }
         public void InitialiserSize(Vector2 size)
         {
@@ -147,6 +146,21 @@ namespace SpaceZombie.Joueurs
         public void InitialiserPosition(Vector2 position)
         {
             playAeraPosition = position;
+        }
+
+        private void SetGodMode()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                cannons.UpgradeCanons();
+                cannons.UpgradeVitesse();
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                cannons.UpgradeTraverse();
+                cannons.UpgradeDamage();
+            }
+            moveSpeed = 500f;
         }
         private float PositionCentreX()
         {

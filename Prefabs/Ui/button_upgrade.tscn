@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cv0ctyboxonyq" path="res://Scripts/Ui/ButtonUpgrade.cs" id="1_4248d"]
 [ext_resource type="Texture2D" uid="uid://dspwjjyo5dq8k" path="res://images/attack_piercing.png" id="2_obr01"]
-[ext_resource type="StyleBox" path="res://Prefabs/Ui/noFocus_upgrade_menu.tres" id="2_ut8is"]
-[ext_resource type="StyleBox" path="res://Prefabs/Ui/focus_upgrade_menu.tres" id="3_26mg6"]
+[ext_resource type="StyleBox" uid="uid://dusv88tnycfv6" path="res://Prefabs/Ui/noFocus_upgrade_menu.tres" id="2_ut8is"]
+[ext_resource type="StyleBox" uid="uid://b4doudcbs1ouw" path="res://Prefabs/Ui/focus_upgrade_menu.tres" id="3_26mg6"]
 [ext_resource type="Shader" uid="uid://c2ivj52281cpu" path="res://Prefabs/Ui/menu_upgrade.gdshader" id="4_26mg6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_26mg6"]
@@ -31,7 +31,7 @@ layout_mode = 2
 size_flags_vertical = 6
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Passthrough +1"
+text = "+1 Projectile"
 horizontal_alignment = 1
 
 [node name="Icon" type="TextureRect" parent="VBoxContainer" unique_id=91800520]

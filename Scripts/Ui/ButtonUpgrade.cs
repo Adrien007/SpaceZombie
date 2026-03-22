@@ -12,7 +12,7 @@ public partial class ButtonUpgrade : PanelContainer
     [Export] private StyleBoxFlat focusStyle;
     [Export] private Label title;
     [Export] private TextureRect icon;
-    public UpgradeOptions upgrade;
+    private int upgrade;
     public override void _Ready()
     {
         FocusEntered += OnFocusEntered;
@@ -25,7 +25,7 @@ public partial class ButtonUpgrade : PanelContainer
         if (HasFocus() && Input.IsActionJustReleased("select"))
         {
             //GD.Print($"SelectUpgrade : {upgrade}");
-            EmitSignal(SignalName.Upgrade, (int)upgrade);
+            EmitSignal(SignalName.Upgrade, upgrade);
         }
     }
 
@@ -44,17 +44,12 @@ public partial class ButtonUpgrade : PanelContainer
         icon.UseParentMaterial = true;
     }
 
-    public void SetUpgrage(UpgradeOptions upgrade)
+    public void SetUpgrage(int upgrade, string title, Texture2D texture)
     {
         this.upgrade = upgrade;
-        switch (upgrade)
-        {
-            case UpgradeOptions.AddProjectile: SetTitleAndIcon(addProjectileTitle, addProjectileTexture); break;
-            case UpgradeOptions.Damage: SetTitleAndIcon(damageTitle, damageTexture); break;
-            case UpgradeOptions.AttackSpeed: SetTitleAndIcon(attackSpeedTitle, attackSpeedTexture); break;
-            case UpgradeOptions.Passthrough: SetTitleAndIcon(passthroughTitle, passthroughTexture); break;
-            case UpgradeOptions.MoveSpeed: SetTitleAndIcon(moveSpeedTitle, moveSpeedTexture); break;
-        }
+        this.title.Text = title;
+        icon.Texture = texture;
+
     }
 
     private void SetTitleAndIcon(String title, Texture2D texture)
@@ -62,15 +57,4 @@ public partial class ButtonUpgrade : PanelContainer
         this.title.Text = title;
         icon.Texture = texture;
     }
-
-    const String addProjectileTitle = "Projectile +1";
-    const String damageTitle = "Damage +1";
-    const String attackSpeedTitle = "Attack Speed +10%";
-    const String passthroughTitle = "Passthrough +1";
-    const String moveSpeedTitle = "Move Speed +10%";
-    private static readonly Texture2D addProjectileTexture = ResourceLoader.Load<Texture2D>("res://images/more_projectile.png");
-    private static readonly Texture2D damageTexture = ResourceLoader.Load<Texture2D>("res://images/attack_damage_icon.png");
-    private static readonly Texture2D attackSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/attack_speed_icon.png");
-    private static readonly Texture2D passthroughTexture = ResourceLoader.Load<Texture2D>("res://images/attack_piercing.png");
-    private static readonly Texture2D moveSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/move_speed_icon.png");
 }
