@@ -20,6 +20,7 @@ namespace SpaceZombie.Joueurs
         [Export] private AudioStreamPlayer sonPrendsHit;
         [Export] private AudioStreamPlayer sonMeurt;
         [Export] private AudioStreamPlayer sonInvicible;
+        [Export] public int hp = 3;
         [Export] public float moveSpeed = 200f;
         [Export] public float upgradeMoveSpeed = 0.2f;
         [Export] bool godMode = false;
@@ -127,7 +128,7 @@ namespace SpaceZombie.Joueurs
             moveSpeed += moveSpeed * upgradeMoveSpeed;
         }
 
-        public void Initialize(int hp, IResetEtatNotifier resetEtatNotifier)
+        public void Initialize(IResetEtatNotifier resetEtatNotifier)
         {
             jState = new JoueurEtat(hp);
             nouvellePosition = Position;
