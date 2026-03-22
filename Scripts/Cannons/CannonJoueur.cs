@@ -8,10 +8,6 @@ namespace SpaceZombie.Cannons
 {
     public partial class CannonJoueur : Node2D
     {
-        [Export] private int maxCannonAuMilieu = 4;
-        [Export] private int espaceEntreCannon = 40;
-        [Export] private float angleCannonEnPercentageDePi = 0.02f;
-        [Export] public float tempsRelaod = 1.0f;
         [Export] private AudioStreamPlayer sonFire;
         [Export] public int initialDamage = 1;
         [Export] public float initialReloadSpeedInSeconds = 1.0f;

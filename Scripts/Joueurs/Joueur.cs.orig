@@ -20,7 +20,10 @@ namespace SpaceZombie.Joueurs
         [Export] private AudioStreamPlayer sonPrendsHit;
         [Export] private AudioStreamPlayer sonMeurt;
         [Export] private AudioStreamPlayer sonInvicible;
+<<<<<<< HEAD
         [Export] public int hp = 3;
+=======
+>>>>>>> c5486e4 (Ajout translation pour les upgrades)
         [Export] public float moveSpeed = 200f;
         [Export] public float upgradeMoveSpeed = 0.2f;
         [Export] bool godMode = false;
@@ -30,7 +33,6 @@ namespace SpaceZombie.Joueurs
         private Vector2 nouvellePosition;
         private float directionX = 0;
         private float demiXsize = 0;
-        private int level = 1;
 
         public override void _Ready()
         {
@@ -111,36 +113,17 @@ namespace SpaceZombie.Joueurs
             return hp;
         }
 
-<<<<<<< HEAD
         public void Upgrade(UpgradeOptions option)
-=======
-        public void Upgrade(int option)
->>>>>>> 2e3bd26 (Ajout des upgrades)
         {
             //GD.Print($"Upgrade : {option}");
             switch (option)
             {
-<<<<<<< HEAD
                 case UpgradeOptions.Damage: cannons.UpgradeDamage(); break;
                 case UpgradeOptions.AttackSpeed: cannons.UpgradeVitesse(); break;
                 case UpgradeOptions.AddProjectile: cannons.UpgradeCanons(); break;
                 case UpgradeOptions.Passthrough: cannons.UpgradeTraverse(); break;
                 case UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
             }
-=======
-                case (int)UpgradeOptions.Damage: cannons.UpgradeDamage(); break;
-                case (int)UpgradeOptions.AttackSpeed: cannons.UpgradeVitesse(); break;
-                case (int)UpgradeOptions.AddProjectile: cannons.UpgradeCanons(); break;
-                case (int)UpgradeOptions.Passthrough: cannons.UpgradeTraverse(); break;
-                case (int)UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
-            }
-            level += 1;
-        }
-
-        private void UpgradeMoveSpeed()
-        {
-            vitesse *= 1.2f;
->>>>>>> 2e3bd26 (Ajout des upgrades)
         }
 
         private void UpgradeMoveSpeed()
