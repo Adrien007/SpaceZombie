@@ -1,9 +1,8 @@
-//CannonEnemy.cs
 using Godot;
 
-namespace SpaceZombie.Cannons
+namespace SpaceZombie.Canons
 {
-    public partial class CannonEnemy : CannonObjet
+    public partial class CanonEnemy : CanonObjet
     {
         [Export] private AudioStreamPlayer sonFire;
 

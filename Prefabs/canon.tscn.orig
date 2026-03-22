@@ -1,0 +1,12 @@
+<<<<<<< HEAD
+[gd_scene format=3 uid="uid://d0abunydadwtt"]
+
+[ext_resource type="Script" path="res://Scripts/Canons/CanonObjet.cs" id="1_jtkx7"]
+=======
+[gd_scene format=3 uid="uid://cogrlhaliv7r7"]
+
+[ext_resource type="Script" uid="uid://d36jfm0jeyrse" path="res://Scripts/Canons/CanonObjet.cs" id="1_jtkx7"]
+>>>>>>> 55b68c7 (Correction typo canon)
+
+[node name="Canon" type="Node2D" unique_id=1369072580]
+script = ExtResource("1_jtkx7")

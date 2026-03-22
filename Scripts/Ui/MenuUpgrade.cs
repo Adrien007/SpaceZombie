@@ -58,7 +58,7 @@ public partial class MenuUpgrade : PanelContainer
                 button.SetUpgrage((int)option, Tr("UPGRADE_DAMAGE"), damageTexture);
                 break;
             case UpgradeOptions.AttackSpeed:
-                button.SetUpgrage((int)option, string.Format(Tr("UPGRADE_ATTACK_SPEED"), GetPercentage(joueur.cannons.upgradeAttackSpeed)), attackSpeedTexture);
+                button.SetUpgrage((int)option, string.Format(Tr("UPGRADE_ATTACK_SPEED"), GetPercentage(joueur.canons.upgradeAttackSpeed)), attackSpeedTexture);
                 break;
             case UpgradeOptions.Passthrough:
                 button.SetUpgrage((int)option, Tr("UPGRADE_PASSTHROUGH"), passthroughTexture);

@@ -6,9 +6,9 @@ using SpaceZombie.Ammunitions;
 using SpaceZombie.Events;
 using SpaceZombie.Mondes.Utilitaires;
 
-namespace SpaceZombie.Cannons
+namespace SpaceZombie.Canons
 {
-    public partial class CannonObjet : Node2D
+    public partial class CanonObjet : Node2D
     {
         private Queue<ProjectileObjet> projectileBuffer;
         PackedScene projectileScene;
