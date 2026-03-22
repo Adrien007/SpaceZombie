@@ -37,7 +37,7 @@ namespace SpaceZombie.Mondes.Utilitaires
 
             joueur.InitialiserSize(this.Size);
             joueur.InitialiserPosition(this.Position);
-            joueur.Initialize(99, res);
+            joueur.Initialize(res);
 
             upgrade.InitializePlayAreaSize(Size);
 
