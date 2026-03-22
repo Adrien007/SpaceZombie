@@ -1,6 +1,6 @@
 using Godot;
 using SpaceZombie.Ammunitions;
-using SpaceZombie.Cannons;
+using SpaceZombie.Canons;
 using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using System;

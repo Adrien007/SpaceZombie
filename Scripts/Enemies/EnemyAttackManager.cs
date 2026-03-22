@@ -1,7 +1,7 @@
 //EnemyAttackManager.cs
 using Godot;
 using SpaceZombie.Ammunitions;
-using SpaceZombie.Cannons;
+using SpaceZombie.Canons;
 using SpaceZombie.Events;
 using SpaceZombie.Utilitaires.Layers;
 using System;
@@ -19,7 +19,7 @@ namespace SpaceZombie.Enemies
     public class EnemyAttackManager : IEnemyAttackManagerSetEnemy, IResetEtatObserver
     {
         private List<Node2D> enemiesAvailable;
-        private CannonEnemy cannon0;
+        private CanonEnemy canon;
         private EnemyFireService service;
         private Timer rateOfFire;
 
@@ -30,10 +30,10 @@ namespace SpaceZombie.Enemies
             resetEtatNotifier.Register(this);
             enemiesAvailable = new List<Node2D>();
             this.service = service;
-            PackedScene cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon_enemy.tscn");
-            cannon0 = cannonPrefab.Instantiate<CannonEnemy>();
-            mainAera.AddChild(cannon0);
-            cannon0.Initialize("projectile_enemy", new Projectile(1, 200f), resetEtatNotifier);
+            PackedScene canonPrefab = GD.Load<PackedScene>("res://Prefabs/canon_enemy.tscn");
+            canon = canonPrefab.Instantiate<CanonEnemy>();
+            mainAera.AddChild(canon);
+            canon.Initialize("projectile_enemy", new Projectile(1, 200f), resetEtatNotifier);
 
             rateOfFire = service.GetTimerRateOfFire();
             mainAera.AddChild(rateOfFire);
@@ -46,8 +46,8 @@ namespace SpaceZombie.Enemies
             List<Node2D> enemyFire = service.PickRandom(enemiesAvailable);
             for (int i = 0; i < enemyFire.Count; i++)
             {
-                cannon0.GlobalPosition = enemyFire[i].GlobalPosition;
-                cannon0.Fire(GetGlobalDirection(enemyFire[i].GlobalRotation));
+                canon.GlobalPosition = enemyFire[i].GlobalPosition;
+                canon.Fire(GetGlobalDirection(enemyFire[i].GlobalRotation));
             }
         }
 
@@ -64,7 +64,7 @@ namespace SpaceZombie.Enemies
         public void OnResetToInitaialState()
         {
             rateOfFire.Stop();
-            cannon0.StopSound();
+            canon.StopSound();
         }
 
         public void StartTimerState()

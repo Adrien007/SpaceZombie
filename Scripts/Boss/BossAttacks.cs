@@ -1,6 +1,6 @@
 using Godot;
 using SpaceZombie.Ammunitions;
-using SpaceZombie.Cannons;
+using SpaceZombie.Canons;
 using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using System;
@@ -11,7 +11,7 @@ namespace SpaceZombie.Boss
     public partial class BossAttacks : Panel, IResetEtatNotifier
     {
         [Export] public Joueur joueur;
-        private List<CannonObjet> canons = new List<CannonObjet>();
+        private List<CanonObjet> canons = new List<CanonObjet>();
         private List<BossLazerRay> lazers = new List<BossLazerRay>();
         [Export] private BossLazerZone attackZone1;
         [Export] private BossLazerZone attackZone2;
@@ -38,7 +38,7 @@ namespace SpaceZombie.Boss
             this.joueur = joueur;
             for (int i = 0; i < 5; i++)
             {
-                CannonObjet canon = (CannonObjet)FindChild($"Canon{i}");
+                CanonObjet canon = (CanonObjet)FindChild($"Canon{i}");
                 canon.Initialize("projectile_enemy", new Projectile(1, 200f), this);
                 BossLazerRay lazerRay = canon.GetChild<BossLazerRay>(0);
                 lazerRay.lazerCollideListener = onLazerCollide;
@@ -92,7 +92,7 @@ namespace SpaceZombie.Boss
 
         private void FireBullet()
         {
-            CannonObjet canon = canons[random.RandiRange(0, 4)];
+            CanonObjet canon = canons[random.RandiRange(0, 4)];
             canon.Fire((joueur.GlobalPosition - canon.GlobalPosition).Normalized());
         }
 

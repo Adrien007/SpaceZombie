@@ -3,18 +3,18 @@
 [ext_resource type="Script" uid="uid://ceppxdbu03qif" path="res://Scripts/Joueurs/Joueur.cs" id="1_0i1yc"]
 [ext_resource type="AudioStream" uid="uid://omewyt457dmx" path="res://Sounds/PlayerInvisibility.mp3" id="2_kfqi4"]
 [ext_resource type="Texture2D" uid="uid://71qelkwnmbek" path="res://images/vaisseau-removebg-preview.png" id="2_qpr61"]
-[ext_resource type="PackedScene" uid="uid://b42c0nlqmpudy" path="res://Prefabs/cannon_joueur.tscn" id="2_trojc"]
+[ext_resource type="PackedScene" uid="uid://b42c0nlqmpudy" path="res://Prefabs/canon_joueur.tscn" id="2_trojc"]
 [ext_resource type="AudioStream" uid="uid://dmfv56vwlsvvo" path="res://Sounds/PlayerHitTaken.wav" id="3_klc7x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
 
-[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("cannons", "panel", "invinsibilityPanel", "sonPrendsHit", "sonInvicible")]
+[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("canons", "panel", "invinsibilityPanel", "sonPrendsHit", "sonInvicible")]
 collision_layer = 2147483648
 collision_mask = 268435456
 monitoring = false
 script = ExtResource("1_0i1yc")
-cannons = NodePath("Panel/CannonJoueur")
+canons = NodePath("Panel/CanonJoueur")
 panel = NodePath("Panel")
 invinsibilityPanel = NodePath("Panel/Panel")
 sonPrendsHit = NodePath("PlayerHitTaken")
@@ -45,7 +45,7 @@ grow_vertical = 2
 texture = ExtResource("2_qpr61")
 expand_mode = 1
 
-[node name="CannonJoueur" parent="Panel" unique_id=1857421205 instance=ExtResource("2_trojc")]
+[node name="CanonJoueur" parent="Panel" unique_id=1857421205 instance=ExtResource("2_trojc")]
 position = Vector2(20, 0)
 initialProjectileSpeed = 800.0
 
