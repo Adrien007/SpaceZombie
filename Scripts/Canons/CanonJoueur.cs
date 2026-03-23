@@ -23,7 +23,6 @@ namespace SpaceZombie.Canons
         private int canonMilieuImpair;
 
         private List<CanonObjet> canons = new List<CanonObjet>();
-        IResetEtatNotifier resetEtatNotifier;
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
@@ -34,7 +33,6 @@ namespace SpaceZombie.Canons
             AddChild(reloadTimer);
             reloadTimer.WaitTime = initialReloadSpeedInSeconds;
             reloadTimer.OneShot = true;
-            reloadTimer.Timeout += OnReloadTimeout;
             Rotation = Vector2.Up.Angle();
             InitializeMiddleCanon();
         }
@@ -140,30 +138,15 @@ namespace SpaceZombie.Canons
         {
             var canon = canonPrefab.Instantiate<CanonObjet>();
             AddChild(canon);
-            canon.Initialize("projectile_joueur", projectile, resetEtatNotifier);
+            canon.Initialize("projectile_joueur", projectile);
             canon.Rotation = Vector2.Up.Angle();
             canons.Add(canon);
         }
 
-        public void Initialize(IResetEtatNotifier resetEtatNotifier)
+        public void Initialize()
         {
-            this.resetEtatNotifier = resetEtatNotifier;
             AddCanon();
         }
-
-        public void StopReloadTimer()
-        {
-            reloadTimer.Stop();
-            sonFire.Stop();
-        }
-
-        // Reload timer timeout handler
-        private void OnReloadTimeout()
-        {
-            // You can add any additional logic for what happens when the reload timer finishes
-            //GD.Print("Reload finished. You can fire again!");
-        }
-
     }
 }
 

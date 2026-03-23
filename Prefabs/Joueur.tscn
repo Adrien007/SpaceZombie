@@ -19,6 +19,7 @@ panel = NodePath("Panel")
 invinsibilityPanel = NodePath("Panel/Panel")
 sonPrendsHit = NodePath("PlayerHitTaken")
 sonInvicible = NodePath("PlayerInvisibility")
+godMode = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078271631]
 visible = false

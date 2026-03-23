@@ -2,38 +2,28 @@
 using Godot;
 using SpaceZombie.Ammunitions;
 using SpaceZombie.Canons;
-using SpaceZombie.Events;
-using SpaceZombie.Utilitaires.Layers;
-using System;
 using System.Collections.Generic;
 
 namespace SpaceZombie.Enemies
 {
-    public interface IEnemyAttackManagerSetEnemy
-    {
-        public void SetEnemyForLevel(List<Node2D> allEnemy);
-    }
     /// <summary>
     /// At each level, get all eneymy. If enemy are visdible, thay can posstentially attack.
     /// </summary>
-    public class EnemyAttackManager : IEnemyAttackManagerSetEnemy, IResetEtatObserver
+    public class EnemyAttackManager
     {
         private List<Node2D> enemiesAvailable;
         private CanonEnemy canon;
         private EnemyFireService service;
         private Timer rateOfFire;
 
-        public EnemyAttackManager(Control mainAera,
-                                 IResetEtatNotifier resetEtatNotifier,
-                                EnemyFireService service)
+        public EnemyAttackManager(Control mainAera, EnemyFireService service)
         {
-            resetEtatNotifier.Register(this);
             enemiesAvailable = new List<Node2D>();
             this.service = service;
             PackedScene canonPrefab = GD.Load<PackedScene>("res://Prefabs/canon_enemy.tscn");
             canon = canonPrefab.Instantiate<CanonEnemy>();
             mainAera.AddChild(canon);
-            canon.Initialize("projectile_enemy", new Projectile(1, 200f), resetEtatNotifier);
+            canon.Initialize("projectile_enemy", new Projectile(1, 200f));
 
             rateOfFire = service.GetTimerRateOfFire();
             mainAera.AddChild(rateOfFire);
@@ -60,14 +50,13 @@ namespace SpaceZombie.Enemies
         {
             this.enemiesAvailable = allEnemy;
         }
-
-        public void OnResetToInitaialState()
+        public void StopFire()
         {
             rateOfFire.Stop();
             canon.StopSound();
         }
 
-        public void StartTimerState()
+        public void StartFire()
         {
             rateOfFire.Start();
         }

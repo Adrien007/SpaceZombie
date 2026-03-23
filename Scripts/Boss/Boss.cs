@@ -3,6 +3,7 @@ using SpaceZombie.Ammunitions;
 using SpaceZombie.Canons;
 using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
+using SpaceZombie.Utilitaires;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -10,10 +11,9 @@ using System.Security.AccessControl;
 
 namespace SpaceZombie.Boss
 {
-    public partial class Boss : Path2D, IResetEtatNotifier
+    public partial class Boss : Path2D
     {
         private int hp = 300;
-        private Area2D area;
         private PathFollow2D pathFollow2D;
         private AnimationPlayer animation;
         private BossAttacks bossAttacks;
@@ -26,9 +26,7 @@ namespace SpaceZombie.Boss
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            area = (Area2D)FindChild("Area2D");
             pathFollow2D = GetNode<PathFollow2D>("PathFollow2D");
-            area.AreaEntered += OnAreaEntered;
             animation = GetNode<AnimationPlayer>("AnimationPlayer");
             bossAttacks = (BossAttacks)FindChild("Attacks");
             bossAttacks.Initialize(joueur);
@@ -103,50 +101,18 @@ namespace SpaceZombie.Boss
             }
         }
 
-        private void OnAreaEntered(Area2D area)
+        public void TakeDamage(int damage)
         {
-            if (area.GetParent() is ProjectileObjet projectile)
+            hp -= damage;
+            if (hp <= 0)
             {
-                hp -= projectile.Projectile.Damage;
-                Callable.From(projectile.Disable).CallDeferred();
-
-                if (hp <= 0)
-                {
-                    CallDeferred(nameof(DisableCallDefered));
-                }
+                CallDeferred(nameof(DisableCallDefered));
             }
         }
 
         private void DisableCallDefered()
         {
-            area.Monitoring = false;
             Visible = false;
-        }
-
-        public void Register(IResetEtatObserver observer)
-        {
-            //TODO Remove IResetEtatObserver
-        }
-
-        public void Unregister(IResetEtatObserver observer)
-        {
-            //TODO Remove IResetEtatObserver
-        }
-    }
-
-    class BossAction
-    {
-        private Action<int> action;
-        private int parameter;
-        BossAction(Action<int> action, int parameter = 0)
-        {
-            this.action = action;
-            this.parameter = parameter;
-        }
-
-        public void execute()
-        {
-            action(parameter);
         }
     }
 }

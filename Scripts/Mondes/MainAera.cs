@@ -5,50 +5,38 @@ using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using SpaceZombie.Niveaux;
 using SpaceZombie.Ui;
-using SpaceZombie.Utilitaires.Layers;
 using System;
 
 namespace SpaceZombie.Mondes.Utilitaires
 {
     public partial class MainAera : Control
     {
-        [Export] private AeraPlayBound area;
         [Export] private Joueur joueur;
         [Export] private ZombiesSpawn zombiesSpawn;
         [Export] private ProchainNiveauUi prochainNiveauUi;
-        [Export] public Upgrade upgrade;
+        [Export] public UpgradeLoader upgradeLoader;
         [Export] private MenuUpgrade menuUpgrade;
-        private static LayerDictionnary ld;
 
         public override void _Ready()
         {
-            AeraPlayBoundAccessor.Initialize(area);
             menuUpgrade.Upgrade += Upgrade;
             GameEvents.Instance.ChooseUpgrade += ChooseUpgrade;
             GameEvents.Instance.PlayerDied += QUITTER;
         }
-        public void Initialiser(Vector2 outOfBoundSize)
+        public void Initialiser()
         {
-            GetTree().Paused = true;
-
-            area.InitialiserSize(outOfBoundSize);
-
-            var res = new ResetEtatManager();
-
-            joueur.InitialiserSize(this.Size);
-            joueur.InitialiserPosition(this.Position);
-            joueur.Initialize(res);
-
-            upgrade.InitializePlayAreaSize(Size);
+            joueur.Initialize(GetRect());
+            zombiesSpawn.Initialize(GetRect());
+            upgradeLoader.InitialiseAreaPlaySize(Size);
 
             EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1));
             EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
-            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, res, enemyFireService);
+            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, enemyFireService);
 
-            var lm = new LevelManager(zombiesSpawn, enemyFireOptions, enemyAttackManager, upgrade);
+            var lm = new LevelManager(zombiesSpawn, enemyFireOptions, enemyAttackManager, upgradeLoader);
             lm.SetNiveau(0, 1);
 
-            var ltm = new LevelTransitionManager(GetTree(), prochainNiveauUi, lm, res);
+            var ltm = new LevelTransitionManager(prochainNiveauUi, lm);
             ltm.ChangerNiveauLogic();
         }
 

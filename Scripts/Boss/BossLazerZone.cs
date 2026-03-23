@@ -1,5 +1,6 @@
 using Godot;
 using SpaceZombie.Joueurs;
+using SpaceZombie.Utilitaires;
 using System;
 using System.Collections.Generic;
 
@@ -17,6 +18,7 @@ namespace SpaceZombie.Boss
             area = GetNode<Area2D>("Area2D");
             collision = (CollisionShape2D)FindChild("CollisionShape2D");
             animation = GetNode<AnimationPlayer>("AnimationPlayer");
+            area.AreaEntered += OnAreaEntered;
             DisableCollision();
         }
 
@@ -41,15 +43,20 @@ namespace SpaceZombie.Boss
             area.Position = screenSize + Size;
         }
 
+        public void OnAreaEntered(Area2D area)
+        {
+            if (area is IDamagable damagableNode)
+            {
+                damagableNode.TakeDamage(2);
+            }
+        }
+
         public void StopAnimation()
         {
             if (animation.IsAnimationActive())
             {
                 animation.Stop();
             }
-        }
-        public override void _PhysicsProcess(double delta)
-        {
         }
     }
 

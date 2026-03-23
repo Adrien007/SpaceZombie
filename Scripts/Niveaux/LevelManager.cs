@@ -12,9 +12,6 @@ namespace SpaceZombie.Niveaux
 {
     public class LevelManager
     {
-        public delegate void FinCreationNiveauSignalEventHandler();
-        public event FinCreationNiveauSignalEventHandler FinCreationNiveau;
-
         private int stage = 0;
         private int globalLevel = 0;
         private int levelLocal = 0;
@@ -23,15 +20,15 @@ namespace SpaceZombie.Niveaux
         private GameDataIterator gdi;
         private ZombiesSpawn zombiesSpawn;
         private IEnemyFireOptionsSettings enemyFireAttackOption;
-        private IEnemyAttackManagerSetEnemy enemyAttackManager;
+        private EnemyAttackManager enemyAttackManager;
         private RandomNumberGenerator randomUpgradeApparition;
         private int upgradeApparition;
-        private Upgrade upgrade;
+        private UpgradeLoader upgrades;
         public int Stage { get => stage; }
         public int GlobalLevel { get => globalLevel; }
 
         public LevelManager(ZombiesSpawn zombiesSpawn,
-                            IEnemyFireOptionsSettings enemyFireAttackOption, IEnemyAttackManagerSetEnemy enemyAttackManager, Upgrade upgrade)
+                            IEnemyFireOptionsSettings enemyFireAttackOption, EnemyAttackManager enemyAttackManager, UpgradeLoader upgrades)
         {
             var gd = ExempleDeserialisation.Deserialize();
             gdi = new GameDataIterator(gd);
@@ -40,7 +37,7 @@ namespace SpaceZombie.Niveaux
             this.zombiesSpawn = zombiesSpawn;
             this.enemyFireAttackOption = enemyFireAttackOption;
             this.enemyAttackManager = enemyAttackManager;
-            this.upgrade = upgrade;
+            this.upgrades = upgrades;
             GameEvents.Instance.EnemyDied += OnEnemyDied;
         }
 
@@ -57,8 +54,9 @@ namespace SpaceZombie.Niveaux
                 var stageLevelLocal = gdi.Next();
                 stage = stageLevelLocal.Item1;
                 levelLocal = stageLevelLocal.Item2;
+                zombiesSpawn.ProcessMode = Node.ProcessModeEnum.Disabled;
+                enemyAttackManager.StopFire();
                 GameEvents.Instance.EmitSignal(nameof(GameEvents.EndLevel));
-                upgrade.Deactivate();
             }
             else
             {
@@ -69,7 +67,7 @@ namespace SpaceZombie.Niveaux
                 if (nbEnemy <= upgradeApparition)
                 {
                     upgradeApparition = 0;
-                    upgrade.Activate();
+                    upgrades.NewUpgrade();
                 }
             }
         }
@@ -83,7 +81,8 @@ namespace SpaceZombie.Niveaux
         public void CreerNiveau()
         {
             CreerNiveau(stage, levelLocal);
-            FinCreationNiveau.Invoke();
+            zombiesSpawn.ProcessMode = Node.ProcessModeEnum.Inherit;
+            enemyAttackManager.StartFire();
         }
 
         private void UpdateUpgradeApparition()

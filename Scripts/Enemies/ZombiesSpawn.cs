@@ -30,7 +30,11 @@ namespace SpaceZombie.Enemies
         public override void _Ready()
         {
             GameEvents.Instance.EnemyDied += DesactiverEnemyPasEnSandwitchListener;
-            service = new InLigneSpawnerUtilitiesEventService();
+        }
+
+        public void Initialize(Rect2 areaPlay)
+        {
+            service = new InLigneSpawnerUtilitiesEventService(GetRect());
         }
 
         public void SetLignePhysicAttributes(int indexLigne, InLigneSpawnerObjetAttributsMapper mapper)
@@ -60,7 +64,7 @@ namespace SpaceZombie.Enemies
 
         public override void _PhysicsProcess(double delta)
         {
-            InLigneSpawnerUtilitiesEventService.DeplacerLigne(inLigneSpawnersObjet, (float)delta, DeplaceEnBlock);
+            service.DeplacerLigne(inLigneSpawnersObjet, (float)delta, DeplaceEnBlock);
         }
     }
 

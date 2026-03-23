@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace SpaceZombie.Boss
 {
-    public partial class BossAttacks : Panel, IResetEtatNotifier
+    public partial class BossAttacks : Panel
     {
         [Export] public Joueur joueur;
         private List<CanonObjet> canons = new List<CanonObjet>();
@@ -39,7 +39,7 @@ namespace SpaceZombie.Boss
             for (int i = 0; i < 5; i++)
             {
                 CanonObjet canon = (CanonObjet)FindChild($"Canon{i}");
-                canon.Initialize("projectile_enemy", new Projectile(1, 200f), this);
+                canon.Initialize("projectile_enemy", new Projectile(1, 200f));
                 BossLazerRay lazerRay = canon.GetChild<BossLazerRay>(0);
                 lazerRay.lazerCollideListener = onLazerCollide;
                 lazers.Add(lazerRay);
@@ -59,7 +59,6 @@ namespace SpaceZombie.Boss
         {
             if (rayLazerDamageTimer.TimeLeft == 0)
             {
-                GD.Print($"Joueur - TakeDamage : RayLazer");
                 joueur.TakeDamage(1);
                 rayLazerDamageTimer.Start();
             }
@@ -138,16 +137,6 @@ namespace SpaceZombie.Boss
             float freeZonePosition = random.RandfRange(attackZoneMargin, screenSize.X - attackZoneMargin - freeZoneWidth);
             attackZone1.Fire(new Vector2(freeZonePosition, screenSize.Y), 0);
             attackZone2.Fire(new Vector2(screenSize.X - freeZonePosition - freeZoneWidth, screenSize.Y), freeZonePosition + freeZoneWidth);
-        }
-
-        public void Register(IResetEtatObserver observer)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void Unregister(IResetEtatObserver observer)
-        {
-            //throw new NotImplementedException();
         }
     }
 

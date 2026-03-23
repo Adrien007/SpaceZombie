@@ -1,18 +1,14 @@
 using Godot;
-using SpaceZombie.Ammunitions;
-using SpaceZombie.Boss;
 using SpaceZombie.Canons;
 using SpaceZombie.Events;
-using SpaceZombie.Mondes.Utilitaires;
 using SpaceZombie.Utilitaires;
-using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Joueurs
 {
     /// <summary>
     /// Represents a player in the game, handling movement and shooting mechanics.
     /// </summary>
-    public partial class Joueur : Area2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver, IDamagable
+    public partial class Joueur : Area2D, IDamagable
     {
         [Export] public CanonJoueur canons;
         [Export] private Control panel;
@@ -33,7 +29,6 @@ namespace SpaceZombie.Joueurs
 
         public override void _Ready()
         {
-            playAeraSize = GetViewportRect().Size;
             playAeraPosition = Position;
 
             demiXsize = (int)(panel.Size.X * 0.5f);
@@ -42,9 +37,10 @@ namespace SpaceZombie.Joueurs
 
             sonInvicible.Finished += OnSoundInvicibilityFinished;
             invinsibilityPanel.Visible = false;
+            SetProcess(false);
         }
 
-        public override void _PhysicsProcess(double delta)
+        public override void _Process(double delta)
         {
             // Get movement direction from input
             directionX = 0f;
@@ -128,25 +124,19 @@ namespace SpaceZombie.Joueurs
             moveSpeed += moveSpeed * upgradeMoveSpeed;
         }
 
-        public void Initialize(IResetEtatNotifier resetEtatNotifier)
+        public void Initialize(Rect2 playArea)
         {
             jState = new JoueurEtat(hp);
             nouvellePosition = Position;
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
-            resetEtatNotifier.Register(this);
-            canons.Initialize(resetEtatNotifier);
+            canons.Initialize();
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
             if (godMode) SetGodMode();
-        }
-        public void InitialiserSize(Vector2 size)
-        {
-            playAeraSize = size;
-        }
-        public void InitialiserPosition(Vector2 position)
-        {
-            playAeraPosition = position;
+            playAeraSize = playArea.Size;
+            playAeraPosition = playArea.Position;
+            SetProcess(true);
         }
 
         private void SetGodMode()
@@ -173,18 +163,6 @@ namespace SpaceZombie.Joueurs
             Visible = false;
             Monitorable = false;
             Monitoring = false;
-        }
-
-        public void OnResetToInitaialState()
-        {
-            nouvellePosition.X = PositionCentreX();
-            Position = nouvellePosition;
-            canons.StopReloadTimer();
-            sonInvicible.Stop();
-            invinsibilityPanel.Visible = false;
-        }
-        public void StartTimerState()
-        {
         }
 
         private void OnSoundInvicibilityFinished()

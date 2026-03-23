@@ -1,28 +1,17 @@
 [gd_scene format=3 uid="uid://fgwdlfhafogy"]
 
 [ext_resource type="Script" uid="uid://deb5rydr3b57d" path="res://Scripts/Mondes/BossScene.cs" id="1_l0l3o"]
-[ext_resource type="Script" uid="uid://hrta737ytjo8" path="res://Scripts/Mondes/GameBounderies.cs" id="2_txy7r"]
 [ext_resource type="PackedScene" uid="uid://cctan0cxox4el" path="res://Prefabs/Joueur.tscn" id="3_vpfhl"]
 [ext_resource type="PackedScene" uid="uid://b6g5loxabm74e" path="res://Prefabs/boss.tscn" id="4_qwaro"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_txvgv"]
-
-[node name="BossScene" type="Node" unique_id=1280517820]
+[node name="BossScene" type="Node2D" unique_id=825953369]
 script = ExtResource("1_l0l3o")
 
-[node name="GameBounderies" type="Area2D" parent="." unique_id=306648452]
-collision_mask = 0
-input_pickable = false
-monitoring = false
-script = ExtResource("2_txy7r")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="GameBounderies" unique_id=978943792]
-shape = SubResource("RectangleShape2D_txvgv")
-
-[node name="MainAera" type="Node" parent="." unique_id=1821327768]
+[node name="MainAera" type="Node" parent="." unique_id=222818829]
 
 [node name="Joueur" parent="MainAera" unique_id=1982290760 instance=ExtResource("3_vpfhl")]
 position = Vector2(576, 610)
+godMode = false
 
 [node name="Boss" parent="MainAera" unique_id=1170369034 node_paths=PackedStringArray("joueur") instance=ExtResource("4_qwaro")]
 position = Vector2(576, 20)

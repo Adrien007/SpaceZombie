@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://b6g5loxabm74e"]
 
+[ext_resource type="Script" uid="uid://u7wob0uitjvr" path="res://Scripts/Utilitaires/Damagable.cs" id="2_1pyra"]
 [ext_resource type="Script" uid="uid://c1aq57q1bhvgp" path="res://Scripts/Boss/BossAttacks.cs" id="2_ab3ne"]
 [ext_resource type="Script" uid="uid://couxhgy7yqcip" path="res://Scripts/Boss/Boss.cs" id="2_fj87s"]
 [ext_resource type="PackedScene" uid="uid://cogrlhaliv7r7" path="res://Prefabs/canon.tscn" id="2_obrrb"]
@@ -60,20 +61,20 @@ _data = {
 
 [node name="Path2D" type="Path2D" unique_id=1868883716]
 z_index = 1
-position = Vector2(-5, 0)
 curve = SubResource("Curve2D_fj87s")
 script = ExtResource("2_fj87s")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=2144733937]
 rotates = false
 
-[node name="Area2D" type="Area2D" parent="PathFollow2D" unique_id=1048009476]
-position = Vector2(-250, 0)
+[node name="Area2D" type="Area2D" parent="PathFollow2D" unique_id=511207021]
 collision_layer = 536870912
-collision_mask = 1073741824
+collision_mask = 0
+monitoring = false
+script = ExtResource("2_1pyra")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/Area2D" unique_id=508312017]
-position = Vector2(250, 100)
+position = Vector2(0, 100)
 shape = SubResource("RectangleShape2D_ixukv")
 
 [node name="Attacks" type="Panel" parent="PathFollow2D" unique_id=1405955129 node_paths=PackedStringArray("attackZone1", "attackZone2")]
@@ -126,3 +127,5 @@ z_index = -1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1965144711]
 libraries/ = SubResource("AnimationLibrary_obrrb")
+
+[connection signal="take_damage" from="PathFollow2D/Area2D" to="." method="TakeDamage"]
