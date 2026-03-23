@@ -1,21 +1,29 @@
+using System.Drawing;
 using Godot;
 using SpaceZombie.Events;
-using SpaceZombie.Joueurs;
-using SpaceZombie.Utilitaires;
-using System;
 namespace SpaceZombie.Joueurs
 {
     public partial class Upgrade : Area2D
     {
-        private RandomNumberGenerator randomPosition = new RandomNumberGenerator();
-        private float vitesse = 60f;
-        private float sideMoveDistance = 45f;
+        [Export] private float vitesse = 60f;
+        [Export] private float sideMoveDistance = 45f;
+        [Export] private CollisionShape2D collisionShape;
+        private static RandomNumberGenerator randomPosition = new RandomNumberGenerator();
+        private float areaPlayWidth;
+
         private Tween tween;
-        private float playAreaWidth;
+
         public override void _Ready()
         {
-            AreaEntered += OnAreaEntered;
-            SetProcess(false);
+            Vector2 halfSize = ((RectangleShape2D)collisionShape.Shape).Size / 2;
+            float initialPostiionX = randomPosition.RandfRange(sideMoveDistance + halfSize.X, areaPlayWidth - halfSize.X);
+            Position = new Vector2(initialPostiionX, -halfSize.Y);
+            Move();
+        }
+
+        public void Initialize(float areaPlayWidth)
+        {
+            this.areaPlayWidth = areaPlayWidth;
         }
 
         public override void _Process(double delta)
@@ -25,27 +33,15 @@ namespace SpaceZombie.Joueurs
 
         private void OnAreaEntered(Area2D area)
         {
-            if (area is Joueur joueur)
-            {
-                Deactivate();
-                GameEvents.Instance.EmitSignal(GameEvents.SignalName.ChooseUpgrade);
-            }
-        }
-
-        public void Activate()
-        {
-            Visible = true;
-            CallDeferred(Area2D.MethodName.SetMonitoring, true);
-            GlobalPosition = new Vector2(randomPosition.RandfRange(sideMoveDistance, playAreaWidth), 0);
-            SetProcess(true);
-            move();
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.ChooseUpgrade);
+            Deactivate();
         }
 
         public void Deactivate()
         {
-            CallDeferred(Area2D.MethodName.SetMonitoring, false);
             Visible = false;
             tween.Stop();
+            QueueFree();
         }
 
         public void MovedOutOfBound()
@@ -56,20 +52,14 @@ namespace SpaceZombie.Joueurs
             }
         }
 
-        private void move()
+        private void Move()
         {
             tween = CreateTween();
             tween.SetEase(Tween.EaseType.InOut);
             tween.SetTrans(Tween.TransitionType.Sine);
             tween.SetLoops();
-
             tween.TweenProperty(this, "position:x", GlobalPosition.X - sideMoveDistance, 2);
             tween.TweenProperty(this, "position:x", GlobalPosition.X, 2);
-        }
-
-        public void InitializePlayAreaSize(Vector2 size)
-        {
-            playAreaWidth = size.X;
         }
     }
 

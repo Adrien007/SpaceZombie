@@ -1,12 +1,10 @@
 //ProjectileObjet.cs
 using Godot;
-using SpaceZombie.Events;
 using SpaceZombie.Utilitaires;
-using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Ammunitions
 {
-    public partial class ProjectileObjet : Area2D, IResetEtatObserver
+    public partial class ProjectileObjet : Area2D
     {
         public delegate void HitSignalEventHandler(ProjectileObjet projectileObj);
         public event HitSignalEventHandler OutOfBoundignal;
@@ -20,12 +18,10 @@ namespace SpaceZombie.Ammunitions
         {
             Visible = false;
         }
-        public void Initialize(Projectile projectile,
-                                IResetEtatNotifier resetEtatNotifier)
+        public void Initialize(Projectile projectile)
         {
             AreaEntered += OnAreaEntered;
             this.projectile = projectile;
-            resetEtatNotifier.Register(this);
         }
 
         //private const float CORRECTION_ANGLE = Mathf.Pi * 0.5f;
@@ -85,14 +81,5 @@ namespace SpaceZombie.Ammunitions
             Disable();
             OutOfBoundignal.Invoke(this);
         }
-
-        public void OnResetToInitaialState()
-        {
-            if (!Visible)//Si est un projectile NON tire; Pas besoin de le reset.
-                return;
-            Disable();//Le fait de Disable, on disable le area.Monitoring, ce qui semble appeler OnAreaExited.
-        }
-
-        public void StartTimerState() { /*This class has no timer*/ }
     }
 }

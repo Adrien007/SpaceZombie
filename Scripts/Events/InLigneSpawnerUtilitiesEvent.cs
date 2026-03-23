@@ -8,6 +8,12 @@ namespace SpaceZombie.Events
 {
     public class InLigneSpawnerUtilitiesEventService
     {
+        private Rect2 areaPlay;
+
+        public InLigneSpawnerUtilitiesEventService(Rect2 areaPlay)
+        {
+            this.areaPlay = areaPlay; ;
+        }
         public void DesactiverEnemyPasEnSandwitch(InLigneSpawnerObjet[] inLigneSpawnersObjet)
         {
             foreach (var ligne in inLigneSpawnersObjet)
@@ -16,7 +22,7 @@ namespace SpaceZombie.Events
             }
         }
 
-        public static void DeplacerLigne(InLigneSpawnerObjet[] inLigneSpawnersObjet, float delta, bool deplaceEnBlock)
+        public void DeplacerLigne(InLigneSpawnerObjet[] inLigneSpawnersObjet, float delta, bool deplaceEnBlock)
         {
             if (deplaceEnBlock)
             {
@@ -27,10 +33,10 @@ namespace SpaceZombie.Events
                 DeplacerLigneLibre(inLigneSpawnersObjet, delta);
             }
         }
-        static void DeplacerLigneEnBlock(InLigneSpawnerObjet[] inLigneSpawnersObjet, float delta)
+        private void DeplacerLigneEnBlock(InLigneSpawnerObjet[] inLigneSpawnersObjet, float delta)
         {
-            float minX = AeraPlayBoundAccessor.GetInstance().Position.X;
-            float maxX = AeraPlayBoundAccessor.GetInstance().Position.X + AeraPlayBoundAccessor.GetInstance().Size.X;
+            float minX = areaPlay.Position.X;
+            float maxX = areaPlay.Position.X + areaPlay.Size.X;
             int premierIndexVisibleToutLigne = int.MaxValue;
             int dernierIndexVisibleToutLigne = -1;
             for (int i = 0; i < inLigneSpawnersObjet.Length; i++)
@@ -62,10 +68,10 @@ namespace SpaceZombie.Events
                 }
             }
         }
-        static void DeplacerLigneLibre(InLigneSpawnerObjet[] inLigneSpawnersObjet, float delta)
+        private void DeplacerLigneLibre(InLigneSpawnerObjet[] inLigneSpawnersObjet, float delta)
         {
-            float minX = AeraPlayBoundAccessor.GetInstance().Position.X;
-            float maxX = AeraPlayBoundAccessor.GetInstance().Position.X + AeraPlayBoundAccessor.GetInstance().Size.X;
+            float minX = areaPlay.Position.X;
+            float maxX = areaPlay.Position.X + areaPlay.Size.X;
             for (int i = 0; i < inLigneSpawnersObjet.Length; i++)
             {
                 if (!inLigneSpawnersObjet[i].IsFixe)
