@@ -1,15 +1,11 @@
-//EnemyObjet.cs
 using Godot;
-using SpaceZombie.Ammunitions;
 using SpaceZombie.Events;
-using System;
+using SpaceZombie.Utilitaires;
 
 namespace SpaceZombie.Enemies
 {
-    public partial class EnemyObjet : Node2D
+    public partial class EnemyObjet : Area2D, IDamagable
     {
-        [Export] private Area2D area;
-        [Export] private Panel panel;
         private Enemy enemy;
         [Export] private AudioStreamPlayer sonPrendsHit;
         [Export] private AudioStreamPlayer sonMeurt;
@@ -18,20 +14,14 @@ namespace SpaceZombie.Enemies
         public EnemyFlagLogic enemyFlagLogic { get; private set; }
         public override void _Ready()
         {
-            base._Ready();
-            area.AreaEntered += OnAreaEntered;
             enemyFlagLogic = new EnemyFlagLogic();
         }
 
-        private void OnAreaEntered(Area2D area)
+        public void TakeDamage(int damage)
         {
-            //_collisionManager.ReportCollision(this, aera2D);
-
-            //GD.Print("Enemy Hit !!! + ");
-
-            if (area.GetParent() is ProjectileObjet projectile && !enemyFlagLogic.isDead)
+            if (!enemyFlagLogic.isDead)
             {
-                Enemy.Hp = RetirerHp(Enemy.Hp, projectile.Projectile.Damage);
+                Enemy.Hp = RetirerHp(Enemy.Hp, damage);
                 if (Enemy.Hp <= 0)
                 {
                     enemyFlagLogic.isDead = true;
@@ -46,20 +36,18 @@ namespace SpaceZombie.Enemies
                     //GD.Print("[SoundSystemEnemy] Play 'enemy hit' sound.");
                     sonPrendsHit.Play();
                 }
-                Callable.From(projectile.Disable).CallDeferred();
             }
         }
+
         public void SetEnemy(EnemyObjetMapper mapper)
         {
             if (mapper.Visible)
             {
                 Enable();
-                //EnableCallDefered();
             }
             else
             {
                 Disable();
-                //DisableCallDefered();
             }
             this.enemy = mapper.Enemy;
         }
@@ -74,25 +62,16 @@ namespace SpaceZombie.Enemies
             return hp;
         }
 
-        private void DisableCallDefered()
-        {
-            area.Monitoring = false;
-        }
         public void Disable()
         {
             Visible = false;
-            CallDeferred(nameof(DisableCallDefered));
+            SetDeferred("monitorable", false);
         }
 
-        private void EnableCallDefered()
-        {
-            Visible = true;
-            area.Monitoring = true;
-        }
         private void Enable()
         {
             Visible = true;
-            CallDeferred(nameof(EnableCallDefered));
+            SetDeferred("monitorable", true);
         }
     }
 

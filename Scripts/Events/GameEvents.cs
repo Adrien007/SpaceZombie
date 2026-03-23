@@ -25,7 +25,7 @@ namespace SpaceZombie.Events
         public delegate void EnemyDiedEventHandler(EnemyObjet enemy);
 
         [Signal]
-        public delegate void LevelUpEventHandler();
+        public delegate void ChooseUpgradeEventHandler();
 
         [Signal]
         public delegate void EndLevelEventHandler();

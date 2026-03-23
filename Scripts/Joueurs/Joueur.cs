@@ -4,6 +4,7 @@ using SpaceZombie.Boss;
 using SpaceZombie.Cannons;
 using SpaceZombie.Events;
 using SpaceZombie.Mondes.Utilitaires;
+using SpaceZombie.Utilitaires;
 using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Joueurs
@@ -11,17 +12,18 @@ namespace SpaceZombie.Joueurs
     /// <summary>
     /// Represents a player in the game, handling movement and shooting mechanics.
     /// </summary>
-    public partial class Joueur : Area2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver
+    public partial class Joueur : Area2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver, IDamagable
     {
-        //[Export] private Control enfant;
-        [Export] public float vitesse = 200f;
-        [Export] private CannonJoueur cannons;
+        [Export] public CannonJoueur cannons;
         [Export] private Control panel;
         [Export] private ColorRect invinsibilityPanel;
         [Export] private AudioStreamPlayer sonPrendsHit;
         [Export] private AudioStreamPlayer sonMeurt;
         [Export] private AudioStreamPlayer sonInvicible;
-
+        [Export] public int hp = 3;
+        [Export] public float moveSpeed = 200f;
+        [Export] public float upgradeMoveSpeed = 0.2f;
+        [Export] bool godMode = false;
         public JoueurEtat jState;
         private Vector2 playAeraSize;
         private Vector2 playAeraPosition;
@@ -31,14 +33,11 @@ namespace SpaceZombie.Joueurs
 
         public override void _Ready()
         {
-            base._Ready();
             playAeraSize = GetViewportRect().Size;
             playAeraPosition = Position;
 
             demiXsize = (int)(panel.Size.X * 0.5f);
 
-            AreaEntered += OnAreaEntered;
-            GameEvents.Instance.LevelUp += LevelUpCannon;
             GameEvents.Instance.EnemyDied += ScoreUpdateListener;
 
             sonInvicible.Finished += OnSoundInvicibilityFinished;
@@ -59,7 +58,7 @@ namespace SpaceZombie.Joueurs
             }
 
             // Move the object along the X-axis based on input
-            Position += new Vector2(directionX * vitesse * (float)delta, 0);
+            Position += new Vector2(directionX * moveSpeed * (float)delta, 0);
 
             // Clamp the position within the play area
             nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X + demiXsize, playAeraPosition.X + playAeraSize.X - demiXsize);
@@ -74,47 +73,31 @@ namespace SpaceZombie.Joueurs
             }
         }
 
-        private void OnAreaEntered(Area2D area)
+        public void TakeDamage(int damage)
         {
             if (!jState.IsDead && !jState.IsInvicible)
             {
-                GD.Print($"{!jState.IsDead} && {!jState.IsInvicible}");
-                Node parent = area.GetParent();
-                if (parent is ProjectileObjet projectile)
+                jState.Hp = RetirerHp(jState.Hp, damage);
+                UpdateScore(-5000);
+                GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
+                if (jState.Hp <= 0)
                 {
-                    GD.Print($"Joueur - TakeDamage : Projectile");
-                    TakeDamage(projectile.Projectile.Damage);
-                    projectile.Disable();
+                    jState.IsDead = true;
+                    jState.DeadSoundPlayed = true;
+                    GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
+                    CallDeferred(nameof(Disable));
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerDied);
                 }
-                else if (parent is BossLazerZone lazerZone)
+                else
                 {
-                    GD.Print($"Joueur - TakeDamage : ZoneLazer");
-                    TakeDamage(lazerZone.damage);
+                    //GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
+                    jState.IsInvicible = true;
+                    sonPrendsHit.Play();
+                    sonInvicible.Play();
+                    invinsibilityPanel.Visible = true;
                 }
             }
-        }
 
-        public void TakeDamage(int damage)
-        {
-            jState.Hp = RetirerHp(jState.Hp, damage);
-            UpdateScore(-5000);
-            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
-            if (jState.Hp <= 0)
-            {
-                jState.IsDead = true;
-                jState.DeadSoundPlayed = true;
-                GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
-                CallDeferred(nameof(Disable));
-                GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerDied);
-            }
-            else
-            {
-                //GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
-                jState.IsInvicible = true;
-                sonPrendsHit.Play();
-                sonInvicible.Play();
-                invinsibilityPanel.Visible = true;
-            }
         }
 
         private static int RetirerHp(int hp, int hitValue)
@@ -127,12 +110,25 @@ namespace SpaceZombie.Joueurs
             return hp;
         }
 
-        private void LevelUpCannon()
+        public void Upgrade(UpgradeOptions option)
         {
-            cannons.LevelUp();
+            //GD.Print($"Upgrade : {option}");
+            switch (option)
+            {
+                case UpgradeOptions.Damage: cannons.UpgradeDamage(); break;
+                case UpgradeOptions.AttackSpeed: cannons.UpgradeVitesse(); break;
+                case UpgradeOptions.AddProjectile: cannons.UpgradeCanons(); break;
+                case UpgradeOptions.Passthrough: cannons.UpgradeTraverse(); break;
+                case UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
+            }
         }
 
-        public void Initialize(int hp, IResetEtatNotifier resetEtatNotifier)
+        private void UpgradeMoveSpeed()
+        {
+            moveSpeed += moveSpeed * upgradeMoveSpeed;
+        }
+
+        public void Initialize(IResetEtatNotifier resetEtatNotifier)
         {
             jState = new JoueurEtat(hp);
             nouvellePosition = Position;
@@ -142,6 +138,7 @@ namespace SpaceZombie.Joueurs
             cannons.Initialize(resetEtatNotifier);
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
+            if (godMode) SetGodMode();
         }
         public void InitialiserSize(Vector2 size)
         {
@@ -150,6 +147,21 @@ namespace SpaceZombie.Joueurs
         public void InitialiserPosition(Vector2 position)
         {
             playAeraPosition = position;
+        }
+
+        private void SetGodMode()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                cannons.UpgradeCanons();
+                cannons.UpgradeVitesse();
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                cannons.UpgradeTraverse();
+                cannons.UpgradeDamage();
+            }
+            moveSpeed = 500f;
         }
         private float PositionCentreX()
         {
