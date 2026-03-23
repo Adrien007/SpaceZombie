@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dqdl0p8fg2rt2"]
 
-[ext_resource type="Script" uid="uid://by12bheanyax6" path="res://Scripts/TitleScreen/title_screen.gd" id="1_klylv"]
-[ext_resource type="Shader" uid="uid://dy10i5hb2xs0l" path="res://Scenes/title_screen_moving.gdshader" id="2_twnyg"]
+[ext_resource type="Script" uid="uid://di6ctnjf7jobq" path="res://Scripts/TitleScreen/TitleScreen.cs" id="1_55kwv"]
+[ext_resource type="Shader" path="res://Scenes/title_screen_moving.gdshader" id="2_twnyg"]
 [ext_resource type="Theme" uid="uid://bgp1n4uijfn6m" path="res://images/white_theme.tres" id="3_4gxqj"]
 [ext_resource type="Texture2D" uid="uid://chfwe3kosxfjn" path="res://images/starfield_stars_tile.png" id="3_55kwv"]
 [ext_resource type="AudioStream" uid="uid://csblwr6117qh6" path="res://Sounds/IntroPlusBossFight.mp3" id="4_55kwv"]
@@ -12,16 +12,17 @@ shader_parameter/speed = 0.008
 shader_parameter/scroll_duration = 8.0
 shader_parameter/pause_duration = 0.1
 
-[sub_resource type="Theme" id="Theme_4gxqj"]
+[sub_resource type="Theme" id="Theme_55kwv"]
 
-[node name="TitleScreen" type="Control" unique_id=22300465]
+[node name="TitleScreen" type="Control" unique_id=22300465 node_paths=PackedStringArray("firstButtonToFocus")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_klylv")
+script = ExtResource("1_55kwv")
+firstButtonToFocus = NodePath("Control1/VBoxContainer/StartButton")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1231218953]
 layout_mode = 1
@@ -88,7 +89,12 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
-theme = SubResource("Theme_4gxqj")
+focus_neighbor_top = NodePath("../Quit")
+focus_neighbor_bottom = NodePath("../ButtonLanguage")
+theme = SubResource("Theme_55kwv")
+theme_override_colors/font_color = Color(0.00714154, 0.0071415715, 0.007141549, 1)
+theme_override_colors/font_focus_color = Color(0, 0.2784314, 0.6431373, 1)
+theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
 text = "START"
 autowrap_mode = 1
 
@@ -96,12 +102,22 @@ autowrap_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../StartButton")
+focus_neighbor_bottom = NodePath("../Quit")
+theme_override_colors/font_color = Color(0.00714154, 0.0071415715, 0.007141549, 1)
+theme_override_colors/font_focus_color = Color(0, 0.2784314, 0.6431373, 1)
+theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
 text = "ENGLISH"
 autowrap_mode = 1
 
 [node name="Quit" type="Button" parent="Control1/VBoxContainer" unique_id=1344365612]
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../ButtonLanguage")
+focus_neighbor_bottom = NodePath("../StartButton")
+theme_override_colors/font_color = Color(0.00714154, 0.0071415715, 0.007141549, 1)
+theme_override_colors/font_focus_color = Color(0, 0.2784314, 0.6431373, 1)
+theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
 text = "QUIT"
 autowrap_mode = 1
 

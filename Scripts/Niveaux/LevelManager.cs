@@ -48,7 +48,7 @@ namespace SpaceZombie.Niveaux
             {
                 if (!gdi.HasNext())
                 {
-                    throw new InvalidOperationException("No more levels available.");
+
                 }
                 globalLevel++;
                 var stageLevelLocal = gdi.Next();
@@ -56,7 +56,7 @@ namespace SpaceZombie.Niveaux
                 levelLocal = stageLevelLocal.Item2;
                 zombiesSpawn.ProcessMode = Node.ProcessModeEnum.Disabled;
                 enemyAttackManager.StopFire();
-                GameEvents.Instance.EmitSignal(nameof(GameEvents.EndLevel));
+                GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel);
             }
             else
             {
