@@ -8,15 +8,17 @@ namespace SpaceZombie.Cannons
 {
     public partial class CannonJoueur : Node2D
     {
-        [Export] private int maxCannonAuMilieu = 4;
-        [Export] private int espaceEntreCannon = 40;
-        [Export] private float angleCannonEnPercentageDePi = 0.02f;
-        [Export] public float tempsRelaod = 1.0f;
+        [Export] private AudioStreamPlayer sonFire;
+        [Export] public int initialDamage = 1;
+        [Export] public float initialReloadSpeedInSeconds = 1.0f;
+        [Export] public float initialProjectileSpeed = 250f;
+        [Export] public float projectileAngleInPiPercentage = 0.01f;
+        [Export] public int maxProjectileStraightInMiddle = 2;
+        [Export] public int spaceBetweenProjectile = 40;
+        [Export] public float upgradeAttackSpeed = 0.2f;
         private Timer reloadTimer;
         private PackedScene cannonPrefab;
         private Projectile projectile;
-        private int level = 1;
-        private int maxLevel = 10;
         private int cannonMilieuPair;
         private int cannonMilieuImpair;
 
@@ -27,30 +29,28 @@ namespace SpaceZombie.Cannons
         public override void _Ready()
         {
             cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
-            projectile = new Projectile(1, 250f, false);
+            projectile = new Projectile(initialDamage, initialProjectileSpeed);
             reloadTimer = new Timer();
             AddChild(reloadTimer);
-            reloadTimer.WaitTime = tempsRelaod;
+            reloadTimer.WaitTime = initialReloadSpeedInSeconds;
             reloadTimer.OneShot = true;
             reloadTimer.Timeout += OnReloadTimeout;
             Rotation = Vector2.Up.Angle();
             InitializeMiddleCannon();
-            level = 4;
         }
 
         private void InitializeMiddleCannon()
         {
-            if (maxCannonAuMilieu % 2 == 0)
+            if (maxProjectileStraightInMiddle % 2 == 0)
             {
-                cannonMilieuPair = maxCannonAuMilieu;
-                cannonMilieuImpair = maxCannonAuMilieu - 1;
+                cannonMilieuPair = maxProjectileStraightInMiddle;
+                cannonMilieuImpair = maxProjectileStraightInMiddle - 1;
             }
             else
             {
-                cannonMilieuPair = maxCannonAuMilieu - 1;
-                cannonMilieuImpair = maxCannonAuMilieu;
+                cannonMilieuPair = maxProjectileStraightInMiddle - 1;
+                cannonMilieuImpair = maxProjectileStraightInMiddle;
             }
-
         }
 
         // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -62,6 +62,7 @@ namespace SpaceZombie.Cannons
         {
             if (reloadTimer.TimeLeft == 0)
             {
+                sonFire.Play(0.79f);
                 foreach (CannonObjet cannon in cannons)
                 {
                     cannon.Fire(GetGlobalDirection(cannon.Rotation));
@@ -76,31 +77,27 @@ namespace SpaceZombie.Cannons
             return new Vector2(Mathf.Cos(rotation), Mathf.Sin(rotation)).Normalized();
         }
 
-        public void LevelUp()
+        public void UpgradeDamage()
         {
-            if (level < maxLevel)
-            {
-                LevelUpTempsReload();
-                LevelUpVitesse();
-                CallDeferred(nameof(LevelUpCannon));
-            }
+            projectile.UpgradeDamage();
         }
 
-        private void LevelUpTempsReload()
+        public void UpgradeVitesse()
         {
-            tempsRelaod -= 0.1f;
-            reloadTimer.WaitTime = tempsRelaod;
+            initialReloadSpeedInSeconds -= initialReloadSpeedInSeconds * upgradeAttackSpeed;
+            reloadTimer.WaitTime = initialReloadSpeedInSeconds;
+            //projectile.UpgradeVitesse(upgradeAttackSpeed);
         }
 
-        private void LevelUpVitesse()
+        public void UpgradeTraverse()
         {
-            projectile.upgradeVitesse(0.1f);
+            projectile.UpgradeTraverse();
         }
 
-        private void LevelUpCannon()
+        public void UpgradeCanons()
         {
             AddCannon();
-            if (cannons.Count <= maxCannonAuMilieu)
+            if (cannons.Count <= maxProjectileStraightInMiddle)
             {
                 AligneCannonDroit(cannons.Count);
             }
@@ -115,27 +112,27 @@ namespace SpaceZombie.Cannons
         private int AligneCannonDroit(int total)
         {
             total -= 1;
-            int rightPosition = total * espaceEntreCannon / 2;
+            int rightPosition = total * spaceBetweenProjectile / 2;
             for (int i = 0; i <= total; i++)
             {
                 cannons[i].Position = new Vector2(0, rightPosition);
                 cannons[i].Rotation = Vector2.Up.Angle();
-                rightPosition -= espaceEntreCannon;
+                rightPosition -= spaceBetweenProjectile;
             }
             return -rightPosition;
         }
 
         private void AligneCannonAngle(int alreadyDone, int position)
         {
-            float rotation = angleCannonEnPercentageDePi;
+            float rotation = Mathf.Pi * projectileAngleInPiPercentage;
             for (int i = alreadyDone; i < cannons.Count; i += 2)
             {
                 cannons[i].Position = new Vector2(0, position);
-                cannons[i].Rotation = Vector2.Up.Angle() + (Mathf.Pi * rotation);
+                cannons[i].Rotation = Vector2.Up.Angle() + rotation;
                 cannons[i + 1].Position = new Vector2(0, -position);
-                cannons[i + 1].Rotation = Vector2.Up.Angle() - (Mathf.Pi * rotation);
+                cannons[i + 1].Rotation = Vector2.Up.Angle() - rotation;
                 rotation += rotation;
-                position += espaceEntreCannon;
+                position += spaceBetweenProjectile;
             }
         }
 
@@ -151,21 +148,13 @@ namespace SpaceZombie.Cannons
         public void Initialize(IResetEtatNotifier resetEtatNotifier)
         {
             this.resetEtatNotifier = resetEtatNotifier;
-            InitializeLevel();
-        }
-
-        private void InitializeLevel()
-        {
             AddCannon();
-            for (int i = 1; i < level && i < maxLevel; i++)
-            {
-                LevelUpCannon();
-            }
         }
 
         public void StopReloadTimer()
         {
             reloadTimer.Stop();
+            sonFire.Stop();
         }
 
         // Reload timer timeout handler

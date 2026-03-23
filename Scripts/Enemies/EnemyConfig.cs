@@ -8,32 +8,32 @@ namespace SpaceZombie.Enemies.Configs
     {
         public static readonly NiveauEnemySettings enemyType1 = new NiveauEnemySettings()
         {
-            Color = new Color(Colors.Blue),
-            Enemy = new Enemy(1, 1)
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy.tscn"),
+            Enemy = new Enemy(1, 100)
         };
         public static readonly NiveauEnemySettings enemyType2 = new NiveauEnemySettings()
         {
-            Color = new Color(Colors.Green),
-            Enemy = new Enemy(2, 2)
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy.tscn"),
+            Enemy = new Enemy(2, 200)
         };
         public static readonly NiveauEnemySettings enemyType3 = new NiveauEnemySettings()
         {
-            Color = new Color(Colors.Blue),
-            Enemy = new Enemy(3, 3)
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy.tscn"),
+            Enemy = new Enemy(3, 300)
         };
         public static readonly NiveauEnemySettings enemyType4 = new NiveauEnemySettings()
         {
-            Color = new Color(Colors.Green),
-            Enemy = new Enemy(4, 4)
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy.tscn"),
+            Enemy = new Enemy(5, 500)
         };
         public static readonly NiveauEnemySettings enemyType5 = new NiveauEnemySettings()
         {
-            Color = new Color(Colors.Green),
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy.tscn"),
             Enemy = new Enemy(7, 5)
         };
         public static readonly NiveauEnemySettings enemyType6 = new NiveauEnemySettings()
         {
-            Color = new Color(Colors.Green),
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy.tscn"),
             Enemy = new Enemy(10, 6)
         };
 

@@ -6,22 +6,32 @@ namespace SpaceZombie.Ammunitions
     {
         private int damage;
         private float vitesse;
-        private bool canHitMultipleObjects;
+        private int traverse;
 
         public int Damage { get => damage; }
         public float Vitesse { get => vitesse; }
-        public bool CanHitMultipleObjects { get => canHitMultipleObjects; }
+        public int Traverse { get => traverse; }
 
-        public Projectile(int damage, float vitesse, bool canHitMultipleObjects)
+        public Projectile(int damage, float vitesse, int traverse = 0)
         {
             this.damage = damage;
             this.vitesse = vitesse;
-            this.canHitMultipleObjects = canHitMultipleObjects;
+            this.traverse = traverse;
         }
 
-        public void upgradeVitesse(float pourcentage)
+        public void UpgradeDamage()
+        {
+            damage += 1;
+        }
+
+        public void UpgradeVitesse(float pourcentage)
         {
             vitesse += vitesse * pourcentage;
+        }
+
+        public void UpgradeTraverse()
+        {
+            traverse += 1;
         }
     }
 }

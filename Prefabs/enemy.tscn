@@ -1,25 +1,33 @@
 [gd_scene format=3 uid="uid://cccdrmtfnmbgi"]
 
 [ext_resource type="Script" uid="uid://cuwcuwe3vhqrj" path="res://Scripts/Enemies/EnemyObjet.cs" id="1_pj2xj"]
+[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/EnemyTakeHit.wav" id="2_t4g6b"]
+[ext_resource type="AudioStream" uid="uid://chaslu53mxywl" path="res://Sounds/ZombieDye.wav" id="3_30yes"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r77uo"]
 radius = 20.0
 
-[node name="Enemy" type="Node2D" unique_id=1779648409 node_paths=PackedStringArray("area", "panel")]
+[node name="Area2D" type="Area2D" unique_id=684169035 node_paths=PackedStringArray("sonPrendsHit", "sonMeurt")]
 rotation = 1.5707964
-script = ExtResource("1_pj2xj")
-area = NodePath("Area2D")
-panel = NodePath("Panel")
-
-[node name="Area2D" type="Area2D" parent="." unique_id=684169035]
 collision_layer = 536870912
-collision_mask = 1073741824
+collision_mask = 0
+monitoring = false
 monitorable = false
+script = ExtResource("1_pj2xj")
+sonPrendsHit = NodePath("EnemyTakeHit")
+sonMeurt = NodePath("ZombieDye")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=46704071]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=46704071]
 shape = SubResource("CircleShape2D_r77uo")
 
+[node name="EnemyTakeHit" type="AudioStreamPlayer" parent="." unique_id=2126247250]
+stream = ExtResource("2_t4g6b")
+
+[node name="ZombieDye" type="AudioStreamPlayer" parent="." unique_id=415602154]
+stream = ExtResource("3_30yes")
+
 [node name="Panel" type="Panel" parent="." unique_id=1073823520]
+modulate = Color(18.892157, 0, 0, 1)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
