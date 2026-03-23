@@ -27,3 +27,25 @@ position = Vector2(576, 610)
 [node name="Boss" parent="MainAera" unique_id=1170369034 node_paths=PackedStringArray("joueur") instance=ExtResource("4_qwaro")]
 position = Vector2(576, 20)
 joueur = NodePath("../Joueur")
+
+[node name="BossUI" type="CanvasLayer" parent="." unique_id=1777588701]
+
+[node name="ProgressBar" type="ProgressBar" parent="BossUI" unique_id=1177476441]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+
+[node name="BOSS ZOMBIE" type="Label" parent="BossUI" unique_id=2138967193]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -62.0
+offset_top = 40.0
+offset_right = 44.0
+offset_bottom = 63.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "BOSS ZOMBIE"

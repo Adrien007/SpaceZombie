@@ -22,6 +22,7 @@ namespace SpaceZombie.Boss
         private Timer nextActionTimer = new Timer();
         private int nextActionIndex = 0;
         [Export] public Joueur joueur;
+        private ProgressBar bossHealthBar;
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
@@ -37,6 +38,9 @@ namespace SpaceZombie.Boss
             nextActionTimer.OneShot = true;
             AddChild(nextActionTimer);
             CallDeferred(nameof(InitializeActions));
+            bossHealthBar = GetNode<ProgressBar>("/root/BossScene/BossUI/ProgressBar");
+            bossHealthBar.MaxValue = hp;
+            bossHealthBar.Value = hp;
         }
 
         private void InitializeActions()
@@ -108,6 +112,7 @@ namespace SpaceZombie.Boss
             if (area.GetParent() is ProjectileObjet projectile)
             {
                 hp -= projectile.Projectile.Damage;
+                bossHealthBar.Value = hp;
                 Callable.From(projectile.Disable).CallDeferred();
 
                 if (hp <= 0)
@@ -150,5 +155,3 @@ namespace SpaceZombie.Boss
         }
     }
 }
-
-
