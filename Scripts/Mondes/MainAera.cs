@@ -48,5 +48,12 @@ namespace SpaceZombie.Mondes.Utilitaires
             endScreen.score = joueur.jState.Score;
             GetTree().Root.AddChild(endScreen);
         }
+
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+            GameEvents.Instance.ChooseUpgrade -= ChooseUpgrade;
+            GameEvents.Instance.ShowEndScreen -= ShowEndScreen;
+        }
     }
 }

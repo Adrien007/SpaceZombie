@@ -68,14 +68,13 @@ namespace SpaceZombie.Enemies
         {
             service.DeplacerLigne(inLigneSpawnersObjet, (float)delta, DeplaceEnBlock);
         }
+
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+            GameEvents.Instance.EnemyDied -= DesactiverEnemyPasEnSandwitchListener;
+        }
     }
-
-
-
-
-
-
-
 
     public static class InLigneSpawnerObjetService
     {

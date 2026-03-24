@@ -134,6 +134,12 @@ namespace SpaceZombie.Niveaux
             AddChild(boss);
             boss.Foward();
         }
+
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+            GameEvents.Instance.EnemyDied -= OnEnemyDied;
+        }
     }
 
     public class GameDataIterator

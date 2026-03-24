@@ -171,6 +171,12 @@ namespace SpaceZombie.Joueurs
             Monitoring = false;
         }
 
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+            GameEvents.Instance.EnemyDied -= ScoreUpdateListener;
+        }
+
         private void OnSoundInvicibilityFinished()
         {
             invinsibilityPanel.Visible = false;

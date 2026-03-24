@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://u7wob0uitjvr" path="res://Scripts/Utilitaires/Damagable.cs" id="2_1pyra"]
 [ext_resource type="Script" uid="uid://c1aq57q1bhvgp" path="res://Scripts/Boss/BossAttacks.cs" id="2_ab3ne"]
 [ext_resource type="Script" uid="uid://couxhgy7yqcip" path="res://Scripts/Boss/Boss.cs" id="2_fj87s"]
-[ext_resource type="PackedScene" uid="uid://cogrlhaliv7r7" path="res://Prefabs/canon.tscn" id="2_obrrb"]
+[ext_resource type="PackedScene" uid="uid://d0abunydadwtt" path="res://Prefabs/canon.tscn" id="2_obrrb"]
 [ext_resource type="PackedScene" uid="uid://cpj3804ekabf" path="res://Prefabs/boss_lazer_ray.tscn" id="3_obrrb"]
 [ext_resource type="PackedScene" uid="uid://b7uoylkqt1bey" path="res://Prefabs/boss_lazer_zone.tscn" id="6_im1n0"]
 

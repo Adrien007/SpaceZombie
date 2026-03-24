@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cctan0cxox4el"]
 
-[ext_resource type="Script" uid="uid://ceppxdbu03qif" path="res://Scripts/Joueurs/Joueur.cs" id="1_0i1yc"]
+[ext_resource type="Script" uid="uid://b0fj30bc4ufp1" path="res://Scripts/Joueurs/Joueur.cs" id="1_0i1yc"]
 [ext_resource type="AudioStream" uid="uid://omewyt457dmx" path="res://Sounds/PlayerInvisibility.mp3" id="2_kfqi4"]
 [ext_resource type="Texture2D" uid="uid://71qelkwnmbek" path="res://images/vaisseau-removebg-preview.png" id="2_qpr61"]
-[ext_resource type="PackedScene" uid="uid://b42c0nlqmpudy" path="res://Prefabs/canon_joueur.tscn" id="2_trojc"]
+[ext_resource type="PackedScene" uid="uid://b8lyoihukwcpa" path="res://Prefabs/canon_joueur.tscn" id="2_trojc"]
 [ext_resource type="AudioStream" uid="uid://dmfv56vwlsvvo" path="res://Sounds/PlayerHitTaken.wav" id="3_klc7x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
@@ -56,7 +56,6 @@ panel = NodePath("Panel")
 invinsibilityPanel = NodePath("Panel/Panel")
 sonPrendsHit = NodePath("PlayerHitTaken")
 sonInvicible = NodePath("PlayerInvisibility")
-godMode = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078271631]
 visible = false

@@ -23,6 +23,7 @@ public partial class EndScreen : ColorRect
         if (Input.IsActionPressed("select"))
         {
             GetTree().ChangeSceneToFile("res://Scenes/title_screen.tscn");
+            QueueFree();
         }
     }
 
