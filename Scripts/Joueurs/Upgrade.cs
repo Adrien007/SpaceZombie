@@ -9,21 +9,19 @@ namespace SpaceZombie.Joueurs
         [Export] private float sideMoveDistance = 45f;
         [Export] private CollisionShape2D collisionShape;
         private static RandomNumberGenerator randomPosition = new RandomNumberGenerator();
-        private float areaPlayWidth;
 
         private Tween tween;
 
         public override void _Ready()
         {
-            Vector2 halfSize = ((RectangleShape2D)collisionShape.Shape).Size / 2;
-            float initialPostiionX = randomPosition.RandfRange(sideMoveDistance + halfSize.X, areaPlayWidth - halfSize.X);
-            Position = new Vector2(initialPostiionX, -halfSize.Y);
             Move();
         }
 
         public void Initialize(float areaPlayWidth)
         {
-            this.areaPlayWidth = areaPlayWidth;
+            Vector2 size = ((RectangleShape2D)collisionShape.Shape).Size;
+            float initialPostiionX = randomPosition.RandfRange(sideMoveDistance + size.X, areaPlayWidth - size.X);
+            Position = new Vector2(initialPostiionX, -size.Y + 1);
         }
 
         public override void _Process(double delta)

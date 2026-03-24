@@ -22,7 +22,7 @@ namespace SpaceZombie.Niveaux
         public void ChangerNiveauLogic()
         {
             prochainNiveauUi.ProcessMode = Node.ProcessModeEnum.Always;
-            prochainNiveauUi.UpdateLabelTexte(lm.GlobalLevel.ToString());
+            prochainNiveauUi.UpdateLabelTexte(lm.level.ToString());
             prochainNiveauUi.Visible = true;
             prochainNiveauUi.StartTimer();
         }

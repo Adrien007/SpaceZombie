@@ -19,6 +19,38 @@ size = Vector2(498, 198)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ab3ne"]
 bg_color = Color(0.0045926566, 0.003936563, 0.0030407421, 1)
 
+[sub_resource type="Animation" id="Animation_bi3vq"]
+resource_name = "Die"
+length = 7.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PathFollow2D/Area2D/Attacks:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1pyra"]
+resource_name = "Foward"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PathFollow2D/Area2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -250), Vector2(0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_fj87s"]
 resource_name = "Move"
 length = 20.0
@@ -48,18 +80,41 @@ tracks/0/keys = {
 "points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
-
-[sub_resource type="Animation" id="Animation_ab3ne"]
-resource_name = "Shake"
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PathFollow2D/Area2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PathFollow2D/Area2D/Attacks:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_obrrb"]
 _data = {
+&"Die": SubResource("Animation_bi3vq"),
+&"Foward": SubResource("Animation_1pyra"),
 &"Move": SubResource("Animation_fj87s"),
-&"RESET": SubResource("Animation_r8bj5"),
-&"Shake": SubResource("Animation_ab3ne")
+&"RESET": SubResource("Animation_r8bj5")
 }
 
 [node name="Path2D" type="Path2D" unique_id=1868883716]
+self_modulate = Color(1, 1, 1, 0.088)
 z_index = 1
 curve = SubResource("Curve2D_fj87s")
 script = ExtResource("2_fj87s")
@@ -77,7 +132,7 @@ script = ExtResource("2_1pyra")
 position = Vector2(0, 100)
 shape = SubResource("RectangleShape2D_ixukv")
 
-[node name="Attacks" type="Panel" parent="PathFollow2D" unique_id=1405955129 node_paths=PackedStringArray("attackZone1", "attackZone2")]
+[node name="Attacks" type="Panel" parent="PathFollow2D/Area2D" unique_id=1405955129 node_paths=PackedStringArray("attackZone1", "attackZone2")]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -87,36 +142,36 @@ offset_bottom = 200.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ab3ne")
 script = ExtResource("2_ab3ne")
-attackZone1 = NodePath("../../ZoneAttack1")
-attackZone2 = NodePath("../../ZoneAttack2")
+attackZone1 = NodePath("../../../ZoneAttack1")
+attackZone2 = NodePath("../../../ZoneAttack2")
 
-[node name="Canon0" parent="PathFollow2D/Attacks" unique_id=1369072580 instance=ExtResource("2_obrrb")]
+[node name="Canon0" parent="PathFollow2D/Area2D/Attacks" unique_id=1369072580 instance=ExtResource("2_obrrb")]
 position = Vector2(50, 200)
 
-[node name="BossLazerRay" parent="PathFollow2D/Attacks/Canon0" unique_id=380489412 instance=ExtResource("3_obrrb")]
+[node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon0" unique_id=380489412 instance=ExtResource("3_obrrb")]
 rotation = 0.5235988
 
-[node name="Canon1" parent="PathFollow2D/Attacks" unique_id=1137410245 instance=ExtResource("2_obrrb")]
+[node name="Canon1" parent="PathFollow2D/Area2D/Attacks" unique_id=1137410245 instance=ExtResource("2_obrrb")]
 position = Vector2(150, 200)
 
-[node name="BossLazerRay" parent="PathFollow2D/Attacks/Canon1" unique_id=1635700301 instance=ExtResource("3_obrrb")]
+[node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon1" unique_id=1635700301 instance=ExtResource("3_obrrb")]
 rotation = 0.2617994
 
-[node name="Canon2" parent="PathFollow2D/Attacks" unique_id=1129639824 instance=ExtResource("2_obrrb")]
+[node name="Canon2" parent="PathFollow2D/Area2D/Attacks" unique_id=1129639824 instance=ExtResource("2_obrrb")]
 position = Vector2(250, 200)
 
-[node name="BossLazerRay" parent="PathFollow2D/Attacks/Canon2" unique_id=307548533 instance=ExtResource("3_obrrb")]
+[node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon2" unique_id=307548533 instance=ExtResource("3_obrrb")]
 
-[node name="Canon3" parent="PathFollow2D/Attacks" unique_id=595705896 instance=ExtResource("2_obrrb")]
+[node name="Canon3" parent="PathFollow2D/Area2D/Attacks" unique_id=595705896 instance=ExtResource("2_obrrb")]
 position = Vector2(340, 200)
 
-[node name="BossLazerRay" parent="PathFollow2D/Attacks/Canon3" unique_id=1208909132 instance=ExtResource("3_obrrb")]
+[node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon3" unique_id=1208909132 instance=ExtResource("3_obrrb")]
 rotation = -0.2617994
 
-[node name="Canon4" parent="PathFollow2D/Attacks" unique_id=1269162833 instance=ExtResource("2_obrrb")]
+[node name="Canon4" parent="PathFollow2D/Area2D/Attacks" unique_id=1269162833 instance=ExtResource("2_obrrb")]
 position = Vector2(450, 200)
 
-[node name="BossLazerRays" parent="PathFollow2D/Attacks/Canon4" unique_id=2097247793 instance=ExtResource("3_obrrb")]
+[node name="BossLazerRays" parent="PathFollow2D/Area2D/Attacks/Canon4" unique_id=2097247793 instance=ExtResource("3_obrrb")]
 rotation = -0.5235988
 
 [node name="ZoneAttack1" parent="." unique_id=1235244731 instance=ExtResource("6_im1n0")]

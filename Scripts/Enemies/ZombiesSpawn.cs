@@ -29,12 +29,14 @@ namespace SpaceZombie.Enemies
 
         public override void _Ready()
         {
+            SetPhysicsProcess(false);
             GameEvents.Instance.EnemyDied += DesactiverEnemyPasEnSandwitchListener;
         }
 
-        public void Initialize(Rect2 areaPlay)
+        public void Initialize()
         {
             service = new InLigneSpawnerUtilitiesEventService(GetRect());
+            SetPhysicsProcess(true);
         }
 
         public void SetLignePhysicAttributes(int indexLigne, InLigneSpawnerObjetAttributsMapper mapper)

@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://2y2kuyo5sipf"]
-
-[ext_resource type="Script" uid="uid://cpv4264a4bs7t" path="res://Scripts/Joueurs/ConfigJoueur.cs" id="1_p68u5"]
-
-[node name="ConfigJoueur" type="Node" unique_id=1130339759]
-script = ExtResource("1_p68u5")

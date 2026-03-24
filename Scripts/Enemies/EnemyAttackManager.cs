@@ -2,6 +2,7 @@
 using Godot;
 using SpaceZombie.Ammunitions;
 using SpaceZombie.Canons;
+using SpaceZombie.Niveaux.Configs;
 using System.Collections.Generic;
 
 namespace SpaceZombie.Enemies
@@ -11,15 +12,14 @@ namespace SpaceZombie.Enemies
     /// </summary>
     public class EnemyAttackManager
     {
+        private EnemyFireService service = new EnemyFireService();
         private List<Node2D> enemiesAvailable;
         private CanonEnemy canon;
-        private EnemyFireService service;
         private Timer rateOfFire;
 
-        public EnemyAttackManager(Control mainAera, EnemyFireService service)
+        public EnemyAttackManager(Control mainAera)
         {
             enemiesAvailable = new List<Node2D>();
-            this.service = service;
             PackedScene canonPrefab = GD.Load<PackedScene>("res://Prefabs/canon_enemy.tscn");
             canon = canonPrefab.Instantiate<CanonEnemy>();
             mainAera.AddChild(canon);
@@ -46,9 +46,10 @@ namespace SpaceZombie.Enemies
             return new Vector2(Mathf.Cos(globalRotation), Mathf.Sin(globalRotation)).Normalized();
         }
 
-        public void SetEnemyForLevel(List<Node2D> allEnemy)
+        public void SetEnemyForLevel(List<Node2D> allEnemy, NiveauZombiesSpawnSettings niveauSettings)
         {
             this.enemiesAvailable = allEnemy;
+            service.options.NewSettings(niveauSettings.EnemyAttackSettings.NbProjectilePerAttack, niveauSettings.EnemyAttackSettings.FireRate);
         }
         public void StopFire()
         {
