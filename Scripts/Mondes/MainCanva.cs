@@ -13,8 +13,7 @@ namespace SpaceZombie.Mondes.Utilitaires
 
         private void DeferredInit()
         {
-            Vector2 outOfBoundSize = this.Size;
-            mainAera.Initialiser(outOfBoundSize);
+            mainAera.Initialiser();
         }
     }
 }

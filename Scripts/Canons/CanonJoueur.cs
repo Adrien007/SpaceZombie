@@ -1,12 +1,12 @@
 using Godot;
 using SpaceZombie.Ammunitions;
-using SpaceZombie.Cannons;
+using SpaceZombie.Canons;
 using SpaceZombie.Events;
 using System;
 using System.Collections.Generic;
-namespace SpaceZombie.Cannons
+namespace SpaceZombie.Canons
 {
-    public partial class CannonJoueur : Node2D
+    public partial class CanonJoueur : Node2D
     {
         [Export] private AudioStreamPlayer sonFire;
         [Export] public int initialDamage = 1;
@@ -17,39 +17,37 @@ namespace SpaceZombie.Cannons
         [Export] public int spaceBetweenProjectile = 40;
         [Export] public float upgradeAttackSpeed = 0.2f;
         private Timer reloadTimer;
-        private PackedScene cannonPrefab;
+        private PackedScene canonPrefab;
         private Projectile projectile;
-        private int cannonMilieuPair;
-        private int cannonMilieuImpair;
+        private int canonMilieuPair;
+        private int canonMilieuImpair;
 
-        private List<CannonObjet> cannons = new List<CannonObjet>();
-        IResetEtatNotifier resetEtatNotifier;
+        private List<CanonObjet> canons = new List<CanonObjet>();
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            cannonPrefab = GD.Load<PackedScene>("res://Prefabs/cannon.tscn");
+            canonPrefab = GD.Load<PackedScene>("res://Prefabs/canon.tscn");
             projectile = new Projectile(initialDamage, initialProjectileSpeed);
             reloadTimer = new Timer();
             AddChild(reloadTimer);
             reloadTimer.WaitTime = initialReloadSpeedInSeconds;
             reloadTimer.OneShot = true;
-            reloadTimer.Timeout += OnReloadTimeout;
             Rotation = Vector2.Up.Angle();
-            InitializeMiddleCannon();
+            InitializeMiddleCanon();
         }
 
-        private void InitializeMiddleCannon()
+        private void InitializeMiddleCanon()
         {
             if (maxProjectileStraightInMiddle % 2 == 0)
             {
-                cannonMilieuPair = maxProjectileStraightInMiddle;
-                cannonMilieuImpair = maxProjectileStraightInMiddle - 1;
+                canonMilieuPair = maxProjectileStraightInMiddle;
+                canonMilieuImpair = maxProjectileStraightInMiddle - 1;
             }
             else
             {
-                cannonMilieuPair = maxProjectileStraightInMiddle - 1;
-                cannonMilieuImpair = maxProjectileStraightInMiddle;
+                canonMilieuPair = maxProjectileStraightInMiddle - 1;
+                canonMilieuImpair = maxProjectileStraightInMiddle;
             }
         }
 
@@ -63,9 +61,9 @@ namespace SpaceZombie.Cannons
             if (reloadTimer.TimeLeft == 0)
             {
                 sonFire.Play(0.79f);
-                foreach (CannonObjet cannon in cannons)
+                foreach (CanonObjet canon in canons)
                 {
-                    cannon.Fire(GetGlobalDirection(cannon.Rotation));
+                    canon.Fire(GetGlobalDirection(canon.Rotation));
                 }
                 reloadTimer.Start();
             }
@@ -96,74 +94,59 @@ namespace SpaceZombie.Cannons
 
         public void UpgradeCanons()
         {
-            AddCannon();
-            if (cannons.Count <= maxProjectileStraightInMiddle)
+            AddCanon();
+            if (canons.Count <= maxProjectileStraightInMiddle)
             {
-                AligneCannonDroit(cannons.Count);
+                AligneCanonDroit(canons.Count);
             }
             else
             {
-                int aligneDroitCount = (cannons.Count % 2 == 0) ? cannonMilieuPair : cannonMilieuImpair;
-                int rightPosition = AligneCannonDroit(aligneDroitCount);
-                AligneCannonAngle(aligneDroitCount, rightPosition);
+                int aligneDroitCount = (canons.Count % 2 == 0) ? canonMilieuPair : canonMilieuImpair;
+                int rightPosition = AligneCanonDroit(aligneDroitCount);
+                AligneCanonAngle(aligneDroitCount, rightPosition);
             }
         }
 
-        private int AligneCannonDroit(int total)
+        private int AligneCanonDroit(int total)
         {
             total -= 1;
             int rightPosition = total * spaceBetweenProjectile / 2;
             for (int i = 0; i <= total; i++)
             {
-                cannons[i].Position = new Vector2(0, rightPosition);
-                cannons[i].Rotation = Vector2.Up.Angle();
+                canons[i].Position = new Vector2(0, rightPosition);
+                canons[i].Rotation = Vector2.Up.Angle();
                 rightPosition -= spaceBetweenProjectile;
             }
             return -rightPosition;
         }
 
-        private void AligneCannonAngle(int alreadyDone, int position)
+        private void AligneCanonAngle(int alreadyDone, int position)
         {
             float rotation = Mathf.Pi * projectileAngleInPiPercentage;
-            for (int i = alreadyDone; i < cannons.Count; i += 2)
+            for (int i = alreadyDone; i < canons.Count; i += 2)
             {
-                cannons[i].Position = new Vector2(0, position);
-                cannons[i].Rotation = Vector2.Up.Angle() + rotation;
-                cannons[i + 1].Position = new Vector2(0, -position);
-                cannons[i + 1].Rotation = Vector2.Up.Angle() - rotation;
+                canons[i].Position = new Vector2(0, position);
+                canons[i].Rotation = Vector2.Up.Angle() + rotation;
+                canons[i + 1].Position = new Vector2(0, -position);
+                canons[i + 1].Rotation = Vector2.Up.Angle() - rotation;
                 rotation += rotation;
                 position += spaceBetweenProjectile;
             }
         }
 
-        private void AddCannon()
+        private void AddCanon()
         {
-            var cannon = cannonPrefab.Instantiate<CannonObjet>();
-            AddChild(cannon);
-            cannon.Initialize("projectile_joueur", projectile, resetEtatNotifier);
-            cannon.Rotation = Vector2.Up.Angle();
-            cannons.Add(cannon);
+            var canon = canonPrefab.Instantiate<CanonObjet>();
+            AddChild(canon);
+            canon.Initialize("projectile_joueur", projectile);
+            canon.Rotation = Vector2.Up.Angle();
+            canons.Add(canon);
         }
 
-        public void Initialize(IResetEtatNotifier resetEtatNotifier)
+        public void Initialize()
         {
-            this.resetEtatNotifier = resetEtatNotifier;
-            AddCannon();
+            AddCanon();
         }
-
-        public void StopReloadTimer()
-        {
-            reloadTimer.Stop();
-            sonFire.Stop();
-        }
-
-        // Reload timer timeout handler
-        private void OnReloadTimeout()
-        {
-            // You can add any additional logic for what happens when the reload timer finishes
-            //GD.Print("Reload finished. You can fire again!");
-        }
-
     }
 }
 

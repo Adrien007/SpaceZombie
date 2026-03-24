@@ -1,6 +1,6 @@
 using Godot;
 using SpaceZombie.Ammunitions;
-using SpaceZombie.Cannons;
+using SpaceZombie.Canons;
 using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using System;
@@ -8,10 +8,10 @@ using System.Collections.Generic;
 
 namespace SpaceZombie.Boss
 {
-    public partial class BossAttacks : Panel, IResetEtatNotifier
+    public partial class BossAttacks : Panel
     {
         [Export] public Joueur joueur;
-        private List<CannonObjet> canons = new List<CannonObjet>();
+        private List<CanonObjet> canons = new List<CanonObjet>();
         private List<BossLazerRay> lazers = new List<BossLazerRay>();
         [Export] private BossLazerZone attackZone1;
         [Export] private BossLazerZone attackZone2;
@@ -38,8 +38,8 @@ namespace SpaceZombie.Boss
             this.joueur = joueur;
             for (int i = 0; i < 5; i++)
             {
-                CannonObjet canon = (CannonObjet)FindChild($"Canon{i}");
-                canon.Initialize("projectile_enemy", new Projectile(1, 200f), this);
+                CanonObjet canon = (CanonObjet)FindChild($"Canon{i}");
+                canon.Initialize("projectile_enemy", new Projectile(1, 200f));
                 BossLazerRay lazerRay = canon.GetChild<BossLazerRay>(0);
                 lazerRay.lazerCollideListener = onLazerCollide;
                 lazers.Add(lazerRay);
@@ -55,11 +55,22 @@ namespace SpaceZombie.Boss
             attackEndListener = onAttackEnded;
         }
 
+        public void Stop()
+        {
+            fireBulletsTimer.Stop();
+            rayLazerDamageTimer.Stop();
+            attackZone1.animation.Stop();
+            attackZone2.animation.Stop();
+            foreach (BossLazerRay lazerRay in lazers)
+            {
+                lazerRay.animation.Stop();
+            }
+        }
+
         private void onLazerCollide()
         {
             if (rayLazerDamageTimer.TimeLeft == 0)
             {
-                GD.Print($"Joueur - TakeDamage : RayLazer");
                 joueur.TakeDamage(1);
                 rayLazerDamageTimer.Start();
             }
@@ -92,7 +103,7 @@ namespace SpaceZombie.Boss
 
         private void FireBullet()
         {
-            CannonObjet canon = canons[random.RandiRange(0, 4)];
+            CanonObjet canon = canons[random.RandiRange(0, 4)];
             canon.Fire((joueur.GlobalPosition - canon.GlobalPosition).Normalized());
         }
 
@@ -138,16 +149,6 @@ namespace SpaceZombie.Boss
             float freeZonePosition = random.RandfRange(attackZoneMargin, screenSize.X - attackZoneMargin - freeZoneWidth);
             attackZone1.Fire(new Vector2(freeZonePosition, screenSize.Y), 0);
             attackZone2.Fire(new Vector2(screenSize.X - freeZonePosition - freeZoneWidth, screenSize.Y), freeZonePosition + freeZoneWidth);
-        }
-
-        public void Register(IResetEtatObserver observer)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void Unregister(IResetEtatObserver observer)
-        {
-            //throw new NotImplementedException();
         }
     }
 
