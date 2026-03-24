@@ -8,11 +8,7 @@ namespace SpaceZombie.Enemies
 {
     public class EnemyFireService
     {
-        private EnemyFireOptions options;
-        public EnemyFireService(EnemyFireOptions options)
-        {
-            this.options = options;
-        }
+        public EnemyFireOptions options = new EnemyFireOptions(new Random(1));
         public static void UpdateEnemyAvailable(List<Node2D> list)
         {
             List<int> indexToRemove = new List<int>();
@@ -42,13 +38,7 @@ namespace SpaceZombie.Enemies
 
     }
 
-
-
-    public interface IEnemyFireOptionsSettings
-    {
-        public void NewSettings(int nbOfElementToSelectPerShotFire, float tempsRelaod);
-    }
-    public class EnemyFireOptions : IEnemyFireOptionsSettings
+    public class EnemyFireOptions
     {
         private Random rng;
         private Timer rateOfFire = new Timer();

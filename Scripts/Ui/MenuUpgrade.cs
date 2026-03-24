@@ -11,14 +11,16 @@ public partial class MenuUpgrade : PanelContainer
     [Export] Label selectionTip;
     [Export] ButtonUpgrade option1;
     [Export] ButtonUpgrade option2;
-    [Export] string selectionButtonName;
+    [Export] string buttonNameEn;
+    [Export] string buttonNameFr;
 
     private RandomNumberGenerator random = new RandomNumberGenerator();
     public override void _Ready()
     {
         option1.Upgrade += SelectUpgrade;
         option2.Upgrade += SelectUpgrade;
-        selectionTip.Text = string.Format(Tr("UPGRADE_INPUT"), selectionButtonName);
+        string buttonName = TranslationServer.GetLocale() == "en" ? buttonNameEn : buttonNameFr;
+        selectionTip.Text = string.Format(Tr("UPGRADE_INPUT"), buttonName);
     }
 
     private void SelectUpgrade(int option)

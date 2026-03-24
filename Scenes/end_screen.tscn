@@ -1,0 +1,171 @@
+[gd_scene format=3 uid="uid://cd33124hkf0gc"]
+
+[ext_resource type="Script" uid="uid://dhibg5nojbxq8" path="res://Scripts/GameScreen/EndScreen.cs" id="1_f2mtv"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_syso7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_f2mtv"]
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_syso7"]
+font_size = 32
+outline_size = 5
+outline_color = Color(0, 0.6784314, 0.19215687, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_syso7"]
+content_margin_bottom = 16.0
+
+[sub_resource type="Animation" id="Animation_f2mtv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("NextTip:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_1gwaw"]
+resource_name = "fade_in"
+length = 9.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(4, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 500), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("NextTip:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 7, 9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ReadyToReturnToTitleScreen"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bhpww"]
+_data = {
+&"RESET": SubResource("Animation_f2mtv"),
+&"fade_in": SubResource("Animation_1gwaw")
+}
+
+[node name="EndScreen" type="ColorRect" unique_id=668082556 node_paths=PackedStringArray("labelScore", "labelNextTip", "animation")]
+material = SubResource("CanvasItemMaterial_syso7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_f2mtv")
+labelScore = NodePath("VBoxContainer/Score")
+labelNextTip = NodePath("NextTip")
+animation = NodePath("AnimationPlayer")
+buttonNameEn = "Enter"
+buttonNameFr = "Enter"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1005738330]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -0.0048828125
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=270539699]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "END_THANKS"
+label_settings = SubResource("LabelSettings_f2mtv")
+horizontal_alignment = 1
+
+[node name="Score" type="Label" parent="VBoxContainer" unique_id=533784973]
+layout_mode = 2
+text = "Score : 2000 points"
+label_settings = SubResource("LabelSettings_syso7")
+horizontal_alignment = 1
+
+[node name="NextTip" type="Label" parent="." unique_id=1278899265]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -23.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxLine_syso7")
+text = "Press enter to return to title screen"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=657904435]
+libraries/ = SubResource("AnimationLibrary_bhpww")

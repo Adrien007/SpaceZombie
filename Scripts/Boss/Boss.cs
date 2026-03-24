@@ -21,6 +21,7 @@ namespace SpaceZombie.Boss
         private List<(Action<int>, int)> actions = new List<(Action<int>, int)>();
         private Timer nextActionTimer = new Timer();
         private int nextActionIndex = 0;
+        private bool died = false;
         [Export] public Joueur joueur;
 
         // Called when the node enters the scene tree for the first time.
@@ -34,10 +35,22 @@ namespace SpaceZombie.Boss
             nextActionTimer.Timeout += DoNextAction;
             nextActionTimer.OneShot = true;
             AddChild(nextActionTimer);
-            CallDeferred(nameof(InitializeActions));
+
+            animation.AnimationFinished += AnimationFinished;
         }
 
-        private void InitializeActions()
+        public void Foward()
+        {
+            animation.Play("Foward");
+        }
+
+        private void AnimationFinished(StringName animName)
+        {
+            animation.AnimationFinished -= AnimationFinished;
+            Attack();
+        }
+
+        private void Attack()
         {
             actions.Add((StartMovement, 3));
             actions.Add((StartFireBullets, 5));
@@ -104,15 +117,27 @@ namespace SpaceZombie.Boss
         public void TakeDamage(int damage)
         {
             hp -= damage;
-            if (hp <= 0)
+            if (hp <= 0 && !died)
             {
-                CallDeferred(nameof(DisableCallDefered));
+                died = true;
+                StopAttacks();
+                animation.Play("Die");
+                animation.AnimationFinished += (StringName animName) => CallDeferred(nameof(Disable));
             }
         }
 
-        private void DisableCallDefered()
+        private void StopAttacks()
+        {
+            nextActionTimer.Stop();
+            bossAttacks.Stop();
+        }
+
+        private async void Disable()
         {
             Visible = false;
+            QueueFree();
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.ShowEndScreen);
+
         }
     }
 }

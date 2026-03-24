@@ -12,31 +12,20 @@ namespace SpaceZombie.Mondes.Utilitaires
     public partial class MainAera : Control
     {
         [Export] private Joueur joueur;
-        [Export] private ZombiesSpawn zombiesSpawn;
         [Export] private ProchainNiveauUi prochainNiveauUi;
-        [Export] public UpgradeLoader upgradeLoader;
         [Export] private MenuUpgrade menuUpgrade;
+        [Export] private LevelManager levelManager;
 
         public override void _Ready()
         {
             menuUpgrade.Upgrade += Upgrade;
             GameEvents.Instance.ChooseUpgrade += ChooseUpgrade;
-            GameEvents.Instance.PlayerDied += QUITTER;
+            GameEvents.Instance.ShowEndScreen += ShowEndScreen;
         }
         public void Initialiser()
         {
             joueur.Initialize(GetRect());
-            zombiesSpawn.Initialize(GetRect());
-            upgradeLoader.InitialiseAreaPlaySize(Size);
-
-            EnemyFireOptions enemyFireOptions = new EnemyFireOptions(new Random(1));
-            EnemyFireService enemyFireService = new EnemyFireService(enemyFireOptions);
-            EnemyAttackManager enemyAttackManager = new EnemyAttackManager(this, enemyFireService);
-
-            var lm = new LevelManager(zombiesSpawn, enemyFireOptions, enemyAttackManager, upgradeLoader);
-            lm.SetNiveau(0, 1);
-
-            var ltm = new LevelTransitionManager(prochainNiveauUi, lm);
+            var ltm = new LevelTransitionManager(prochainNiveauUi, levelManager);
             ltm.ChangerNiveauLogic();
         }
 
@@ -52,9 +41,12 @@ namespace SpaceZombie.Mondes.Utilitaires
             GetTree().Paused = false;
         }
 
-        private void QUITTER()
+        private void ShowEndScreen()
         {
-            GetTree().Quit();
+            PackedScene endScreenLoader = (PackedScene)ResourceLoader.Load($"res://Scenes/end_screen.tscn");
+            EndScreen endScreen = endScreenLoader.Instantiate<EndScreen>();
+            endScreen.score = joueur.jState.Score;
+            GetTree().Root.AddChild(endScreen);
         }
     }
 }

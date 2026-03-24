@@ -7,9 +7,9 @@ public partial class TitleScreen : Control
 
     public override void _Ready()
     {
-        firstButtonToFocus.GrabFocus();
         var introPlusBossFight = GetNode<AudioStreamPlayer>("IntroPlusBossFight");
         introPlusBossFight.Play(21.50f);
+        firstButtonToFocus.GrabFocus();
     }
 
     private void _on_start_button_pressed()

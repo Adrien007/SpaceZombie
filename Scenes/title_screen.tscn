@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dqdl0p8fg2rt2"]
 
-[ext_resource type="Script" uid="uid://di6ctnjf7jobq" path="res://Scripts/TitleScreen/TitleScreen.cs" id="1_55kwv"]
+[ext_resource type="Script" uid="uid://di6ctnjf7jobq" path="res://Scripts/GameScreen/TitleScreen.cs" id="1_55kwv"]
 [ext_resource type="Shader" path="res://Scenes/title_screen_moving.gdshader" id="2_twnyg"]
 [ext_resource type="Theme" uid="uid://bgp1n4uijfn6m" path="res://images/white_theme.tres" id="3_4gxqj"]
 [ext_resource type="Texture2D" uid="uid://chfwe3kosxfjn" path="res://images/starfield_stars_tile.png" id="3_55kwv"]
@@ -94,6 +94,7 @@ focus_neighbor_bottom = NodePath("../ButtonLanguage")
 theme = SubResource("Theme_55kwv")
 theme_override_colors/font_color = Color(0.00714154, 0.0071415715, 0.007141549, 1)
 theme_override_colors/font_focus_color = Color(0, 0.2784314, 0.6431373, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.2784314, 0.6431373, 1)
 theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
 text = "START"
 autowrap_mode = 1
@@ -106,6 +107,7 @@ focus_neighbor_top = NodePath("../StartButton")
 focus_neighbor_bottom = NodePath("../Quit")
 theme_override_colors/font_color = Color(0.00714154, 0.0071415715, 0.007141549, 1)
 theme_override_colors/font_focus_color = Color(0, 0.2784314, 0.6431373, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.2784314, 0.6431373, 1)
 theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
 text = "ENGLISH"
 autowrap_mode = 1
@@ -117,6 +119,7 @@ focus_neighbor_top = NodePath("../ButtonLanguage")
 focus_neighbor_bottom = NodePath("../StartButton")
 theme_override_colors/font_color = Color(0.00714154, 0.0071415715, 0.007141549, 1)
 theme_override_colors/font_focus_color = Color(0, 0.2784314, 0.6431373, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.2784314, 0.6431373, 1)
 theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
 text = "QUIT"
 autowrap_mode = 1

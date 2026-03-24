@@ -55,6 +55,18 @@ namespace SpaceZombie.Boss
             attackEndListener = onAttackEnded;
         }
 
+        public void Stop()
+        {
+            fireBulletsTimer.Stop();
+            rayLazerDamageTimer.Stop();
+            attackZone1.animation.Stop();
+            attackZone2.animation.Stop();
+            foreach (BossLazerRay lazerRay in lazers)
+            {
+                lazerRay.animation.Stop();
+            }
+        }
+
         private void onLazerCollide()
         {
             if (rayLazerDamageTimer.TimeLeft == 0)

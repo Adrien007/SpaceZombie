@@ -76,15 +76,7 @@ namespace SpaceZombie.Joueurs
                 jState.Hp = RetirerHp(jState.Hp, damage);
                 UpdateScore(-5000);
                 GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
-                if (jState.Hp <= 0)
-                {
-                    jState.IsDead = true;
-                    jState.DeadSoundPlayed = true;
-                    GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
-                    CallDeferred(nameof(Disable));
-                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerDied);
-                }
-                else
+                if (jState.Hp > 0)
                 {
                     //GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
                     jState.IsInvicible = true;
@@ -92,8 +84,22 @@ namespace SpaceZombie.Joueurs
                     sonInvicible.Play();
                     invinsibilityPanel.Visible = true;
                 }
+                else if (!jState.IsDead)
+                {
+                    jState.IsDead = true;
+                    jState.DeadSoundPlayed = true;
+                    GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
+                    CallDeferred(nameof(Disable));
+                    AnimationPlayer animation = GetNode<AnimationPlayer>("AnimationPlayer");
+                    animation.AnimationFinished += OnDiedAnimationFinished;
+                    animation.Play("Die");
+                }
             }
+        }
 
+        private void OnDiedAnimationFinished(StringName animName)
+        {
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.ShowEndScreen);
         }
 
         private static int RetirerHp(int hp, int hitValue)
@@ -160,7 +166,7 @@ namespace SpaceZombie.Joueurs
 
         public void Disable()
         {
-            Visible = false;
+            SetProcess(false);
             Monitorable = false;
             Monitoring = false;
         }

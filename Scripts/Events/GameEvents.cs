@@ -18,8 +18,6 @@ namespace SpaceZombie.Events
             }
         }
 
-        [Signal]
-        public delegate void PlayerDiedEventHandler();
 
         [Signal]
         public delegate void EnemyDiedEventHandler(EnemyObjet enemy);
@@ -34,7 +32,10 @@ namespace SpaceZombie.Events
         public delegate void PlayerScoreUpdatedEventHandler(int playerScore);
 
         [Signal]
-        public delegate void PlayerHealthUpdatedEventHandler(int playerScore);
+        public delegate void PlayerHealthUpdatedEventHandler(int playerHealth);
+
+        [Signal]
+        public delegate void ShowEndScreenEventHandler();
     }
 }
 
