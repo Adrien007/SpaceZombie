@@ -1,8 +1,10 @@
 //LevelManager.cs
 using System;
 using System.Linq;
+using Godot;
 using SpaceZombie.Enemies;
 using SpaceZombie.Events;
+using SpaceZombie.Joueurs;
 using SpaceZombie.Niveaux.Configs;
 using SpaceZombie.Niveaux.Configs.V;
 
@@ -22,18 +24,23 @@ namespace SpaceZombie.Niveaux
         private ZombiesSpawn zombiesSpawn;
         private IEnemyFireOptionsSettings enemyFireAttackOption;
         private IEnemyAttackManagerSetEnemy enemyAttackManager;
+        private RandomNumberGenerator randomUpgradeApparition;
+        private int upgradeApparition;
+        private Upgrade upgrade;
         public int Stage { get => stage; }
         public int GlobalLevel { get => globalLevel; }
 
         public LevelManager(ZombiesSpawn zombiesSpawn,
-                            IEnemyFireOptionsSettings enemyFireAttackOption, IEnemyAttackManagerSetEnemy enemyAttackManager)
+                            IEnemyFireOptionsSettings enemyFireAttackOption, IEnemyAttackManagerSetEnemy enemyAttackManager, Upgrade upgrade)
         {
             var gd = ExempleDeserialisation.Deserialize();
             gdi = new GameDataIterator(gd);
             ncr = new NiveauCreatorManager(gd);
+            randomUpgradeApparition = new RandomNumberGenerator();
             this.zombiesSpawn = zombiesSpawn;
             this.enemyFireAttackOption = enemyFireAttackOption;
             this.enemyAttackManager = enemyAttackManager;
+            this.upgrade = upgrade;
             GameEvents.Instance.EnemyDied += OnEnemyDied;
         }
 
@@ -51,13 +58,18 @@ namespace SpaceZombie.Niveaux
                 stage = stageLevelLocal.Item1;
                 levelLocal = stageLevelLocal.Item2;
                 GameEvents.Instance.EmitSignal(nameof(GameEvents.EndLevel));
-                GameEvents.Instance.EmitSignal(nameof(GameEvents.LevelUp));
+                upgrade.Deactivate();
             }
             else
             {
                 if (!enemy.enemyFlagLogic.scoreGiven)
                 {
                     enemy.enemyFlagLogic.scoreGiven = true; // Set the score given flag to true
+                }
+                if (nbEnemy <= upgradeApparition)
+                {
+                    upgradeApparition = 0;
+                    upgrade.Activate();
                 }
             }
         }
@@ -73,6 +85,12 @@ namespace SpaceZombie.Niveaux
             CreerNiveau(stage, levelLocal);
             FinCreationNiveau.Invoke();
         }
+
+        private void UpdateUpgradeApparition()
+        {
+            upgradeApparition = (int)(randomUpgradeApparition.RandfRange(0.3f, 0.7f) * nbEnemy) + 1;
+        }
+
         private void CreerNiveau(int stage, int niveau)
         {
             var niveauSettings = ncr.CreerNiveau(stage, niveau);
@@ -80,6 +98,7 @@ namespace SpaceZombie.Niveaux
             ncr.AppliquerNiveau(zombiesSpawn, niveauSettings);
             enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Godot.Node2D>());
             enemyFireAttackOption.NewSettings(niveauSettings.EnemyAttackSettings.NbProjectilePerAttack, niveauSettings.EnemyAttackSettings.FireRate);
+            UpdateUpgradeApparition();
         }
 
         private int CountNumberOfEnemy(NiveauZombiesSpawnSettings niveau)

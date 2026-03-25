@@ -39,7 +39,7 @@ namespace SpaceZombie.Boss
             for (int i = 0; i < 5; i++)
             {
                 CannonObjet canon = (CannonObjet)FindChild($"Canon{i}");
-                canon.Initialize("projectile_enemy", new Projectile(1, 200f, false), this);
+                canon.Initialize("projectile_enemy", new Projectile(1, 200f), this);
                 BossLazerRay lazerRay = canon.GetChild<BossLazerRay>(0);
                 lazerRay.lazerCollideListener = onLazerCollide;
                 lazers.Add(lazerRay);

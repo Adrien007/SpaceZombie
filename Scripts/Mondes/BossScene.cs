@@ -19,7 +19,7 @@ namespace SpaceZombie.Mondes.Utilitaires
 
             joueur.InitialiserSize(gameBounderies.screenSize);
             joueur.InitialiserPosition(Vector2.Zero);
-            joueur.Initialize(3, new ResetEtatManager());
+            joueur.Initialize(new ResetEtatManager());
         }
     }
 }

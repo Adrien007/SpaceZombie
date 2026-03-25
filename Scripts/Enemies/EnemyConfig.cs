@@ -8,22 +8,22 @@ namespace SpaceZombie.Enemies.Configs
     {
         public static readonly NiveauEnemySettings enemyType1 = new NiveauEnemySettings()
         {
-            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy_1.tscn"),
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy1.tscn"),
             Enemy = new Enemy(1, 100)
         };
         public static readonly NiveauEnemySettings enemyType2 = new NiveauEnemySettings()
         {
-            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy_2.tscn"),
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy2.tscn"),
             Enemy = new Enemy(2, 200)
         };
         public static readonly NiveauEnemySettings enemyType3 = new NiveauEnemySettings()
         {
-            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy_3.tscn"),
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy3.tscn"),
             Enemy = new Enemy(3, 300)
         };
         public static readonly NiveauEnemySettings enemyType4 = new NiveauEnemySettings()
         {
-            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy_4.tscn"),
+            EnemyObj = GD.Load<PackedScene>("res://Prefabs/enemy4.tscn"),
             Enemy = new Enemy(5, 500)
         };
         public static readonly NiveauEnemySettings enemyType5 = new NiveauEnemySettings()

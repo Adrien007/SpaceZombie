@@ -17,7 +17,7 @@ namespace SpaceZombie.Mondes.Utilitaires
         public void InitialiserSize(Vector2 size)
         {
             shape2D.Size = size;
-            GD.Print(shape2D.Size);
+            //GD.Print(shape2D.Size);
         }
     }
 }

@@ -3,3 +3,9 @@ ENGLISH,Français,English
 START,Start,Commencer
 QUIT,Quit,Quitter
 NEXTWAVE,Next Wave,Prochaine vague
+UPGRADE_SELECTION,Choose one upgrade, Choisir une amélioration
+UPGRADE_INPUT,Press {0} to select, Appuyez sur {0} pour choisir
+UPGRADE_DAMAGE,Damage +1,Dégat +1
+UPGRADE_ATTACK_SPEED,Attack Speed +{0}%,Vitesse d'attaque +{0}%
+UPGRADE_PASSTHROUGH,Passthrough +1,Traverse +1
+UPGRADE_MOVE_SPEED,Move Speed +{0}%,Déplacement +{0}%

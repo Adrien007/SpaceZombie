@@ -9,8 +9,10 @@
 [ext_resource type="Script" uid="uid://yd71tlnwfeq2" path="res://Scripts/Enemies/EnemySlot.cs" id="3_v3cb1"]
 [ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="4_kf714"]
 [ext_resource type="Script" uid="uid://ldnssl3fut00" path="res://Scripts/Enemies/ZombiesSpawn.cs" id="5_4gd4g"]
+[ext_resource type="PackedScene" uid="uid://csksfstlrsvpj" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
 [ext_resource type="Script" uid="uid://dyd3bw3m7n1ge" path="res://Scripts/Enemies/InLigneSpawnerObjet.cs" id="5_ylj3c"]
 [ext_resource type="PackedScene" uid="uid://cgpw88utk0j4p" path="res://Prefabs/enemy_slot.tscn" id="7_wwtlw"]
+[ext_resource type="PackedScene" uid="uid://cnvba2re87hed" path="res://Prefabs/upgrade.tscn" id="8_p5n5s"]
 [ext_resource type="Script" uid="uid://bmrula5s1hvpo" path="res://Scripts/Ui/ProchainNiveauUi.cs" id="9_tpj28"]
 [ext_resource type="LabelSettings" uid="uid://41wxbbc2j0eo" path="res://Prefabs/Ui/new_label_settings.tres" id="10_ahn3c"]
 [ext_resource type="PackedScene" uid="uid://sls8dni2f3o7" path="res://Prefabs/Ui/ui_game.tscn" id="10_ib1eq"]
@@ -70,7 +72,7 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="MainAera" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=2040906383 node_paths=PackedStringArray("area", "joueur", "zombiesSpawn", "prochainNiveauUi")]
+[node name="MainAera" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=2040906383 node_paths=PackedStringArray("area", "joueur", "zombiesSpawn", "prochainNiveauUi", "upgrade", "menuUpgrade")]
 process_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -79,12 +81,18 @@ area = NodePath("AeraPlayBounds")
 joueur = NodePath("Joueur")
 zombiesSpawn = NodePath("ZombieSpawns")
 prochainNiveauUi = NodePath("NextLevelCtr")
+upgrade = NodePath("Upgrade")
+menuUpgrade = NodePath("../../../MenuUpgrade")
 
 [node name="AeraPlayBounds" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=666234240 instance=ExtResource("1_0pure")]
 layout_mode = 1
 
 [node name="Joueur" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=290880064 instance=ExtResource("1_0dl77")]
 position = Vector2(561.5, 595)
+
+[node name="Upgrade" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=926339055 instance=ExtResource("8_p5n5s")]
+visible = false
+monitoring = false
 
 [node name="RespawnPosition" type="Control" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=501859680]
 layout_mode = 1
@@ -563,3 +571,19 @@ grow_horizontal = 0
 [node name="Marge3" type="Control" parent="HBoxContainer" unique_id=815882770]
 custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
+
+[node name="MenuUpgrade" parent="." unique_id=1716258266 instance=ExtResource("5_kf714")]
+process_mode = 4
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -130.0
+offset_right = 190.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
