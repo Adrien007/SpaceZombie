@@ -4,6 +4,24 @@
 [ext_resource type="PackedScene" uid="uid://cctan0cxox4el" path="res://Prefabs/Joueur.tscn" id="3_vpfhl"]
 [ext_resource type="PackedScene" uid="uid://b6g5loxabm74e" path="res://Prefabs/boss.tscn" id="4_qwaro"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08iug"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l0l3o"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
 [node name="BossScene" type="Node2D" unique_id=825953369]
 script = ExtResource("1_l0l3o")
 
@@ -11,8 +29,29 @@ script = ExtResource("1_l0l3o")
 
 [node name="Joueur" parent="MainAera" unique_id=1982290760 instance=ExtResource("3_vpfhl")]
 position = Vector2(576, 610)
-godMode = false
 
 [node name="Boss" parent="MainAera" unique_id=1170369034 node_paths=PackedStringArray("joueur") instance=ExtResource("4_qwaro")]
 position = Vector2(576, 20)
 joueur = NodePath("../Joueur")
+
+[node name="BossUI" type="CanvasLayer" parent="." unique_id=1899857513]
+
+[node name="ProgressBar" type="ProgressBar" parent="BossUI" unique_id=1947356633]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 256.0
+offset_top = 20.0
+offset_right = 362.0
+offset_bottom = 67.0
+grow_horizontal = 2
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_08iug")
+theme_override_styles/fill = SubResource("StyleBoxFlat_l0l3o")
+
+[node name="BOSS ZOMBIE" type="Label" parent="BossUI" unique_id=1930126782]
+offset_left = 521.0
+offset_top = 48.0
+offset_right = 627.0
+offset_bottom = 71.0
+text = "BOSS ZOMBIE"
