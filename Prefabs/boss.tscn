@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://couxhgy7yqcip" path="res://Scripts/Boss/Boss.cs" id="2_fj87s"]
 [ext_resource type="PackedScene" uid="uid://cogrlhaliv7r7" path="res://Prefabs/cannon.tscn" id="2_obrrb"]
 [ext_resource type="PackedScene" uid="uid://cpj3804ekabf" path="res://Prefabs/boss_lazer_ray.tscn" id="3_obrrb"]
+[ext_resource type="Shader" uid="uid://chk70dpj8irn3" path="res://Prefabs/boss.gdshader" id="5_bi3vq"]
+[ext_resource type="Texture2D" uid="uid://cc0wpobvfp66k" path="res://images/Boss/boss1.png" id="6_bi3vq"]
 [ext_resource type="PackedScene" uid="uid://b7uoylkqt1bey" path="res://Prefabs/boss_lazer_zone.tscn" id="6_im1n0"]
 
 [sub_resource type="Curve2D" id="Curve2D_fj87s"]
@@ -15,8 +17,11 @@ point_count = 8
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ixukv"]
 size = Vector2(498, 198)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ab3ne"]
-bg_color = Color(0.0045926566, 0.003936563, 0.0030407421, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1pyra"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bi3vq"]
+shader = ExtResource("5_bi3vq")
 
 [sub_resource type="Animation" id="Animation_fj87s"]
 resource_name = "Move"
@@ -84,7 +89,7 @@ offset_left = -250.0
 offset_right = 250.0
 offset_bottom = 200.0
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ab3ne")
+theme_override_styles/panel = SubResource("StyleBoxFlat_1pyra")
 script = ExtResource("2_ab3ne")
 attackZone1 = NodePath("../../ZoneAttack1")
 attackZone2 = NodePath("../../ZoneAttack2")
@@ -95,16 +100,58 @@ position = Vector2(50, 200)
 [node name="BossLazerRay" parent="PathFollow2D/Attacks/Canon0" unique_id=380489412 instance=ExtResource("3_obrrb")]
 rotation = 0.5235988
 
+[node name="LaserMain" type="Line2D" parent="PathFollow2D/Attacks/Canon0/BossLazerRay" unique_id=1696163081]
+use_parent_material = true
+width = 1.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="LaserGlow" type="Line2D" parent="PathFollow2D/Attacks/Canon0/BossLazerRay" unique_id=1338348481]
+material = SubResource("ShaderMaterial_bi3vq")
+width = 1.0
+default_color = Color(0.93612784, 0.30166683, 0, 1)
+
+[node name="LaserCore" type="Line2D" parent="PathFollow2D/Attacks/Canon0/BossLazerRay" unique_id=1059681241]
+points = PackedVector2Array(-349.5608, 244.54297)
+width = 1.0
+
 [node name="Canon1" parent="PathFollow2D/Attacks" unique_id=1137410245 instance=ExtResource("2_obrrb")]
 position = Vector2(150, 200)
 
 [node name="BossLazerRay" parent="PathFollow2D/Attacks/Canon1" unique_id=1635700301 instance=ExtResource("3_obrrb")]
 rotation = 0.2617994
 
+[node name="LaserMain" type="Line2D" parent="PathFollow2D/Attacks/Canon1/BossLazerRay" unique_id=941943745]
+use_parent_material = true
+width = 1.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="LaserGlow" type="Line2D" parent="PathFollow2D/Attacks/Canon1/BossLazerRay" unique_id=1067691580]
+material = SubResource("ShaderMaterial_bi3vq")
+width = 1.0
+default_color = Color(0.93612784, 0.30166683, 0, 1)
+
+[node name="LaserCore" type="Line2D" parent="PathFollow2D/Attacks/Canon1/BossLazerRay" unique_id=972650296]
+points = PackedVector2Array(-349.5608, 244.54297)
+width = 1.0
+
 [node name="Canon2" parent="PathFollow2D/Attacks" unique_id=1129639824 instance=ExtResource("2_obrrb")]
 position = Vector2(250, 200)
 
 [node name="BossLazerRay" parent="PathFollow2D/Attacks/Canon2" unique_id=307548533 instance=ExtResource("3_obrrb")]
+
+[node name="LaserMain" type="Line2D" parent="PathFollow2D/Attacks/Canon2/BossLazerRay" unique_id=749571377]
+use_parent_material = true
+width = 1.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="LaserGlow" type="Line2D" parent="PathFollow2D/Attacks/Canon2/BossLazerRay" unique_id=1140101229]
+material = SubResource("ShaderMaterial_bi3vq")
+width = 1.0
+default_color = Color(0.93612784, 0.30166683, 0, 1)
+
+[node name="LaserCore" type="Line2D" parent="PathFollow2D/Attacks/Canon2/BossLazerRay" unique_id=781806316]
+points = PackedVector2Array(-349.5608, 244.54297)
+width = 1.0
 
 [node name="Canon3" parent="PathFollow2D/Attacks" unique_id=595705896 instance=ExtResource("2_obrrb")]
 position = Vector2(340, 200)
@@ -112,11 +159,44 @@ position = Vector2(340, 200)
 [node name="BossLazerRay" parent="PathFollow2D/Attacks/Canon3" unique_id=1208909132 instance=ExtResource("3_obrrb")]
 rotation = -0.2617994
 
+[node name="LaserMain" type="Line2D" parent="PathFollow2D/Attacks/Canon3/BossLazerRay" unique_id=2022548958]
+use_parent_material = true
+width = 1.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="LaserGlow" type="Line2D" parent="PathFollow2D/Attacks/Canon3/BossLazerRay" unique_id=93666628]
+material = SubResource("ShaderMaterial_bi3vq")
+width = 1.0
+default_color = Color(0.93612784, 0.30166683, 0, 1)
+
+[node name="LaserCore" type="Line2D" parent="PathFollow2D/Attacks/Canon3/BossLazerRay" unique_id=645741023]
+points = PackedVector2Array(-349.5608, 244.54297)
+width = 1.0
+
 [node name="Canon4" parent="PathFollow2D/Attacks" unique_id=1269162833 instance=ExtResource("2_obrrb")]
 position = Vector2(450, 200)
 
 [node name="BossLazerRays" parent="PathFollow2D/Attacks/Canon4" unique_id=2097247793 instance=ExtResource("3_obrrb")]
 rotation = -0.5235988
+
+[node name="LaserMain" type="Line2D" parent="PathFollow2D/Attacks/Canon4/BossLazerRays" unique_id=1050770434]
+use_parent_material = true
+width = 1.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="LaserGlow" type="Line2D" parent="PathFollow2D/Attacks/Canon4/BossLazerRays" unique_id=1665821590]
+material = SubResource("ShaderMaterial_bi3vq")
+width = 1.0
+default_color = Color(0.93612784, 0.30166683, 0, 1)
+
+[node name="LaserCore" type="Line2D" parent="PathFollow2D/Attacks/Canon4/BossLazerRays" unique_id=1366252458]
+points = PackedVector2Array(-349.5608, 244.54297)
+width = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="PathFollow2D" unique_id=1831448893]
+position = Vector2(3.0000076, 99.00001)
+scale = Vector2(0.4315197, 0.34145072)
+texture = ExtResource("6_bi3vq")
 
 [node name="ZoneAttack1" parent="." unique_id=1235244731 instance=ExtResource("6_im1n0")]
 z_index = -1

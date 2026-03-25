@@ -4,8 +4,46 @@
 [ext_resource type="Script" uid="uid://hrta737ytjo8" path="res://Scripts/Mondes/GameBounderies.cs" id="2_txy7r"]
 [ext_resource type="PackedScene" uid="uid://cctan0cxox4el" path="res://Prefabs/Joueur.tscn" id="3_vpfhl"]
 [ext_resource type="PackedScene" uid="uid://b6g5loxabm74e" path="res://Prefabs/boss.tscn" id="4_qwaro"]
+[ext_resource type="Texture2D" uid="uid://mpvjh2r5aq08" path="res://images/Purple Nebula 1 - 1024x1024.png" id="5_txy7r"]
+[ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="6_vpfhl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_txvgv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vpfhl"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l0l3o"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="Shader" id="Shader_qwaro"]
+code = "shader_type canvas_item;
+
+uniform float speed = 0.05;
+
+void vertex() {
+    UV.y -= TIME * speed;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nvf4x"]
+shader = SubResource("Shader_qwaro")
+shader_parameter/speed = 0.1
 
 [node name="BossScene" type="Node" unique_id=1280517820]
 script = ExtResource("1_l0l3o")
@@ -25,27 +63,53 @@ shape = SubResource("RectangleShape2D_txvgv")
 position = Vector2(576, 610)
 
 [node name="Boss" parent="MainAera" unique_id=1170369034 node_paths=PackedStringArray("joueur") instance=ExtResource("4_qwaro")]
-position = Vector2(576, 20)
+position = Vector2(568, 42)
 joueur = NodePath("../Joueur")
 
 [node name="BossUI" type="CanvasLayer" parent="." unique_id=1777588701]
 
 [node name="ProgressBar" type="ProgressBar" parent="BossUI" unique_id=1177476441]
+custom_minimum_size = Vector2(0, 40)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 27.0
+offset_left = 54.0
+offset_top = 24.0
+offset_right = -53.0
+offset_bottom = 64.0
 grow_horizontal = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_vpfhl")
+theme_override_styles/fill = SubResource("StyleBoxFlat_l0l3o")
 
 [node name="BOSS ZOMBIE" type="Label" parent="BossUI" unique_id=2138967193]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -62.0
-offset_top = 40.0
-offset_right = 44.0
-offset_bottom = 63.0
+offset_left = -59.0
+offset_top = 80.0
+offset_right = 47.0
+offset_bottom = 103.0
 grow_horizontal = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 text = "BOSS ZOMBIE"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=899709763]
+z_index = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_txy7r")
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1366742660]
+material = SubResource("ShaderMaterial_nvf4x")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_vpfhl")
+stretch_mode = 1
