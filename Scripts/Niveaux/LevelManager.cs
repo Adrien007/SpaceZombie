@@ -132,7 +132,7 @@ namespace SpaceZombie.Niveaux
         private void AddBoss(Boss.Boss boss)
         {
             AddChild(boss);
-            boss.Foward();
+            //boss.Foward();
         }
 
         public override void _ExitTree()

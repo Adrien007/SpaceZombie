@@ -37,9 +37,10 @@ namespace SpaceZombie.Boss
             AddChild(nextActionTimer);
 
             animation.AnimationFinished += AnimationFinished;
+            CallDeferred(nameof(Foward));
         }
 
-        public void Foward()
+        private void Foward()
         {
             animation.Play("Foward");
         }
@@ -141,5 +142,3 @@ namespace SpaceZombie.Boss
         }
     }
 }
-
-
