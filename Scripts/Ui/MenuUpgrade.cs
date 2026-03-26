@@ -44,7 +44,7 @@ public partial class MenuUpgrade : PanelContainer
         Visible = true;
     }
 
-    int GetPercentage(float percentage)
+    private int GetPercentage(float percentage)
     {
         return (int)(percentage * 100);
     }

@@ -12,7 +12,6 @@ namespace SpaceZombie.Mondes.Utilitaires
     public partial class MainAera : Control
     {
         [Export] private Joueur joueur;
-        [Export] private ProchainNiveauUi prochainNiveauUi;
         [Export] private MenuUpgrade menuUpgrade;
         [Export] private LevelManager levelManager;
 
@@ -25,8 +24,7 @@ namespace SpaceZombie.Mondes.Utilitaires
         public void Initialiser()
         {
             joueur.Initialize(GetRect());
-            var ltm = new LevelTransitionManager(prochainNiveauUi, levelManager);
-            ltm.ChangerNiveauLogic();
+            levelManager.ChangerNiveauLogic();
         }
 
         private void ChooseUpgrade()

@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using SpaceZombie.Canons;
 using SpaceZombie.Events;
@@ -8,32 +9,55 @@ namespace SpaceZombie.Joueurs
     /// <summary>
     /// Represents a player in the game, handling movement and shooting mechanics.
     /// </summary>
-    public partial class Joueur : Area2D, IDamagable
+    public partial class Joueur : Area2D, IDamagableJoueur
     {
         [Export] public CanonJoueur canons;
         [Export] private Control panel;
         [Export] private ColorRect invinsibilityPanel;
         [Export] private AudioStreamPlayer sonPrendsHit;
         [Export] private AudioStreamPlayer sonMeurt;
+        [Export] private AudioStreamPlayer sonDodge;
+        [Export] private AudioStreamPlayer sonDodgeSimple;
         [Export] private AudioStreamPlayer sonInvicible;
+        [Export] private AudioStreamPlayer sonDodgeRestore;
+        [Export] private GpuParticles2D dodgeEffect;
         [Export] public int hp = 3;
-        [Export] public float moveSpeed = 200f;
+        [Export] public float moveSpeed = 175f;
         [Export] public float upgradeMoveSpeed = 0.2f;
+        [Export] private float dodgeSpeedIncrease = 500f;
+        [Export] private Timer dodgeTimer;
+        [Export] private Timer dodgeDelayTimer;
+        [Export] private Timer dodgeCooldownTimer;
+        [Export] private DodgeEnergy dodgeEnergy1;
+        [Export] private DodgeEnergy dodgeEnergy2;
         [Export] bool godMode = false;
+        [Export] private int dodgeUpgrade = 0;
+        private bool isDodging = false;
+        private int dodgeCount = 0;
+        private float dodgeSpeed = 0;
+        private Color dodgeTransparency;
+        private Color normalTransparency = new Color(1, 1, 1);
+        public bool canBeGrabbed { get => !isDodging; }
         public JoueurEtat jState;
         private Vector2 playAeraSize;
         private Vector2 playAeraPosition;
         private Vector2 nouvellePosition;
         private float directionX = 0;
         private float demiXsize = 0;
-
         public override void _Ready()
         {
+            dodgeTimer.Timeout += EndDodge;
+            dodgeCooldownTimer.Timeout += EndDodgeCooldown;
+            dodgeEffect.Emitting = false;
+            dodgeTransparency = panel.Modulate;
+            dodgeTransparency.A = 0.5f;
+            //dodgeEffect.Lifetime = dodgeTimer.WaitTime;
+
             playAeraPosition = Position;
 
             demiXsize = (int)(panel.Size.X * 0.5f);
 
-            GameEvents.Instance.EnemyDied += ScoreUpdateListener;
+            GameEvents.Instance.UpdateScore += ScoreUpdateListener;
 
             sonInvicible.Finished += OnSoundInvicibilityFinished;
             invinsibilityPanel.Visible = false;
@@ -42,8 +66,17 @@ namespace SpaceZombie.Joueurs
 
         public override void _Process(double delta)
         {
-            // Get movement direction from input
-            directionX = 0f;
+            if (dodgeSpeed == 0)
+            {
+                directionX = 0f;
+
+                // Get movement direction from input
+                if (Input.IsActionJustPressed("shot_fire") && dodgeDelayTimer.IsStopped())
+                {
+                    Dodge();
+                }
+            }
+
             if (Input.IsActionPressed("move_left"))
             {
                 directionX = -1f; // Move left
@@ -51,10 +84,11 @@ namespace SpaceZombie.Joueurs
             else if (Input.IsActionPressed("move_right"))
             {
                 directionX = 1f; // Move right
+
             }
 
             // Move the object along the X-axis based on input
-            Position += new Vector2(directionX * moveSpeed * (float)delta, 0);
+            Position += new Vector2(directionX * (moveSpeed + dodgeSpeed) * (float)delta, 0);
 
             // Clamp the position within the play area
             nouvellePosition.X = Mathf.Clamp(Position.X, playAeraPosition.X + demiXsize, playAeraPosition.X + playAeraSize.X - demiXsize);
@@ -65,13 +99,57 @@ namespace SpaceZombie.Joueurs
             // Check if spacebar is pressed and reload timer is not active
             if (Input.IsActionPressed("shot_fire"))
             {
-                canons.Fire();
+                //canons.Fire();
+
             }
+        }
+
+        private void Dodge()
+        {
+            dodgeSpeed = dodgeSpeedIncrease;
+            if (dodgeCount <= dodgeUpgrade)
+            {
+                panel.Modulate = dodgeTransparency;
+                dodgeEffect.Emitting = true;
+                isDodging = true;
+                dodgeCount += 1;
+                sonDodge.Play();
+                dodgeCooldownTimer.Start();
+                if (dodgeCount > dodgeUpgrade)
+                {
+                    dodgeEnergy1.Use();
+                    dodgeEnergy2.Use();
+                }
+            }
+            else
+            {
+                sonDodgeSimple.Play();
+            }
+            dodgeDelayTimer.Start();
+            dodgeTimer.Start();
+            canons.reloadTimer.Stop();
+        }
+
+        private void EndDodge()
+        {
+            dodgeSpeed = 0;
+            dodgeEffect.Emitting = false;
+            panel.Modulate = normalTransparency;
+            isDodging = false;
+            canons.reloadTimer.Start();
+        }
+
+        private void EndDodgeCooldown()
+        {
+            dodgeCount = 0;
+            dodgeEnergy1.Restore();
+            dodgeEnergy2.Restore();
+            sonDodgeRestore.Play();
         }
 
         public void TakeDamage(int damage)
         {
-            if (!jState.IsDead && !jState.IsInvicible)
+            if (!jState.IsDead && !jState.IsInvicible && !isDodging)
             {
                 jState.Hp = RetirerHp(jState.Hp, damage);
                 UpdateScore(-5000);
@@ -174,7 +252,7 @@ namespace SpaceZombie.Joueurs
         public override void _ExitTree()
         {
             base._ExitTree();
-            GameEvents.Instance.EnemyDied -= ScoreUpdateListener;
+            GameEvents.Instance.UpdateScore -= ScoreUpdateListener;
         }
 
         private void OnSoundInvicibilityFinished()
@@ -184,10 +262,10 @@ namespace SpaceZombie.Joueurs
         }
 
         #region score section
-        private void ScoreUpdateListener(Enemies.EnemyObjet enemy)
+        public void ScoreUpdateListener(int score, Vector2 globalPosition)
         {
-            UpdateScore(enemy.Enemy.Score);
-            Ui.FloatingTextManager.Instance.ShowScore(enemy.GlobalPosition + new Vector2(GD.RandRange(-10, 10), GD.RandRange(-5, 5)), enemy.Enemy.Score);
+            UpdateScore(score);
+            Ui.FloatingTextManager.Instance.ShowScore(globalPosition + new Vector2(GD.RandRange(-10, 10), GD.RandRange(-5, 5)), score);
         }
         private void UpdateScore(int newScore)
         {

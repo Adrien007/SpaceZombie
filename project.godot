@@ -22,7 +22,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameEvents="*uid://bk2bx73wqvkb1"
-FloatingTextManager="*uid://dch6kuwgx1577"
 
 [display]
 

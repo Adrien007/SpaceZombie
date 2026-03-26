@@ -28,8 +28,8 @@ namespace SpaceZombie.Ammunitions
         public void Fire(Vector2 directionXY, Vector2 globalPosition, float globalRotation)
         {
             this.directionXY = directionXY;
-            this.GlobalPosition = globalPosition;
-            this.GlobalRotation = globalRotation;// + CORRECTION_ANGLE;
+            GlobalPosition = globalPosition;
+            GlobalRotation = globalRotation;// + CORRECTION_ANGLE;
             Enable();
         }
 

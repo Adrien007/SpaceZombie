@@ -5,14 +5,10 @@
 [ext_resource type="Script" uid="uid://diavschd7g0co" path="res://Scripts/Mondes/MainCanva.cs" id="1_gx84c"]
 [ext_resource type="Texture2D" uid="uid://mpvjh2r5aq08" path="res://images/Purple Nebula 1 - 1024x1024.png" id="2_tfmai"]
 [ext_resource type="Shader" uid="uid://horw6ysklkk6" path="res://Scenes/main_canva_background_scroll.gdshader" id="3_p5n5s"]
-[ext_resource type="Script" uid="uid://yd71tlnwfeq2" path="res://Scripts/Enemies/EnemySlot.cs" id="3_v3cb1"]
 [ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="4_kf714"]
-[ext_resource type="Script" uid="uid://ldnssl3fut00" path="res://Scripts/Enemies/ZombiesSpawn.cs" id="5_4gd4g"]
-[ext_resource type="PackedScene" uid="uid://csksfstlrsvpj" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
-[ext_resource type="Script" uid="uid://dyd3bw3m7n1ge" path="res://Scripts/Enemies/InLigneSpawnerObjet.cs" id="5_ylj3c"]
-[ext_resource type="PackedScene" uid="uid://d4edle7lh0vmn" path="res://Prefabs/upgrade_loader.tscn" id="7_p5n5s"]
-[ext_resource type="PackedScene" uid="uid://cgpw88utk0j4p" path="res://Prefabs/enemy_slot.tscn" id="7_wwtlw"]
-[ext_resource type="Script" uid="uid://buodrch2nlbmm" path="res://Scripts/Niveaux/LevelManager.cs" id="8_kf714"]
+[ext_resource type="PackedScene" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
+[ext_resource type="PackedScene" uid="uid://c2axhgwitp7e2" path="res://Scenes/level_manager.tscn" id="7_ahn3c"]
+[ext_resource type="PackedScene" uid="uid://dch6kuwgx1577" path="res://Prefabs/Ui/floating_text_manager.tscn" id="9_33otj"]
 [ext_resource type="Script" uid="uid://bmrula5s1hvpo" path="res://Scripts/Ui/ProchainNiveauUi.cs" id="9_tpj28"]
 [ext_resource type="LabelSettings" uid="uid://41wxbbc2j0eo" path="res://Prefabs/Ui/new_label_settings.tres" id="10_ahn3c"]
 [ext_resource type="PackedScene" uid="uid://sls8dni2f3o7" path="res://Prefabs/Ui/ui_game.tscn" id="10_ib1eq"]
@@ -72,432 +68,27 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="MainAera" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=2040906383 node_paths=PackedStringArray("joueur", "prochainNiveauUi", "menuUpgrade", "levelManager")]
+[node name="MainAera" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=2040906383 node_paths=PackedStringArray("joueur", "menuUpgrade", "levelManager")]
 process_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("1_3lruc")
 joueur = NodePath("Joueur")
-prochainNiveauUi = NodePath("../../../NextLevelCtr")
 menuUpgrade = NodePath("../../../MenuUpgrade")
 levelManager = NodePath("LevelManager")
 
 [node name="Joueur" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=290880064 instance=ExtResource("1_0dl77")]
 position = Vector2(561.5, 595)
-godMode = false
 
-[node name="LevelManager" type="Control" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=501859680 node_paths=PackedStringArray("zombiesSpawn", "upgradeLoader", "joueur")]
+[node name="LevelManager" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=1859754752 node_paths=PackedStringArray("joueur", "prochainNiveauUi") instance=ExtResource("7_ahn3c")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("8_kf714")
-zombiesSpawn = NodePath("ZombieSpawns")
-upgradeLoader = NodePath("UpgradeLoader")
 joueur = NodePath("../Joueur")
-level = 1
-
-[node name="ZombieSpawns" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager" unique_id=152002464 node_paths=PackedStringArray("inLigneSpawnersObjet")]
-custom_minimum_size = Vector2(0, 300)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 300.0
-grow_horizontal = 2
-script = ExtResource("5_4gd4g")
-inLigneSpawnersObjet = [NodePath("ColonneSpawner"), NodePath("ColonneSpawner2"), NodePath("ColonneSpawner3"), NodePath("ColonneSpawner4"), NodePath("ColonneSpawner5"), NodePath("ColonneSpawner6")]
-
-[node name="ColonneSpawner" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns" unique_id=244956511]
-custom_minimum_size = Vector2(0, 50)
-anchors_preset = 0
-offset_right = 1080.0
-offset_bottom = 50.0
-script = ExtResource("5_ylj3c")
-
-[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner" unique_id=1154070902]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_top = 5.0
-offset_right = 40.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("3_v3cb1")
-
-[node name="Panel2" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner" unique_id=920961987]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 44.0
-offset_top = 5.0
-offset_right = 84.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Panel3" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner" unique_id=2145860204]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 88.0
-offset_top = 5.0
-offset_right = 128.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="EnemySlot" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner" unique_id=1722444191 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 132.0
-offset_top = 5.0
-offset_right = 172.0
-offset_bottom = 45.0
-
-[node name="EnemySlot2" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner" unique_id=1707310190 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 5.0
-offset_right = 216.0
-offset_bottom = 45.0
-
-[node name="EnemySlot3" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner" unique_id=9826165 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 220.0
-offset_top = 5.0
-offset_right = 260.0
-offset_bottom = 45.0
-
-[node name="EnemySlot4" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner" unique_id=661195996 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 264.0
-offset_top = 5.0
-offset_right = 304.0
-offset_bottom = 45.0
-
-[node name="ColonneSpawner2" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns" unique_id=1990851592]
-custom_minimum_size = Vector2(0, 50)
-anchors_preset = 0
-offset_top = 54.0
-offset_right = 1080.0
-offset_bottom = 104.0
-size_flags_horizontal = 4
-script = ExtResource("5_ylj3c")
-
-[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner2" unique_id=699388736]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_top = 5.0
-offset_right = 40.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("3_v3cb1")
-
-[node name="Panel2" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner2" unique_id=1023275675]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 44.0
-offset_top = 5.0
-offset_right = 84.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Panel3" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner2" unique_id=1078514902]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 88.0
-offset_top = 5.0
-offset_right = 128.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="EnemySlot" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner2" unique_id=711874470 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 132.0
-offset_top = 5.0
-offset_right = 172.0
-offset_bottom = 45.0
-
-[node name="EnemySlot2" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner2" unique_id=1874159183 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 5.0
-offset_right = 216.0
-offset_bottom = 45.0
-
-[node name="EnemySlot3" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner2" unique_id=891588046 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 220.0
-offset_top = 5.0
-offset_right = 260.0
-offset_bottom = 45.0
-
-[node name="EnemySlot4" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner2" unique_id=1472659663 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 264.0
-offset_top = 5.0
-offset_right = 304.0
-offset_bottom = 45.0
-
-[node name="ColonneSpawner3" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns" unique_id=956643820]
-custom_minimum_size = Vector2(0, 50)
-anchors_preset = 0
-offset_top = 108.0
-offset_right = 1080.0
-offset_bottom = 158.0
-size_flags_horizontal = 0
-script = ExtResource("5_ylj3c")
-
-[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner3" unique_id=574939926]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_top = 5.0
-offset_right = 40.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("3_v3cb1")
-
-[node name="Panel2" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner3" unique_id=1357048388]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 44.0
-offset_top = 5.0
-offset_right = 84.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Panel3" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner3" unique_id=1805199634]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 88.0
-offset_top = 5.0
-offset_right = 128.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="EnemySlot" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner3" unique_id=48496023 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 132.0
-offset_top = 5.0
-offset_right = 172.0
-offset_bottom = 45.0
-
-[node name="EnemySlot2" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner3" unique_id=805261458 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 5.0
-offset_right = 216.0
-offset_bottom = 45.0
-
-[node name="EnemySlot3" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner3" unique_id=1218936186 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 220.0
-offset_top = 5.0
-offset_right = 260.0
-offset_bottom = 45.0
-
-[node name="EnemySlot4" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner3" unique_id=1622574955 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 264.0
-offset_top = 5.0
-offset_right = 304.0
-offset_bottom = 45.0
-
-[node name="ColonneSpawner4" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns" unique_id=1886473219]
-custom_minimum_size = Vector2(0, 50)
-anchors_preset = 0
-offset_top = 162.0
-offset_right = 1080.0
-offset_bottom = 212.0
-size_flags_horizontal = 0
-script = ExtResource("5_ylj3c")
-
-[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner4" unique_id=1693093471]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_top = 5.0
-offset_right = 40.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("3_v3cb1")
-
-[node name="Panel2" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner4" unique_id=1282703039]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 44.0
-offset_top = 5.0
-offset_right = 84.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Panel3" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner4" unique_id=545315865]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 88.0
-offset_top = 5.0
-offset_right = 128.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="EnemySlot" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner4" unique_id=170708812 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 132.0
-offset_top = 5.0
-offset_right = 172.0
-offset_bottom = 45.0
-
-[node name="EnemySlot2" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner4" unique_id=1814313576 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 5.0
-offset_right = 216.0
-offset_bottom = 45.0
-
-[node name="EnemySlot3" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner4" unique_id=1900356073 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 220.0
-offset_top = 5.0
-offset_right = 260.0
-offset_bottom = 45.0
-
-[node name="EnemySlot4" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner4" unique_id=540971656 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 264.0
-offset_top = 5.0
-offset_right = 304.0
-offset_bottom = 45.0
-
-[node name="ColonneSpawner5" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns" unique_id=1684258530]
-custom_minimum_size = Vector2(0, 50)
-anchors_preset = 0
-offset_top = 216.0
-offset_right = 1080.0
-offset_bottom = 266.0
-size_flags_horizontal = 0
-script = ExtResource("5_ylj3c")
-
-[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner5" unique_id=1282370061]
-visible = false
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("3_v3cb1")
-
-[node name="Panel2" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner5" unique_id=593138670]
-visible = false
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Panel3" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner5" unique_id=1957300494]
-visible = false
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="EnemySlot" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner5" unique_id=78870456 instance=ExtResource("7_wwtlw")]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="EnemySlot2" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner5" unique_id=1979036627 instance=ExtResource("7_wwtlw")]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="EnemySlot3" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner5" unique_id=450203966 instance=ExtResource("7_wwtlw")]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="EnemySlot4" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner5" unique_id=1525362034 instance=ExtResource("7_wwtlw")]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ColonneSpawner6" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns" unique_id=1127416894]
-custom_minimum_size = Vector2(0, 50)
-anchors_preset = 0
-offset_top = 270.0
-offset_right = 1080.0
-offset_bottom = 320.0
-size_flags_horizontal = 0
-script = ExtResource("5_ylj3c")
-
-[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner6" unique_id=897943598]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_top = 5.0
-offset_right = 40.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("3_v3cb1")
-
-[node name="Panel2" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner6" unique_id=1019009208]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 44.0
-offset_top = 5.0
-offset_right = 84.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Panel3" type="Panel" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner6" unique_id=1257517658]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_left = 88.0
-offset_top = 5.0
-offset_right = 128.0
-offset_bottom = 45.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="EnemySlot" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner6" unique_id=327679050 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 132.0
-offset_top = 5.0
-offset_right = 172.0
-offset_bottom = 45.0
-
-[node name="EnemySlot2" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner6" unique_id=1125933010 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 5.0
-offset_right = 216.0
-offset_bottom = 45.0
-
-[node name="EnemySlot3" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner6" unique_id=310991540 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 220.0
-offset_top = 5.0
-offset_right = 260.0
-offset_bottom = 45.0
-
-[node name="EnemySlot4" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns/ColonneSpawner6" unique_id=1466860673 instance=ExtResource("7_wwtlw")]
-layout_mode = 0
-offset_left = 264.0
-offset_top = 5.0
-offset_right = 304.0
-offset_bottom = 45.0
-
-[node name="UpgradeLoader" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager" unique_id=2089523975 instance=ExtResource("7_p5n5s")]
+prochainNiveauUi = NodePath("../../../../NextLevelCtr")
 
 [node name="Marge2" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=1413647310]
 custom_minimum_size = Vector2(0, 10)
@@ -516,6 +107,8 @@ grow_horizontal = 0
 [node name="Marge3" type="Control" parent="HBoxContainer" unique_id=815882770]
 custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
+
+[node name="FloatingTextManager" parent="." unique_id=1496613480 instance=ExtResource("9_33otj")]
 
 [node name="NextLevelCtr" type="Control" parent="." unique_id=1259785756 node_paths=PackedStringArray("p", "label")]
 process_mode = 4
