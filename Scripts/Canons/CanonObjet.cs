@@ -6,15 +6,14 @@ using SpaceZombie.Ammunitions;
 using SpaceZombie.Events;
 using SpaceZombie.Mondes.Utilitaires;
 
-namespace SpaceZombie.Cannons
+namespace SpaceZombie.Canons
 {
-    public partial class CannonObjet : Node2D
+    public partial class CanonObjet : Node2D
     {
         private Queue<ProjectileObjet> projectileBuffer;
         PackedScene projectileScene;
         Projectile projectile;
         Node mainAera;
-        IResetEtatNotifier resetEtatNotifier;
 
         public override void _Ready()
         {
@@ -22,11 +21,9 @@ namespace SpaceZombie.Cannons
             base._Ready();
         }
         public void Initialize(string projectileName,
-                                Projectile projectile,
-                                IResetEtatNotifier resetEtatNotifier)
+                                Projectile projectile)
         {
             this.projectile = projectile;
-            this.resetEtatNotifier = resetEtatNotifier;
             projectileScene = (PackedScene)ResourceLoader.Load($"res://Prefabs/{projectileName}.tscn");
             CallDeferred("InitializeBuffer");
         }
@@ -35,15 +32,15 @@ namespace SpaceZombie.Cannons
             projectileBuffer = new Queue<ProjectileObjet>();
             for (int i = 0; i <= 8; i++)
             {
-                projectileBuffer.Enqueue(newProjectile());
+                projectileBuffer.Enqueue(NewProjectile());
             }
         }
         public virtual void Fire(Vector2 direction)
         {
-            getNextProjectile().Fire(direction, GlobalPosition, GlobalRotation);
+            GetNextProjectile().Fire(direction, GlobalPosition, GlobalRotation);
         }
 
-        private ProjectileObjet getNextProjectile()
+        private ProjectileObjet GetNextProjectile()
         {
             if (projectileBuffer.Count > 0)
             {
@@ -51,14 +48,14 @@ namespace SpaceZombie.Cannons
             }
             else
             {
-                return newProjectile();
+                return NewProjectile();
             }
         }
 
-        private ProjectileObjet newProjectile()
+        private ProjectileObjet NewProjectile()
         {
             ProjectileObjet projectileInstance = (ProjectileObjet)projectileScene.Instantiate();
-            projectileInstance.Initialize(projectile, resetEtatNotifier);
+            projectileInstance.Initialize(projectile);
             projectileInstance.OutOfBoundignal += HandleOutOfBoundSignal;
             mainAera.AddChild(projectileInstance);
             return projectileInstance;

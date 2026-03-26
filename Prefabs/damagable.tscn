@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cv2aa8jui6664"]
+
+[ext_resource type="Script" uid="uid://u7wob0uitjvr" path="res://Scripts/Utilitaires/Damagable.cs" id="1_hm5eq"]
+
+[node name="Damagable" type="Area2D" unique_id=1505304543]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_hm5eq")

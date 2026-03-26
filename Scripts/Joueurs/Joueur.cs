@@ -1,20 +1,16 @@
 using Godot;
-using SpaceZombie.Ammunitions;
-using SpaceZombie.Boss;
-using SpaceZombie.Cannons;
+using SpaceZombie.Canons;
 using SpaceZombie.Events;
-using SpaceZombie.Mondes.Utilitaires;
 using SpaceZombie.Utilitaires;
-using SpaceZombie.Utilitaires.Layers;
 
 namespace SpaceZombie.Joueurs
 {
     /// <summary>
     /// Represents a player in the game, handling movement and shooting mechanics.
     /// </summary>
-    public partial class Joueur : Area2D, IInitialisationSize, IInitialisationPosition, IResetEtatObserver, IDamagable
+    public partial class Joueur : Area2D, IDamagable
     {
-        [Export] public CannonJoueur cannons;
+        [Export] public CanonJoueur canons;
         [Export] private Control panel;
         [Export] private ColorRect invinsibilityPanel;
         [Export] private AudioStreamPlayer sonPrendsHit;
@@ -33,7 +29,6 @@ namespace SpaceZombie.Joueurs
 
         public override void _Ready()
         {
-            playAeraSize = GetViewportRect().Size;
             playAeraPosition = Position;
 
             demiXsize = (int)(panel.Size.X * 0.5f);
@@ -42,9 +37,10 @@ namespace SpaceZombie.Joueurs
 
             sonInvicible.Finished += OnSoundInvicibilityFinished;
             invinsibilityPanel.Visible = false;
+            SetProcess(false);
         }
 
-        public override void _PhysicsProcess(double delta)
+        public override void _Process(double delta)
         {
             // Get movement direction from input
             directionX = 0f;
@@ -69,7 +65,7 @@ namespace SpaceZombie.Joueurs
             // Check if spacebar is pressed and reload timer is not active
             if (Input.IsActionPressed("shot_fire"))
             {
-                cannons.Fire();
+                canons.Fire();
             }
         }
 
@@ -80,15 +76,7 @@ namespace SpaceZombie.Joueurs
                 jState.Hp = RetirerHp(jState.Hp, damage);
                 UpdateScore(-5000);
                 GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
-                if (jState.Hp <= 0)
-                {
-                    jState.IsDead = true;
-                    jState.DeadSoundPlayed = true;
-                    GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
-                    CallDeferred(nameof(Disable));
-                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerDied);
-                }
-                else
+                if (jState.Hp > 0)
                 {
                     //GD.Print("[SoundSystemJoueur] Play 'player hit' sound.");
                     jState.IsInvicible = true;
@@ -96,8 +84,22 @@ namespace SpaceZombie.Joueurs
                     sonInvicible.Play();
                     invinsibilityPanel.Visible = true;
                 }
+                else if (!jState.IsDead)
+                {
+                    jState.IsDead = true;
+                    jState.DeadSoundPlayed = true;
+                    GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
+                    CallDeferred(nameof(Disable));
+                    AnimationPlayer animation = GetNode<AnimationPlayer>("AnimationPlayer");
+                    animation.AnimationFinished += OnDiedAnimationFinished;
+                    animation.Play("Die");
+                }
             }
+        }
 
+        private void OnDiedAnimationFinished(StringName animName)
+        {
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.ShowEndScreen);
         }
 
         private static int RetirerHp(int hp, int hitValue)
@@ -115,10 +117,10 @@ namespace SpaceZombie.Joueurs
             //GD.Print($"Upgrade : {option}");
             switch (option)
             {
-                case UpgradeOptions.Damage: cannons.UpgradeDamage(); break;
-                case UpgradeOptions.AttackSpeed: cannons.UpgradeVitesse(); break;
-                case UpgradeOptions.AddProjectile: cannons.UpgradeCanons(); break;
-                case UpgradeOptions.Passthrough: cannons.UpgradeTraverse(); break;
+                case UpgradeOptions.Damage: canons.UpgradeDamage(); break;
+                case UpgradeOptions.AttackSpeed: canons.UpgradeVitesse(); break;
+                case UpgradeOptions.AddProjectile: canons.UpgradeCanons(); break;
+                case UpgradeOptions.Passthrough: canons.UpgradeTraverse(); break;
                 case UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
             }
         }
@@ -128,38 +130,32 @@ namespace SpaceZombie.Joueurs
             moveSpeed += moveSpeed * upgradeMoveSpeed;
         }
 
-        public void Initialize(IResetEtatNotifier resetEtatNotifier)
+        public void Initialize(Rect2 playArea)
         {
             jState = new JoueurEtat(hp);
             nouvellePosition = Position;
             nouvellePosition.X = PositionCentreX();
             Position = nouvellePosition;
-            resetEtatNotifier.Register(this);
-            cannons.Initialize(resetEtatNotifier);
+            canons.Initialize();
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
             if (godMode) SetGodMode();
-        }
-        public void InitialiserSize(Vector2 size)
-        {
-            playAeraSize = size;
-        }
-        public void InitialiserPosition(Vector2 position)
-        {
-            playAeraPosition = position;
+            playAeraSize = playArea.Size;
+            playAeraPosition = playArea.Position;
+            SetProcess(true);
         }
 
         private void SetGodMode()
         {
             for (int i = 0; i < 8; i++)
             {
-                cannons.UpgradeCanons();
-                cannons.UpgradeVitesse();
+                canons.UpgradeCanons();
+                canons.UpgradeVitesse();
             }
             for (int i = 0; i < 3; i++)
             {
-                cannons.UpgradeTraverse();
-                cannons.UpgradeDamage();
+                canons.UpgradeTraverse();
+                canons.UpgradeDamage();
             }
             moveSpeed = 500f;
         }
@@ -170,21 +166,15 @@ namespace SpaceZombie.Joueurs
 
         public void Disable()
         {
-            Visible = false;
+            SetProcess(false);
             Monitorable = false;
             Monitoring = false;
         }
 
-        public void OnResetToInitaialState()
+        public override void _ExitTree()
         {
-            nouvellePosition.X = PositionCentreX();
-            Position = nouvellePosition;
-            cannons.StopReloadTimer();
-            sonInvicible.Stop();
-            invinsibilityPanel.Visible = false;
-        }
-        public void StartTimerState()
-        {
+            base._ExitTree();
+            GameEvents.Instance.EnemyDied -= ScoreUpdateListener;
         }
 
         private void OnSoundInvicibilityFinished()

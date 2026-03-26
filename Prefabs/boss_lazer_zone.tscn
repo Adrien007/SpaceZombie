@@ -62,7 +62,7 @@ _data = {
 &"RESET": SubResource("Animation_y866w")
 }
 
-[node name="BossLazerZone" type="Panel" unique_id=1235244731 groups=["Joueur"]]
+[node name="BossLazerZone" type="Panel" unique_id=1235244731]
 offset_right = 100.0
 offset_bottom = 400.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_y147c")
@@ -70,8 +70,8 @@ script = ExtResource("1_y147c")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1171264221]
 collision_layer = 268435456
-collision_mask = 0
-monitoring = false
+collision_mask = 2147483648
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1693270544]
 shape = SubResource("RectangleShape2D_jpkyw")

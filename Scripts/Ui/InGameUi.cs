@@ -27,5 +27,12 @@ namespace SpaceZombie.Ui
             this.viRestante.Text = txt;
         }
 
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+            GameEvents.Instance.PlayerScoreUpdated -= UpdatePlayerScoreListener;
+            GameEvents.Instance.PlayerHealthUpdated -= UpdatePlayerHealthLeftListener;
+        }
+
     }
 }
