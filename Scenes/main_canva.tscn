@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://cctan0cxox4el" path="res://Prefabs/Joueur.tscn" id="1_0dl77"]
 [ext_resource type="Script" uid="uid://cju7fti0f4g4y" path="res://Scripts/Mondes/MainAera.cs" id="1_3lruc"]
 [ext_resource type="Script" uid="uid://diavschd7g0co" path="res://Scripts/Mondes/MainCanva.cs" id="1_gx84c"]
-[ext_resource type="Texture2D" uid="uid://mpvjh2r5aq08" path="res://images/Purple Nebula 1 - 1024x1024.png" id="2_tfmai"]
 [ext_resource type="Shader" uid="uid://horw6ysklkk6" path="res://Scenes/main_canva_background_scroll.gdshader" id="3_p5n5s"]
 [ext_resource type="Script" uid="uid://yd71tlnwfeq2" path="res://Scripts/Enemies/EnemySlot.cs" id="3_v3cb1"]
 [ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="4_kf714"]
@@ -31,7 +30,7 @@ grow_vertical = 2
 script = ExtResource("1_gx84c")
 mainAera = NodePath("HBoxContainer/VBoxContainer/MainAera")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1661909455]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=367221533]
 z_index = -1
 layout_mode = 1
 anchors_preset = 15
@@ -39,7 +38,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_tfmai")
+color = Color(0.015344, 0.025419267, 0.05136338, 1)
 
 [node name="TextureRect2" type="TextureRect" parent="." unique_id=163970705]
 material = SubResource("ShaderMaterial_7awwb")
@@ -84,7 +83,6 @@ levelManager = NodePath("LevelManager")
 
 [node name="Joueur" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=290880064 instance=ExtResource("1_0dl77")]
 position = Vector2(561.5, 595)
-godMode = false
 
 [node name="LevelManager" type="Control" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=501859680 node_paths=PackedStringArray("zombiesSpawn", "upgradeLoader", "joueur")]
 layout_mode = 1
@@ -97,7 +95,6 @@ script = ExtResource("8_kf714")
 zombiesSpawn = NodePath("ZombieSpawns")
 upgradeLoader = NodePath("UpgradeLoader")
 joueur = NodePath("../Joueur")
-level = 1
 
 [node name="ZombieSpawns" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager" unique_id=152002464 node_paths=PackedStringArray("inLigneSpawnersObjet")]
 custom_minimum_size = Vector2(0, 300)

@@ -7,12 +7,13 @@
         [
           {
             "LevelNumber": 1,
-            "NbEnemiesParLigne": 18,
+            "NbEnemiesParLigne": 3,
             "DeplaceEnBlock": true,
             "Lines": 
             [
-              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [1] },
-              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [1] },
+              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [3] },
+              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [2] },
               { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [1] }
             ],
             "TpsRecharge": 4,
