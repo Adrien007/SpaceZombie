@@ -13,7 +13,7 @@ size = Vector2(38, 35)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j7lg8"]
 resource_local_to_scene = true
 shader = ExtResource("2_j3hbi")
-shader_parameter/hit_color = Color(0.5, 0.7, 1, 1)
+shader_parameter/hit_color = Color(0.75390625, 0.852944, 1, 1)
 shader_parameter/hit_amount = 0.0
 shader_parameter/attack_color = Color(1, 0.1484375, 0.1484375, 1)
 shader_parameter/attack_amount = 0.0

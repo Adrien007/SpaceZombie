@@ -1,5 +1,6 @@
 //ProjectileObjet.cs
 using Godot;
+using SpaceZombie.Joueurs;
 using SpaceZombie.Utilitaires;
 
 namespace SpaceZombie.Ammunitions
@@ -41,19 +42,22 @@ namespace SpaceZombie.Ammunitions
 
         private void OnAreaEntered(Area2D area)
         {
-            if (area is IDamagable damagableNode)
+            if (area is IDamagable damagable)
             {
                 //GD.Print($"Travere Projectile : {projectile.Traverse}, Traverse : {traverse}");
                 //GD.Print($"Projectile {GetInstanceId()}, Hit : {area.Name} {area.GetInstanceId()}");
-                damagableNode.TakeDamage(projectile.Damage);
-                if (projectile.Traverse <= traverse)
+                if (!damagable.IsDodging)
                 {
-                    traverse = 0;
-                    CallDeferred(nameof(Disable));
-                }
-                else
-                {
-                    traverse += 1;
+                    damagable.TakeDamage(projectile.Damage);
+                    if (projectile.Traverse <= traverse)
+                    {
+                        traverse = 0;
+                        CallDeferred(nameof(Disable));
+                    }
+                    else
+                    {
+                        traverse += 1;
+                    }
                 }
             }
         }

@@ -111,11 +111,11 @@ stream = ExtResource("6_h37oc")
 volume_db = -20.0
 
 [node name="Dodge" type="Timer" parent="." unique_id=406162187]
-wait_time = 0.15
+wait_time = 0.2
 one_shot = true
 
 [node name="DodgeDelay" type="Timer" parent="." unique_id=156199327]
-wait_time = 0.3
+wait_time = 0.4
 one_shot = true
 
 [node name="DodgeCooldown" type="Timer" parent="." unique_id=43066623]

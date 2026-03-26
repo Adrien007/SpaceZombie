@@ -115,9 +115,9 @@ namespace SpaceZombie.Enemies
 
         private void OnAreaEntered(Area2D area)
         {
-            if (area is IDamagableJoueur damagable)
+            if (area is IDamagable damagable)
             {
-                if (damagable.canBeGrabbed)
+                if (!damagable.IsDodging)
                 {
                     CallDeferred(nameof(PlayerGrabbed));
                 }

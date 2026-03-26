@@ -58,11 +58,11 @@ namespace SpaceZombie.Niveaux
 
         private void WaitForTimerToFinish()
         {
-            //CreerNiveau();
-            spawns.Spawn([
+            CreerNiveau();
+            /*spawns.Spawn([
                 new EnemySpawn("res://Prefabs/Enemies/zombie.tscn", 3, 10f, 3),
                 new EnemySpawn("res://Prefabs/Enemies/zombie.tscn", 4, 8f, 3)
-            ]);
+            ]);*/
             prochainNiveauUi.ProcessMode = ProcessModeEnum.Disabled;
             prochainNiveauUi.Visible = false;
         }

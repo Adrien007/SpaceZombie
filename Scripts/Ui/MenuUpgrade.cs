@@ -65,8 +65,8 @@ public partial class MenuUpgrade : PanelContainer
             case UpgradeOptions.Passthrough:
                 button.SetUpgrage((int)option, Tr("UPGRADE_PASSTHROUGH"), passthroughTexture);
                 break;
-            case UpgradeOptions.MoveSpeed:
-                button.SetUpgrage((int)option, string.Format(Tr("UPGRADE_MOVE_SPEED"), GetPercentage(joueur.upgradeMoveSpeed)), moveSpeedTexture);
+            case UpgradeOptions.Dodge:
+                button.SetUpgrage((int)option, Tr("UPGRADE_DODGE"), dodgeTexture);
                 break;
         }
     }
@@ -76,5 +76,5 @@ public partial class MenuUpgrade : PanelContainer
     private static readonly Texture2D damageTexture = ResourceLoader.Load<Texture2D>("res://images/attack_damage_icon.png");
     private static readonly Texture2D attackSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/attack_speed_icon.png");
     private static readonly Texture2D passthroughTexture = ResourceLoader.Load<Texture2D>("res://images/attack_piercing.png");
-    private static readonly Texture2D moveSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/move_speed_icon.png");
+    private static readonly Texture2D dodgeTexture = ResourceLoader.Load<Texture2D>("res://images/dodge_icon.png");
 }

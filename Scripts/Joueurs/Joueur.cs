@@ -9,7 +9,7 @@ namespace SpaceZombie.Joueurs
     /// <summary>
     /// Represents a player in the game, handling movement and shooting mechanics.
     /// </summary>
-    public partial class Joueur : Area2D, IDamagableJoueur
+    public partial class Joueur : Area2D, IDamagable
     {
         [Export] public CanonJoueur canons;
         [Export] private Control panel;
@@ -23,8 +23,8 @@ namespace SpaceZombie.Joueurs
         [Export] private GpuParticles2D dodgeEffect;
         [Export] public int hp = 3;
         [Export] public float moveSpeed = 175f;
-        [Export] public float upgradeMoveSpeed = 0.2f;
-        [Export] private float dodgeSpeedIncrease = 500f;
+        [Export] private float dodgeSpeedIncrease = 350f;
+        [Export] private float dodgeSimpleSpeedIncrease = 200f;
         [Export] private Timer dodgeTimer;
         [Export] private Timer dodgeDelayTimer;
         [Export] private Timer dodgeCooldownTimer;
@@ -37,7 +37,7 @@ namespace SpaceZombie.Joueurs
         private float dodgeSpeed = 0;
         private Color dodgeTransparency;
         private Color normalTransparency = new Color(1, 1, 1);
-        public bool canBeGrabbed { get => !isDodging; }
+        public bool IsDodging { get => isDodging; }
         public JoueurEtat jState;
         private Vector2 playAeraSize;
         private Vector2 playAeraPosition;
@@ -106,28 +106,39 @@ namespace SpaceZombie.Joueurs
 
         private void Dodge()
         {
-            dodgeSpeed = dodgeSpeedIncrease;
-            if (dodgeCount <= dodgeUpgrade)
+            if (dodgeCount > dodgeUpgrade)
             {
-                panel.Modulate = dodgeTransparency;
-                dodgeEffect.Emitting = true;
-                isDodging = true;
-                dodgeCount += 1;
-                sonDodge.Play();
-                dodgeCooldownTimer.Start();
-                if (dodgeCount > dodgeUpgrade)
-                {
-                    dodgeEnergy1.Use();
-                    dodgeEnergy2.Use();
-                }
+                DoSimpleDodge();
             }
             else
             {
-                sonDodgeSimple.Play();
+                DoFullDodge();
             }
             dodgeDelayTimer.Start();
             dodgeTimer.Start();
             canons.reloadTimer.Stop();
+        }
+
+        private void DoSimpleDodge()
+        {
+            dodgeSpeed = dodgeSimpleSpeedIncrease;
+            sonDodgeSimple.Play();
+        }
+
+        private void DoFullDodge()
+        {
+            dodgeSpeed = dodgeSpeedIncrease;
+            panel.Modulate = dodgeTransparency;
+            dodgeEffect.Emitting = true;
+            isDodging = true;
+            dodgeCount += 1;
+            sonDodge.Play();
+            dodgeCooldownTimer.Start();
+            if (dodgeCount > dodgeUpgrade)
+            {
+                dodgeEnergy1.Use();
+                dodgeEnergy2.Use();
+            }
         }
 
         private void EndDodge()
@@ -199,13 +210,19 @@ namespace SpaceZombie.Joueurs
                 case UpgradeOptions.AttackSpeed: canons.UpgradeVitesse(); break;
                 case UpgradeOptions.AddProjectile: canons.UpgradeCanons(); break;
                 case UpgradeOptions.Passthrough: canons.UpgradeTraverse(); break;
-                case UpgradeOptions.MoveSpeed: UpgradeMoveSpeed(); break;
+                case UpgradeOptions.Dodge: UpgradeDodge(); break;
             }
         }
 
-        private void UpgradeMoveSpeed()
+        private void UpgradeDodge()
         {
-            moveSpeed += moveSpeed * upgradeMoveSpeed;
+            dodgeUpgrade += 1;
+            if (dodgeCount == dodgeUpgrade)
+            {
+                dodgeEnergy1.Restore();
+                dodgeEnergy2.Restore();
+                sonDodgeRestore.Play();
+            }
         }
 
         public void Initialize(Rect2 playArea)

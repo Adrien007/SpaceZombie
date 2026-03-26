@@ -6,6 +6,6 @@ namespace SpaceZombie.Joueurs
         AttackSpeed,
         AddProjectile,
         Passthrough,
-        MoveSpeed
+        Dodge
     }
 }

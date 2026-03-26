@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6q155xgtnotg"
-path="res://.godot/imported/move_speed_icon.png-fb83134560ab82414e5b8f9b03eeae8a.ctex"
+uid="uid://dsao7t3eu8bxr"
+path="res://.godot/imported/dodge_icon.png-d8cb443bbf2f018e20aab8886f879e2a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/move_speed_icon.png"
-dest_files=["res://.godot/imported/move_speed_icon.png-fb83134560ab82414e5b8f9b03eeae8a.ctex"]
+source_file="res://images/dodge_icon.png"
+dest_files=["res://.godot/imported/dodge_icon.png-d8cb443bbf2f018e20aab8886f879e2a.ctex"]
 
 [params]
 
