@@ -1,5 +1,7 @@
 using Godot;
+using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
+using SpaceZombie.Ui;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,95 +10,154 @@ namespace SpaceZombie.Enemies
 {
     public partial class EnemiesSpawns : Node2D
     {
-        static private float spawnAreaHeight = 150f;
+        static float spawnAreaY = -100;
+        static float spawnAreaHeight = 100f;
+        static float spawnMargin = 80f;
+        static float spawnLeft = spawnMargin;
+        static float spawnCenter;
+        static float spawnRight;
+
         private Joueur joueur;
         private Vector2 spawnAreaSize;
-        private Timer spawnEveryTimer;
-        private int nextSpawnIndex;
-        private List<EnemySpawn> spawns;
+        private Timer spawnDelayTimer;
+        private int nextLevelIndex;
+        private int nextWaveIndex;
+        private EnemySpawn[][] levels;
+        private int numberOfEnemySpawned = 0;
 
         public override void _Ready()
         {
-            spawnEveryTimer = new Timer
+            spawnDelayTimer = new Timer
             {
                 OneShot = true,
             };
-            spawnEveryTimer.Timeout += DoNextSpawn;
-            nextSpawnIndex = 0;
-            AddChild(spawnEveryTimer);
+            spawnDelayTimer.Timeout += SpawnWave;
+            nextLevelIndex = 0;
+            nextWaveIndex = 0;
+            AddChild(spawnDelayTimer);
         }
 
         public void Initialize(Vector2 playAreaSize, Joueur joueur)
         {
             this.joueur = joueur;
             spawnAreaSize = new Vector2(playAreaSize.X, spawnAreaHeight);
-            Position = new Vector2(0, -spawnAreaHeight - 50);
+            spawnCenter = spawnAreaSize.X / 2;
+            spawnRight = spawnAreaSize.X - spawnMargin;
+
+            Position = new Vector2(0, -spawnAreaHeight + spawnAreaY);
+            levels = [
+                [
+                    new EnemySpawn("res://Prefabs/Enemies/zombie.tscn", (3, null), 6f, 4),
+                    //new EnemySpawn("res://Prefabs/Enemies/zombie.tscn", (3, null), 7f, 2),
+                ],
+                [
+                    new EnemySpawn("res://Prefabs/Enemies/zombie_ship.tscn", (2, null), 5, 3),
+                ],
+            ];
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel, "1");
         }
 
-        public void Spawn(List<EnemySpawn> spawns)
+        public void SpawnLevel()
         {
-            this.spawns = spawns;
-            nextSpawnIndex = 0;
-            DoNextSpawn();
+            if (nextLevelIndex >= levels.Length) return;
+            nextWaveIndex = 0;
+            SpawnWave();
         }
 
-        private void DoNextSpawn()
+        private void SpawnWave()
         {
-            if (nextSpawnIndex >= spawns.Count)
-            {
-                return;
-            }
 
-            EnemySpawn spawn = spawns[nextSpawnIndex];
+            EnemySpawn[] spawns = levels[nextLevelIndex];
+
+            if (nextWaveIndex >= spawns.Length) return;
+
+            EnemySpawn spawn = spawns[nextWaveIndex];
             if (spawn.repeat > 0)
             {
-                SpawnRandomPosition(spawn.loader, spawn.number);
                 spawn.repeat -= 1;
-                if (spawn.every >= 0)
+                if (spawn.repeat == 0) nextWaveIndex += 1;
+                if (spawn.quantityAtPositionX.Item2 == null)
                 {
-                    spawnEveryTimer.Start(spawn.every);
+                    SpawnRandomPosition(spawn.loader, spawn.quantityAtPositionX.Item1);
                 }
                 else
                 {
-                    DoNextSpawn();
+                    SpawnAtPostion(spawn.loader, ((int, float))spawn.quantityAtPositionX);
                 }
+                StartNextSpawnTimer(spawn.delayTillNext);
             }
             else
             {
-                nextSpawnIndex += 1;
-                DoNextSpawn();
+                throw new($"Spawning Error : Wanting to spawn 0 Enemy : At level :{nextLevelIndex}, Wave : {nextWaveIndex}");
             }
         }
 
-        private void SpawnRandomPosition(PackedScene loader, int number)
+        private void StartNextSpawnTimer(float delayTillNext)
         {
-            for (int i = 0; i < number; i++)
+            if (delayTillNext >= 0)
             {
-                Zombie zombie = (Zombie)loader.Instantiate();
-                zombie.Position = GetRandomPosition(spawnAreaSize);
-                zombie.joueur = joueur;
-                AddChild(zombie);
+                spawnDelayTimer.Start(delayTillNext);
+            }
+            else
+            {
+                SpawnWave();
             }
         }
 
-        private static Vector2 GetRandomPosition(Vector2 groupArea) =>
-            new Vector2(GD.Randf() * groupArea.X, GD.Randf() * groupArea.Y);
+        private void OnEnemyDied()
+        {
+            numberOfEnemySpawned -= 1;
+            if (numberOfEnemySpawned == 0)
+            {
+                nextLevelIndex += 1;
+                GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel, (nextLevelIndex + 1).ToString());
+            }
+        }
 
+        private void SpawnAtPostion(PackedScene loader, (int quantity, float positionX) spawn)
+        {
+            for (int i = 0; i < spawn.quantity; i++)
+            {
+                BaseEnemy enemy = (BaseEnemy)loader.Instantiate();
+                enemy.Initialize(GetRandomPositionY(spawn.positionX), joueur, OnEnemyDied);
+                AddChild(enemy);
+            }
+            numberOfEnemySpawned += spawn.quantity;
+        }
+
+        private void SpawnRandomPosition(PackedScene loader, int quantity)
+        {
+            for (int i = 0; i < quantity; i++)
+            {
+                BaseEnemy enemy = (BaseEnemy)loader.Instantiate();
+                enemy.Initialize(GetRandomPosition(), joueur, OnEnemyDied);
+                AddChild(enemy);
+            }
+            numberOfEnemySpawned += quantity;
+        }
+
+        private Vector2 GetRandomPosition() =>
+            new Vector2(GD.Randf() * spawnAreaSize.X, GD.Randf() * spawnAreaSize.Y);
+
+        private Vector2 GetRandomPositionY(float x) =>
+            new Vector2(x, GD.Randf() * spawnAreaSize.Y);
     }
 
     public class EnemySpawn
     {
-        public int number;
-        public float every;
+        public (int, float?) quantityAtPositionX;
+        public float delayTillNext;
         public int repeat;
         public PackedScene loader;
 
-        public EnemySpawn(string resourcePath, int number, float every = 0, int repeat = 1)
+        public EnemySpawn(string resourcePath, (int, float?) quantityAtPositionX, float delayTillNext, int repeat = 1)
         {
-            this.number = number;
-            this.every = every;
+            this.quantityAtPositionX = quantityAtPositionX;
+            this.delayTillNext = delayTillNext;
             this.repeat = repeat;
             loader = (PackedScene)ResourceLoader.Load(resourcePath);
         }
     }
+
+
 }

@@ -28,7 +28,7 @@ namespace SpaceZombie.Events
         public delegate void ChooseUpgradeEventHandler();
 
         [Signal]
-        public delegate void EndLevelEventHandler();
+        public delegate void EndLevelEventHandler(string level);
 
         [Signal]
         public delegate void PlayerScoreUpdatedEventHandler(int playerScore);

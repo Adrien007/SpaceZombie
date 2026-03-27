@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://8dn8alkdfv0h"]
 
 [ext_resource type="Script" uid="uid://c4otkks5aj21x" path="res://Scripts/Enemies/Zombie.cs" id="1_m0vew"]
-[ext_resource type="Texture2D" uid="uid://bce8ixoyeou0t" path="res://images/zombie.png" id="2_iu2hc"]
+[ext_resource type="Texture2D" uid="uid://ncap2kjrxt6m" path="res://images/zombie.png" id="2_iu2hc"]
 [ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="2_j3hbi"]
 [ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="4_j7lg8"]
-[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/EnemyTakeHit.wav" id="5_r0luw"]
+[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/ZombieTakeHit.wav" id="5_r0luw"]
 [ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="6_x4o5o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j3hbi"]
@@ -13,9 +13,9 @@ size = Vector2(38, 35)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j7lg8"]
 resource_local_to_scene = true
 shader = ExtResource("2_j3hbi")
-shader_parameter/hit_color = Color(0.75390625, 0.852944, 1, 1)
+shader_parameter/hit_color = Color(0.8, 0.9, 1, 1)
 shader_parameter/hit_amount = 0.0
-shader_parameter/attack_color = Color(1, 0.1484375, 0.1484375, 1)
+shader_parameter/attack_color = Color(1, 0.149, 0.149, 1)
 shader_parameter/attack_amount = 0.0
 
 [sub_resource type="Animation" id="Animation_j3hbi"]
@@ -153,7 +153,7 @@ tracks/4/path = NodePath("ExplosionSound:playing")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0.1),
+"times": PackedFloat32Array(0.13333334),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -296,19 +296,15 @@ script = ExtResource("1_m0vew")
 sprite = NodePath("Sprite2D")
 takeHitSound = NodePath("TakeHitSound")
 animation = NodePath("AnimationPlayer")
+hp = 2
+moveSpeed = 50.0
+turnSpeed = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=477135099]
-visible = false
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_j3hbi")
 
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1276974171]
-visible = false
-rect = Rect2(-27, -27, 55, 56)
-enable_node_path = NodePath("")
-
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1316942000]
-texture_filter = 1
 material = SubResource("ShaderMaterial_j7lg8")
 scale = Vector2(0.22802734, 0.22802734)
 texture = ExtResource("2_iu2hc")
@@ -318,6 +314,11 @@ visible = false
 position = Vector2(1, -10)
 texture = ExtResource("4_j7lg8")
 hframes = 12
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1276974171]
+visible = false
+rect = Rect2(-27, -27, 55, 56)
+enable_node_path = NodePath("")
 
 [node name="TakeHitSound" type="AudioStreamPlayer" parent="." unique_id=14295426]
 stream = ExtResource("5_r0luw")
@@ -333,4 +334,4 @@ pitch_scale = 0.95
 libraries/ = SubResource("AnimationLibrary_j3hbi")
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
-[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="OnScreenExited"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="queue_free"]

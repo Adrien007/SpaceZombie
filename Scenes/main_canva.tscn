@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://mpvjh2r5aq08" path="res://images/Purple Nebula 1 - 1024x1024.png" id="2_tfmai"]
 [ext_resource type="Shader" uid="uid://horw6ysklkk6" path="res://Scenes/main_canva_background_scroll.gdshader" id="3_p5n5s"]
 [ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="4_kf714"]
-[ext_resource type="PackedScene" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
+[ext_resource type="PackedScene" uid="uid://cle2mdkmee2uh" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
 [ext_resource type="PackedScene" uid="uid://c2axhgwitp7e2" path="res://Scenes/level_manager.tscn" id="7_ahn3c"]
 [ext_resource type="PackedScene" uid="uid://dch6kuwgx1577" path="res://Prefabs/Ui/floating_text_manager.tscn" id="9_33otj"]
 [ext_resource type="Script" uid="uid://bmrula5s1hvpo" path="res://Scripts/Ui/ProchainNiveauUi.cs" id="9_tpj28"]
@@ -38,6 +38,7 @@ grow_vertical = 2
 texture = ExtResource("2_tfmai")
 
 [node name="TextureRect2" type="TextureRect" parent="." unique_id=163970705]
+z_index = -1
 material = SubResource("ShaderMaterial_7awwb")
 layout_mode = 1
 anchors_preset = 15

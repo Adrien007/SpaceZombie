@@ -31,6 +31,10 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="SpaceZombie"
 
+[global_group]
+
+zombie=""
+
 [input]
 
 move_left={

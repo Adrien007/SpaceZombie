@@ -40,29 +40,27 @@ namespace SpaceZombie.Niveaux
 
         private void Initialize()
         {
+            GameEvents.Instance.EnemyDied += OnEnemyDied;
+            GameEvents.Instance.EndLevel += ChangerNiveauLogic;
             upgradeLoader.InitialiseAreaPlaySize(Size);
             zombiesSpawn.Initialize();
             spawns.Initialize(Size, joueur);
-            GameEvents.Instance.EnemyDied += OnEnemyDied;
-            GameEvents.Instance.EndLevel += ChangerNiveauLogic;
             prochainNiveauUi.timer.Timeout += WaitForTimerToFinish;
+            //ChangerNiveauLogic("1");
         }
 
-        public void ChangerNiveauLogic()
+        public void ChangerNiveauLogic(string level)
         {
             prochainNiveauUi.ProcessMode = ProcessModeEnum.Always;
-            prochainNiveauUi.UpdateLabelTexte(level.ToString());
+            prochainNiveauUi.UpdateLabelTexte(level);
             prochainNiveauUi.Visible = true;
             prochainNiveauUi.StartTimer();
         }
 
         private void WaitForTimerToFinish()
         {
-            CreerNiveau();
-            /*spawns.Spawn([
-                new EnemySpawn("res://Prefabs/Enemies/zombie.tscn", 3, 10f, 3),
-                new EnemySpawn("res://Prefabs/Enemies/zombie.tscn", 4, 8f, 3)
-            ]);*/
+            //CreerNiveau();
+            spawns.SpawnLevel();
             prochainNiveauUi.ProcessMode = ProcessModeEnum.Disabled;
             prochainNiveauUi.Visible = false;
         }
@@ -85,7 +83,7 @@ namespace SpaceZombie.Niveaux
                     level = stageLevelLocal.Item2;
                     zombiesSpawn.ProcessMode = ProcessModeEnum.Disabled;
                     enemyAttackManager.StopFire();
-                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel);
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel, level.ToString());
                 }
             }
             else

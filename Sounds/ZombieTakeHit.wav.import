@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://x2fng1xgeycv"
-path="res://.godot/imported/EnemyTakeHit.wav-d8ddcb9d33258bd757f9422431aef194.sample"
+path="res://.godot/imported/ZombieTakeHit.wav-f9009e03e855f7575106dbe851b234cc.sample"
 
 [deps]
 
-source_file="res://Sounds/EnemyTakeHit.wav"
-dest_files=["res://.godot/imported/EnemyTakeHit.wav-d8ddcb9d33258bd757f9422431aef194.sample"]
+source_file="res://Sounds/ZombieTakeHit.wav"
+dest_files=["res://.godot/imported/ZombieTakeHit.wav-f9009e03e855f7575106dbe851b234cc.sample"]
 
 [params]
 

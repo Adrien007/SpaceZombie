@@ -1,0 +1,177 @@
+[gd_scene format=3 uid="uid://duauv0q6jc874"]
+
+[ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="1_1uck6"]
+[ext_resource type="Texture2D" uid="uid://h3x1qdtlreyr" path="res://images/zombie_ship.png" id="1_co2w8"]
+[ext_resource type="PackedScene" uid="uid://c2s3r4j8bv3lj" path="res://Prefabs/projectile_enemy.tscn" id="2_0uinr"]
+[ext_resource type="Script" uid="uid://bogaag6syjvyj" path="res://Scripts/Enemies/ZombieShip.cs" id="3_ijxgy"]
+[ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="4_ijxgy"]
+[ext_resource type="AudioStream" uid="uid://bd8lfxhgdl2jf" path="res://Sounds/ZombieShipTakeHit.wav" id="5_ijxgy"]
+[ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="6_xhi5b"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_co2w8"]
+radius = 30.0
+height = 80.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xhi5b"]
+resource_local_to_scene = true
+shader = ExtResource("1_1uck6")
+shader_parameter/hit_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/hit_amount = 0.0
+shader_parameter/attack_color = Color(1, 0.149, 0.149, 1)
+shader_parameter/attack_amount = 0.0
+
+[sub_resource type="Animation" id="Animation_ijxgy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Explosion:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [11]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ExplosionSound:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_grf6t"]
+resource_name = "die"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Explosion:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ExplosionSound:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.13333334),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.13333334, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(1.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dufua"]
+_data = {
+&"RESET": SubResource("Animation_ijxgy"),
+&"die": SubResource("Animation_grf6t")
+}
+
+[node name="ZombieShip" type="Area2D" unique_id=1128962419 node_paths=PackedStringArray("attacksDelay", "canon", "sprite", "takeHitSound", "animation") groups=["zombie"]]
+collision_layer = 536870912
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_ijxgy")
+numberOfAttacks = 2
+attackDamage = 1
+attackSpeed = 200
+attacksDelay = NodePath("AttackDelay")
+canon = NodePath("Canon")
+bulletLoader = ExtResource("2_0uinr")
+sprite = NodePath("Sprite2D")
+takeHitSound = NodePath("TakeHitSound")
+animation = NodePath("AnimationPlayer")
+hp = 3
+moveSpeed = 75.0
+turnSpeed = 1.5
+separationRadius = 80.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=30268881]
+shape = SubResource("CapsuleShape2D_co2w8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1007883359]
+material = SubResource("ShaderMaterial_xhi5b")
+position = Vector2(-2, -1.9999998)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("1_co2w8")
+
+[node name="Explosion" type="Sprite2D" parent="." unique_id=1198062855]
+position = Vector2(0, -4)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("4_ijxgy")
+hframes = 12
+frame = 11
+
+[node name="Canon" type="Node2D" parent="." unique_id=2095913678]
+position = Vector2(0, 45)
+
+[node name="AttackDelay" type="Timer" parent="." unique_id=971357094]
+
+[node name="AttackCooldown" type="Timer" parent="." unique_id=1488877963]
+wait_time = 4.0
+one_shot = true
+
+[node name="TakeHitSound" type="AudioStreamPlayer" parent="." unique_id=1834854514]
+stream = ExtResource("5_ijxgy")
+volume_db = -5.0
+pitch_scale = 1.5
+
+[node name="ExplosionSound" type="AudioStreamPlayer" parent="." unique_id=601572512]
+stream = ExtResource("6_xhi5b")
+volume_db = 1.5
+pitch_scale = 0.95
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=343715220]
+libraries/ = SubResource("AnimationLibrary_dufua")

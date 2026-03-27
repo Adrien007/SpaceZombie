@@ -1,11 +1,8 @@
 //MainAera.cs
 using Godot;
-using SpaceZombie.Enemies;
 using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using SpaceZombie.Niveaux;
-using SpaceZombie.Ui;
-using System;
 
 namespace SpaceZombie.Mondes.Utilitaires
 {
@@ -24,7 +21,6 @@ namespace SpaceZombie.Mondes.Utilitaires
         public void Initialiser()
         {
             joueur.Initialize(GetRect());
-            levelManager.ChangerNiveauLogic();
         }
 
         private void ChooseUpgrade()
