@@ -5,9 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://71qelkwnmbek" path="res://images/vaisseau-removebg-preview.png" id="2_qpr61"]
 [ext_resource type="PackedScene" uid="uid://b8lyoihukwcpa" path="res://Prefabs/canon_joueur.tscn" id="2_trojc"]
 [ext_resource type="AudioStream" uid="uid://dmfv56vwlsvvo" path="res://Sounds/PlayerHitTaken.wav" id="3_klc7x"]
+[ext_resource type="PackedScene" uid="uid://bw6qi0ilqltm2" path="res://Prefabs/Player/sheld_vfx.tscn" id="6_klc7x"]
+[ext_resource type="PackedScene" uid="uid://brgqvr51kt6sh" path="res://Prefabs/Player/smoke_damage_vfx.tscn" id="7_vdpc2"]
+[ext_resource type="PackedScene" uid="uid://cr0bg7upcelb3" path="res://Prefabs/Player/take_damage_vfx.tscn" id="8_tqf3d"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
-radius = 20.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kfqi4"]
+height = 42.0
 
 [sub_resource type="Animation" id="Animation_kfqi4"]
 resource_name = "Die"
@@ -46,7 +49,7 @@ _data = {
 &"RESET": SubResource("Animation_klc7x")
 }
 
-[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("canons", "panel", "invinsibilityPanel", "sonPrendsHit", "sonInvicible")]
+[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("canons", "panel", "invinsibilityPanel", "sonPrendsHit", "sonInvicible", "smokeDamageVfx", "takeDamageVfx")]
 collision_layer = 2147483648
 collision_mask = 268435456
 monitoring = false
@@ -56,10 +59,12 @@ panel = NodePath("Panel")
 invinsibilityPanel = NodePath("Panel/Panel")
 sonPrendsHit = NodePath("PlayerHitTaken")
 sonInvicible = NodePath("PlayerInvisibility")
+smokeDamageVfx = NodePath("Smoke_damage_vfx")
+takeDamageVfx = NodePath("Take_damage_vfx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078271631]
-visible = false
-shape = SubResource("CircleShape2D_0i1yc")
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_kfqi4")
 
 [node name="PlayerInvisibility" type="AudioStreamPlayer" parent="." unique_id=1547663225]
 stream = ExtResource("2_kfqi4")
@@ -95,5 +100,13 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.7882353, 0.22352941, 0.4392157)
 
+[node name="Sheld_vfx" parent="Panel/Panel" unique_id=446107016 instance=ExtResource("6_klc7x")]
+position = Vector2(20, 55)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=961744937]
 libraries/ = SubResource("AnimationLibrary_vdpc2")
+
+[node name="Smoke_damage_vfx" parent="." unique_id=2020028348 instance=ExtResource("7_vdpc2")]
+position = Vector2(-7, 14)
+
+[node name="Take_damage_vfx" parent="." unique_id=1540856570 instance=ExtResource("8_tqf3d")]

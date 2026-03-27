@@ -37,6 +37,9 @@ namespace SpaceZombie.Boss
             AddChild(nextActionTimer);
 
             animation.AnimationFinished += AnimationFinished;
+            
+            var introPlusBossFight = GetNode<AudioStreamPlayer>("IntroPlusBossFight");
+            introPlusBossFight.Play(21.50f);
         }
 
         public void Foward()

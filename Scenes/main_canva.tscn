@@ -95,6 +95,7 @@ script = ExtResource("8_kf714")
 zombiesSpawn = NodePath("ZombieSpawns")
 upgradeLoader = NodePath("UpgradeLoader")
 joueur = NodePath("../Joueur")
+level = 8
 
 [node name="ZombieSpawns" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager" unique_id=152002464 node_paths=PackedStringArray("inLigneSpawnersObjet")]
 custom_minimum_size = Vector2(0, 300)

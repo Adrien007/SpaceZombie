@@ -4,11 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://coxhx37d4vlu5" path="res://images/enemy1.png" id="2_5s6cx"]
 [ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/EnemyTakeHit.wav" id="3_4nwae"]
 [ext_resource type="AudioStream" uid="uid://chaslu53mxywl" path="res://Sounds/ZombieDye.wav" id="4_x8ovi"]
+[ext_resource type="PackedScene" uid="uid://cr0bg7upcelb3" path="res://Prefabs/Player/take_damage_vfx.tscn" id="5_x8ovi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r77uo"]
 radius = 20.0
 
-[node name="Enemy" type="Area2D" unique_id=971942891 node_paths=PackedStringArray("sonPrendsHit", "sonMeurt")]
+[node name="Enemy" type="Area2D" unique_id=971942891 node_paths=PackedStringArray("sonPrendsHit", "sonMeurt", "takeDamageVfx")]
 rotation = 1.5707964
 collision_layer = 536870912
 collision_mask = 0
@@ -17,6 +18,7 @@ monitorable = false
 script = ExtResource("1_5f2su")
 sonPrendsHit = NodePath("EnemyTakeHit")
 sonMeurt = NodePath("ZombieDye")
+takeDamageVfx = NodePath("Take_damage_vfx")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=572258027]
 anchors_preset = 8
@@ -42,3 +44,5 @@ stream = ExtResource("3_4nwae")
 
 [node name="ZombieDye" type="AudioStreamPlayer" parent="." unique_id=1199393737]
 stream = ExtResource("4_x8ovi")
+
+[node name="Take_damage_vfx" parent="." unique_id=1540856570 instance=ExtResource("5_x8ovi")]

@@ -16,6 +16,8 @@ namespace SpaceZombie.Joueurs
         [Export] private AudioStreamPlayer sonPrendsHit;
         [Export] private AudioStreamPlayer sonMeurt;
         [Export] private AudioStreamPlayer sonInvicible;
+        [Export] private Node2D smokeDamageVfx;
+        [Export] private GpuParticles2D takeDamageVfx;
         [Export] public int hp = 3;
         [Export] public float moveSpeed = 200f;
         [Export] public float upgradeMoveSpeed = 0.2f;
@@ -37,6 +39,7 @@ namespace SpaceZombie.Joueurs
 
             sonInvicible.Finished += OnSoundInvicibilityFinished;
             invinsibilityPanel.Visible = false;
+            smokeDamageVfx.Visible = false;
             SetProcess(false);
         }
 
@@ -83,6 +86,9 @@ namespace SpaceZombie.Joueurs
                     sonPrendsHit.Play();
                     sonInvicible.Play();
                     invinsibilityPanel.Visible = true;
+                    takeDamageVfx.Emitting = true;
+                    if (jState.Hp == 1)
+                        smokeDamageVfx.Visible = true;
                 }
                 else if (!jState.IsDead)
                 {

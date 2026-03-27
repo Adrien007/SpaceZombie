@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://smhtqya2jdam" path="res://Scripts/Ui/MenuUpgrade.cs" id="1_uokam"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h311p"]
-bg_color = Color(1, 0.8666667, 0, 1)
+bg_color = Color(0, 0.43137255, 0, 1)
 border_width_left = 8
 border_width_top = 8
 border_width_right = 8
@@ -22,7 +22,6 @@ script = ExtResource("1_uokam")
 selectionTip = NodePath("MarginContainer/VBoxContainer/SelectionTip")
 option1 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option1")
 option2 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option2")
-selectionButtonName = "\"Enter\""
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1646650328]
 layout_mode = 2
