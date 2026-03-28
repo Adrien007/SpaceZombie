@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://duauv0q6jc874"]
 
-[ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="1_1uck6"]
-[ext_resource type="Texture2D" uid="uid://h3x1qdtlreyr" path="res://images/zombie_ship.png" id="1_co2w8"]
-[ext_resource type="PackedScene" uid="uid://c2s3r4j8bv3lj" path="res://Prefabs/projectile_enemy.tscn" id="2_0uinr"]
-[ext_resource type="Script" uid="uid://bogaag6syjvyj" path="res://Scripts/Enemies/ZombieShip.cs" id="3_ijxgy"]
-[ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="4_ijxgy"]
-[ext_resource type="AudioStream" uid="uid://bd8lfxhgdl2jf" path="res://Sounds/ZombieShipTakeHit.wav" id="5_ijxgy"]
-[ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="6_xhi5b"]
+[ext_resource type="Script" uid="uid://cdkcry7yapg41" path="res://Scripts/Enemies/Zombie2.cs" id="1_y7nrq"]
+[ext_resource type="PackedScene" uid="uid://c2s3r4j8bv3lj" path="res://Prefabs/projectile_enemy.tscn" id="2_5yww2"]
+[ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="3_ibgbl"]
+[ext_resource type="Texture2D" uid="uid://h3x1qdtlreyr" path="res://images/zombie2.png" id="4_7qn1o"]
+[ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="5_jvseb"]
+[ext_resource type="Script" uid="uid://b7ny6msywao5l" path="res://Scripts/States/MoveInState.cs" id="6_5yww2"]
+[ext_resource type="Script" uid="uid://bwiyhgco76md0" path="res://Scripts/States/Zombie2AttackState.cs" id="6_ibgbl"]
+[ext_resource type="AudioStream" uid="uid://bd8lfxhgdl2jf" path="res://Sounds/ZombieShipTakeHit.wav" id="6_m70n8"]
+[ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="7_0f62g"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_co2w8"]
 radius = 30.0
@@ -14,7 +16,7 @@ height = 80.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xhi5b"]
 resource_local_to_scene = true
-shader = ExtResource("1_1uck6")
+shader = ExtResource("3_ibgbl")
 shader_parameter/hit_color = Color(0.8, 0.9, 1, 1)
 shader_parameter/hit_amount = 0.0
 shader_parameter/attack_color = Color(1, 0.149, 0.149, 1)
@@ -119,24 +121,20 @@ _data = {
 &"die": SubResource("Animation_grf6t")
 }
 
-[node name="ZombieShip" type="Area2D" unique_id=1128962419 node_paths=PackedStringArray("attacksDelay", "canon", "sprite", "takeHitSound", "animation") groups=["zombie"]]
+[node name="Zombie2" type="Area2D" unique_id=1128962419 node_paths=PackedStringArray("sprite", "takeHitSound", "animation", "states", "currentState") groups=["zombie"]]
 collision_layer = 536870912
 collision_mask = 0
 monitoring = false
-script = ExtResource("3_ijxgy")
-numberOfAttacks = 2
-attackDamage = 1
-attackSpeed = 200
-attacksDelay = NodePath("AttackDelay")
-canon = NodePath("Canon")
-bulletLoader = ExtResource("2_0uinr")
+script = ExtResource("1_y7nrq")
 sprite = NodePath("Sprite2D")
 takeHitSound = NodePath("TakeHitSound")
 animation = NodePath("AnimationPlayer")
 hp = 3
 moveSpeed = 75.0
-turnSpeed = 1.5
-separationRadius = 80.0
+turnSpeed = 2.5
+separationRadius = 50.0
+states = [NodePath("MoveInState"), NodePath("AttackState")]
+currentState = NodePath("MoveInState")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=30268881]
 shape = SubResource("CapsuleShape2D_co2w8")
@@ -145,31 +143,36 @@ shape = SubResource("CapsuleShape2D_co2w8")
 material = SubResource("ShaderMaterial_xhi5b")
 position = Vector2(-2, -1.9999998)
 scale = Vector2(0.4, 0.4)
-texture = ExtResource("1_co2w8")
+texture = ExtResource("4_7qn1o")
 
 [node name="Explosion" type="Sprite2D" parent="." unique_id=1198062855]
 position = Vector2(0, -4)
 scale = Vector2(1.2, 1.2)
-texture = ExtResource("4_ijxgy")
+texture = ExtResource("5_jvseb")
 hframes = 12
 frame = 11
 
-[node name="Canon" type="Node2D" parent="." unique_id=2095913678]
+[node name="MoveInState" type="Node2D" parent="." unique_id=401713179]
+script = ExtResource("6_5yww2")
+
+[node name="AttackState" type="Node2D" parent="." unique_id=2002954640 node_paths=PackedStringArray("attacksDelay")]
 position = Vector2(0, 45)
+script = ExtResource("6_ibgbl")
+numberOfAttacks = 2
+attackDamage = 1
+attackSpeed = 200
+attacksDelay = NodePath("AttackDelay")
+bulletLoader = ExtResource("2_5yww2")
 
-[node name="AttackDelay" type="Timer" parent="." unique_id=971357094]
-
-[node name="AttackCooldown" type="Timer" parent="." unique_id=1488877963]
-wait_time = 4.0
-one_shot = true
+[node name="AttackDelay" type="Timer" parent="AttackState" unique_id=971357094]
 
 [node name="TakeHitSound" type="AudioStreamPlayer" parent="." unique_id=1834854514]
-stream = ExtResource("5_ijxgy")
+stream = ExtResource("6_m70n8")
 volume_db = -5.0
 pitch_scale = 1.5
 
 [node name="ExplosionSound" type="AudioStreamPlayer" parent="." unique_id=601572512]
-stream = ExtResource("6_xhi5b")
+stream = ExtResource("7_0f62g")
 volume_db = 1.5
 pitch_scale = 0.95
 

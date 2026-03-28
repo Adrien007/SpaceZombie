@@ -24,7 +24,7 @@ namespace SpaceZombie.Joueurs
         [Export] public int hp = 3;
         [Export] public float moveSpeed = 175f;
         [Export] private float dodgeSpeedIncrease = 350f;
-        [Export] private float dodgeSimpleSpeedIncrease = 225f;
+        [Export] private float dodgeSimpleSpeedIncrease = 275f;
         [Export] private Timer dodgeTimer;
         [Export] private Timer dodgeDelayTimer;
         [Export] private Timer dodgeCooldownTimer;

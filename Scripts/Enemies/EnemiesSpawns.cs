@@ -10,6 +10,9 @@ namespace SpaceZombie.Enemies
 {
     public partial class EnemiesSpawns : Node2D
     {
+        const string zombie1 = "res://Prefabs/Enemies/zombie1.tscn";
+        const string zombie2 = "res://Prefabs/Enemies/zombie2.tscn";
+        const string zombie3 = "res://Prefabs/Enemies/zombie3.tscn";
         static float spawnAreaY = -100;
         static float spawnAreaHeight = 100f;
         static float spawnMargin = 80f;
@@ -47,11 +50,16 @@ namespace SpaceZombie.Enemies
             Position = new Vector2(0, -spawnAreaHeight + spawnAreaY);
             levels = [
                 [
-                    new EnemySpawn("res://Prefabs/Enemies/zombie.tscn", (3, null), 6f, 4),
+                    new EnemySpawn(zombie3, (1, null), 5f, 4),
+                    //new EnemySpawn(zombie1, (3, null), 6f, 4),
+                    //new EnemySpawn(zombie2, (5, null), 10, 3),
+                ],
+                [
+                    new EnemySpawn(zombie1, (3, null), 6f, 4),
                     //new EnemySpawn("res://Prefabs/Enemies/zombie.tscn", (3, null), 7f, 2),
                 ],
                 [
-                    new EnemySpawn("res://Prefabs/Enemies/zombie_ship.tscn", (2, null), 5, 3),
+                    new EnemySpawn(zombie2, (2, null), 5, 3),
                 ],
             ];
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel, "1");

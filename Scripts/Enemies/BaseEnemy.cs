@@ -9,21 +9,28 @@ namespace SpaceZombie.Enemies
     {
         [Export] protected Sprite2D sprite;
         [Export] private AudioStreamPlayer takeHitSound;
-        [Export] protected AnimationPlayer animation;
+        [Export] public AnimationPlayer animation;
         [Export] protected int hp;
         [Export] protected float moveSpeed;
         [Export] protected float turnSpeed;
         [Export] private float separationRadius = 40f;
-        private float separationWeight = 2f;
+        [Export] private State[] states;
+        [Export] protected State currentState;
+        private float separationWeight = 60f;
         private float damageFlashDuration = 0.4f;
         private ShaderMaterial damageShader;
         public Joueur joueur;
         public Action died;
-        protected Vector2 velocity;
+        public Vector2 direction;
 
         public override void _Ready()
         {
             damageShader = (ShaderMaterial)sprite.Material;
+            foreach (State state in states)
+            {
+                state.enemy = this;
+            }
+            currentState.Enter();
         }
 
         public void Initialize(Vector2 position, Joueur joueur, Action died)
@@ -33,10 +40,35 @@ namespace SpaceZombie.Enemies
             this.died = died;
         }
 
+        public override void _Process(double delta)
+        {
+            currentState.Update(delta);
+        }
+
+        public override void _PhysicsProcess(double delta)
+        {
+            currentState.PhysicUpdate(delta);
+        }
+
+        public void ChangeState(string newStateName)
+        {
+            currentState.Exit();
+            for (int i = 0; i < states.Length; i++)
+            {
+                if (states[i].name == newStateName)
+                {
+                    currentState = states[i];
+                    currentState.Enter();
+                    return;
+                }
+            }
+            throw new($"State {newStateName} not found !"); ;
+        }
+
         public void TakeDamage(int damage)
         {
             ShowHitShader();
-            Shake();
+            if (direction.Length() < 700) Shake();
 
             hp -= 1;
             if (hp <= 0)
@@ -53,14 +85,20 @@ namespace SpaceZombie.Enemies
         {
             Monitorable = false;
             Monitoring = false;
+            currentState.Exit();
             animation.Play("die");
             joueur.ScoreUpdateListener(100, GlobalPosition);
             died();
         }
 
-        protected void MoveToTarget(Vector2 targetDirection, double delta)
+        public virtual Vector2 GetJoueurDirection()
         {
-            velocity = targetDirection.Normalized() * moveSpeed;
+            return joueur.GlobalPosition - GlobalPosition;
+        }
+
+        public void MoveToTarget(Vector2 targetDirection, double delta)
+        {
+            direction = targetDirection.Normalized() * moveSpeed;
 
             Vector2 separationForce = Vector2.Zero;
 
@@ -73,7 +111,6 @@ namespace SpaceZombie.Enemies
 
                 Vector2 otherDirection = GlobalPosition - other.GlobalPosition;
                 float distance = otherDirection.Length();
-
                 if (distance < other.separationRadius)
                 {
                     float repulsionForce = (other.separationRadius - distance) / separationRadius;
@@ -82,11 +119,22 @@ namespace SpaceZombie.Enemies
             }
 
             // Déplacement
-            velocity = velocity + separationForce;
-            Position += velocity * (float)delta;
+            direction = direction + separationForce;
+            Position += direction * (float)delta;
         }
 
-        protected void RotateTowardTarget(Vector2 targetDirection, double delta)
+        public void MoveToDirection(float speed, double delta)
+        {
+            direction = direction.Normalized() * speed;
+            Position += direction * (float)delta;
+        }
+
+        public void MovePosition(Vector2 direction, double delta)
+        {
+            GlobalPosition += direction * moveSpeed * (float)delta;
+        }
+
+        public void RotateTowardTarget(Vector2 targetDirection, double delta)
         {
             Rotation = Mathf.LerpAngle(Rotation, targetDirection.Angle() - Mathf.Pi / 2f, turnSpeed * (float)delta);
         }

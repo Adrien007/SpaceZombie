@@ -1,0 +1,347 @@
+[gd_scene format=3 uid="uid://8dn8alkdfv0h"]
+
+[ext_resource type="Script" uid="uid://mn0yybhj0ut1" path="res://Scripts/Enemies/Zombie1.cs" id="1_xe8s3"]
+[ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="2_ojfvp"]
+[ext_resource type="Texture2D" uid="uid://ncap2kjrxt6m" path="res://images/zombie1.png" id="3_p5n5v"]
+[ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="4_qkvls"]
+[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/ZombieTakeHit.wav" id="5_ich5e"]
+[ext_resource type="Script" uid="uid://b7ny6msywao5l" path="res://Scripts/States/MoveInState.cs" id="5_p5n5v"]
+[ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="6_da80c"]
+[ext_resource type="Script" uid="uid://drkoej8m130ll" path="res://Scripts/States/Zombie1AttackState.cs" id="6_qkvls"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j3hbi"]
+size = Vector2(38, 35)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j7lg8"]
+resource_local_to_scene = true
+shader = ExtResource("2_ojfvp")
+shader_parameter/hit_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/hit_amount = 0.0
+shader_parameter/attack_color = Color(1, 0.149, 0.149, 1)
+shader_parameter/attack_amount = 0.0
+
+[sub_resource type="Animation" id="Animation_j3hbi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Explosion:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Explosion:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ExplosionSound:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D:material:shader_parameter/attack_amount")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_r0luw"]
+resource_name = "die"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Explosion:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Explosion:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(-8.940697e-08, 0.099999934, 0.19999996, 0.29999983, 0.39999998, 0.49999988, 0.6, 0.6999999, 0.79999983, 0.9, 0.9999999, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.22999999, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(1.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ExplosionSound:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.13333334),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_j7lg8"]
+resource_name = "explode"
+length = 2.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Explosion:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Explosion:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1, 1.1, 1.2, 1.3, 1.4000001, 1.5, 1.6000001, 1.7, 1.8, 1.9000001, 2, 2.1000001),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.1, 1.4000001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(1.3333333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"DamagePlayer"
+}]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(2.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("ExplosionSound:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(1.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_iu2hc"]
+resource_name = "prepare_attack"
+length = 1.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.26666668, 0.4, 0.56666666, 0.73333335, 0.8666667, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-2, 0), Vector2(2, 0), Vector2(-2, 0), Vector2(2, 0), Vector2(-2, 0), Vector2(2, 0), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:material:shader_parameter/attack_amount")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.50000002375]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttackState")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"Attack"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j3hbi"]
+_data = {
+&"RESET": SubResource("Animation_j3hbi"),
+&"die": SubResource("Animation_r0luw"),
+&"explode": SubResource("Animation_j7lg8"),
+&"prepare_attack": SubResource("Animation_iu2hc")
+}
+
+[node name="Zombie1" type="Area2D" unique_id=1856451251 node_paths=PackedStringArray("sprite", "takeHitSound", "animation", "states", "currentState") groups=["zombie"]]
+collision_layer = 536870912
+collision_mask = 2147483648
+script = ExtResource("1_xe8s3")
+sprite = NodePath("Sprite2D")
+takeHitSound = NodePath("TakeHitSound")
+animation = NodePath("AnimationPlayer")
+hp = 2
+moveSpeed = 50.0
+turnSpeed = 1.5
+states = [NodePath("MoveCloseState"), NodePath("AttackState")]
+currentState = NodePath("MoveCloseState")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=477135099]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_j3hbi")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1316942000]
+material = SubResource("ShaderMaterial_j7lg8")
+scale = Vector2(0.22802734, 0.22802734)
+texture = ExtResource("3_p5n5v")
+
+[node name="Explosion" type="Sprite2D" parent="." unique_id=1138148508]
+visible = false
+position = Vector2(1, -10)
+texture = ExtResource("4_qkvls")
+hframes = 12
+
+[node name="MoveCloseState" type="Node2D" parent="." unique_id=197224570]
+script = ExtResource("5_p5n5v")
+
+[node name="AttackState" type="Node2D" parent="." unique_id=757999429]
+script = ExtResource("6_qkvls")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1276974171]
+visible = false
+rect = Rect2(-27, -27, 55, 56)
+enable_node_path = NodePath("")
+
+[node name="TakeHitSound" type="AudioStreamPlayer" parent="." unique_id=14295426]
+stream = ExtResource("5_ich5e")
+volume_db = -15.0
+pitch_scale = 0.8
+
+[node name="ExplosionSound" type="AudioStreamPlayer" parent="." unique_id=505861633]
+stream = ExtResource("6_da80c")
+volume_db = 1.5
+pitch_scale = 0.95
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=277293634]
+libraries/ = SubResource("AnimationLibrary_j3hbi")
+
+[connection signal="area_entered" from="." to="AttackState" method="OnAreaEntered"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="queue_free"]

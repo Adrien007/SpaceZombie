@@ -1,18 +1,19 @@
-[gd_scene format=3 uid="uid://8dn8alkdfv0h"]
+[gd_scene format=3 uid="uid://cvs3k0lmweie0"]
 
-[ext_resource type="Script" uid="uid://c4otkks5aj21x" path="res://Scripts/Enemies/Zombie.cs" id="1_m0vew"]
-[ext_resource type="Texture2D" uid="uid://ncap2kjrxt6m" path="res://images/zombie.png" id="2_iu2hc"]
-[ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="2_j3hbi"]
-[ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="4_j7lg8"]
-[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/ZombieTakeHit.wav" id="5_r0luw"]
-[ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="6_x4o5o"]
+[ext_resource type="Script" uid="uid://cjlfry4rh18a4" path="res://Scripts/Enemies/Zombie3.cs" id="1_dfy8o"]
+[ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="2_cvhvw"]
+[ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="2_ev6jm"]
+[ext_resource type="Texture2D" uid="uid://d7ekkot4akb0" path="res://images/zombie3.png" id="2_fts7h"]
+[ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="4_ev6jm"]
+[ext_resource type="Script" uid="uid://8dcbccokeh1k" path="res://Scripts/States/Zombie3MoveState.cs" id="5_imsnc"]
+[ext_resource type="AudioStream" uid="uid://bd8lfxhgdl2jf" path="res://Sounds/ZombieShipTakeHit.wav" id="6_ev6jm"]
+[ext_resource type="Script" uid="uid://byi0pallx6sf7" path="res://Scripts/States/Zombie3AttackState.cs" id="6_p61eu"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_j3hbi"]
-size = Vector2(38, 35)
+[sub_resource type="CircleShape2D" id="CircleShape2D_fts7h"]
+radius = 47.095646
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_j7lg8"]
-resource_local_to_scene = true
-shader = ExtResource("2_j3hbi")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3kagc"]
+shader = ExtResource("2_ev6jm")
 shader_parameter/hit_color = Color(0.8, 0.9, 1, 1)
 shader_parameter/hit_amount = 0.0
 shader_parameter/attack_color = Color(1, 0.149, 0.149, 1)
@@ -127,7 +128,7 @@ tracks/2/path = NodePath("Sprite2D:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.1, 0.4),
+"times": PackedFloat32Array(0.22999999, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -281,7 +282,7 @@ tracks/2/keys = {
 "values": [0.50000002375]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_j3hbi"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3kagc"]
 _data = {
 &"RESET": SubResource("Animation_j3hbi"),
 &"die": SubResource("Animation_r0luw"),
@@ -289,49 +290,71 @@ _data = {
 &"prepare_attack": SubResource("Animation_iu2hc")
 }
 
-[node name="Zombie" type="Area2D" unique_id=1856451251 node_paths=PackedStringArray("sprite", "takeHitSound", "animation") groups=["zombie"]]
+[node name="Zombie3" type="Area2D" unique_id=495035818 node_paths=PackedStringArray("sprite", "takeHitSound", "animation", "states", "currentState")]
 collision_layer = 536870912
-collision_mask = 2147483648
-script = ExtResource("1_m0vew")
+collision_mask = 536870912
+monitoring = false
+script = ExtResource("1_dfy8o")
 sprite = NodePath("Sprite2D")
 takeHitSound = NodePath("TakeHitSound")
 animation = NodePath("AnimationPlayer")
-hp = 2
-moveSpeed = 50.0
-turnSpeed = 1.0
+hp = 3
+moveSpeed = 500.0
+separationRadius = 60.0
+states = [NodePath("MoveState"), NodePath("AttackState")]
+currentState = NodePath("MoveState")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=477135099]
-position = Vector2(0, 0.5)
-shape = SubResource("RectangleShape2D_j3hbi")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=714396653]
+shape = SubResource("CircleShape2D_fts7h")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1316942000]
-material = SubResource("ShaderMaterial_j7lg8")
-scale = Vector2(0.22802734, 0.22802734)
-texture = ExtResource("2_iu2hc")
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1385061349]
+material = SubResource("ShaderMaterial_3kagc")
+scale = Vector2(0.43121338, 0.43121338)
+texture = ExtResource("2_fts7h")
 
-[node name="Explosion" type="Sprite2D" parent="." unique_id=1138148508]
+[node name="Explosion" type="Sprite2D" parent="." unique_id=1444088097]
 visible = false
-position = Vector2(1, -10)
-texture = ExtResource("4_j7lg8")
+position = Vector2(0, 2)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_cvhvw")
 hframes = 12
 
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1276974171]
-visible = false
-rect = Rect2(-27, -27, 55, 56)
-enable_node_path = NodePath("")
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=132702872]
+position = Vector2(1, 43)
+target_position = Vector2(0, 0)
+collision_mask = 2147483648
+collide_with_areas = true
+collide_with_bodies = false
 
-[node name="TakeHitSound" type="AudioStreamPlayer" parent="." unique_id=14295426]
-stream = ExtResource("5_r0luw")
-volume_db = -15.0
-pitch_scale = 0.8
+[node name="LineAim" type="Line2D" parent="RayCast2D" unique_id=1270781796]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 15.0
+default_color = Color(0.7803914, 0, 0.0528448, 1)
+end_cap_mode = 2
+sharp_limit = 0.0
 
-[node name="ExplosionSound" type="AudioStreamPlayer" parent="." unique_id=505861633]
-stream = ExtResource("6_x4o5o")
+[node name="Line2D2" type="Line2D" parent="RayCast2D" unique_id=1707887681]
+
+[node name="MoveState" type="Node2D" parent="." unique_id=233838870]
+script = ExtResource("5_imsnc")
+
+[node name="AttackState" type="Node2D" parent="." unique_id=1140810055 node_paths=PackedStringArray("attackCooldown")]
+script = ExtResource("6_p61eu")
+attackCooldown = NodePath("AttackCooldown")
+
+[node name="AttackCooldown" type="Timer" parent="AttackState" unique_id=1714191884]
+wait_time = 5.0
+one_shot = true
+
+[node name="TakeHitSound" type="AudioStreamPlayer" parent="." unique_id=233818472]
+stream = ExtResource("6_ev6jm")
+volume_db = -5.0
+pitch_scale = 1.5
+
+[node name="ExplosionSound" type="AudioStreamPlayer" parent="." unique_id=512883303]
+stream = ExtResource("4_ev6jm")
 volume_db = 1.5
 pitch_scale = 0.95
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=277293634]
-libraries/ = SubResource("AnimationLibrary_j3hbi")
-
-[connection signal="area_entered" from="." to="." method="OnAreaEntered"]
-[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="queue_free"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=369079826]
+libraries/ = SubResource("AnimationLibrary_3kagc")
