@@ -8,9 +8,9 @@
 [ext_resource type="Script" uid="uid://yd71tlnwfeq2" path="res://Scripts/Enemies/EnemySlot.cs" id="3_v3cb1"]
 [ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="4_kf714"]
 [ext_resource type="Script" uid="uid://ldnssl3fut00" path="res://Scripts/Enemies/ZombiesSpawn.cs" id="5_4gd4g"]
-[ext_resource type="PackedScene" uid="uid://csksfstlrsvpj" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
+[ext_resource type="PackedScene" uid="uid://b8ekrlendaa6a" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
 [ext_resource type="Script" uid="uid://dyd3bw3m7n1ge" path="res://Scripts/Enemies/InLigneSpawnerObjet.cs" id="5_ylj3c"]
-[ext_resource type="PackedScene" uid="uid://d4edle7lh0vmn" path="res://Prefabs/upgrade_loader.tscn" id="7_p5n5s"]
+[ext_resource type="PackedScene" path="res://Prefabs/upgrade_loader.tscn" id="7_p5n5s"]
 [ext_resource type="PackedScene" uid="uid://cgpw88utk0j4p" path="res://Prefabs/enemy_slot.tscn" id="7_wwtlw"]
 [ext_resource type="Script" uid="uid://buodrch2nlbmm" path="res://Scripts/Niveaux/LevelManager.cs" id="8_kf714"]
 [ext_resource type="Script" uid="uid://bmrula5s1hvpo" path="res://Scripts/Ui/ProchainNiveauUi.cs" id="9_tpj28"]
@@ -20,6 +20,9 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7awwb"]
 shader = ExtResource("3_p5n5s")
 shader_parameter/speed = 0.1
+
+[sub_resource type="Environment" id="Environment_kf714"]
+background_mode = 3
 
 [node name="MainCanva" type="Control" unique_id=206631295 node_paths=PackedStringArray("mainAera")]
 layout_mode = 3
@@ -84,7 +87,6 @@ levelManager = NodePath("LevelManager")
 
 [node name="Joueur" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=290880064 instance=ExtResource("1_0dl77")]
 position = Vector2(561.5, 595)
-godMode = false
 
 [node name="LevelManager" type="Control" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=501859680 node_paths=PackedStringArray("zombiesSpawn", "upgradeLoader", "joueur")]
 layout_mode = 1
@@ -177,9 +179,9 @@ offset_bottom = 45.0
 [node name="ColonneSpawner2" type="Control" parent="HBoxContainer/VBoxContainer/MainAera/LevelManager/ZombieSpawns" unique_id=1990851592]
 custom_minimum_size = Vector2(0, 50)
 anchors_preset = 0
-offset_top = 54.0
+offset_top = 52.0
 offset_right = 1080.0
-offset_bottom = 104.0
+offset_bottom = 102.0
 size_flags_horizontal = 4
 script = ExtResource("5_ylj3c")
 
@@ -589,3 +591,6 @@ offset_right = 190.0
 offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=191905982]
+environment = SubResource("Environment_kf714")

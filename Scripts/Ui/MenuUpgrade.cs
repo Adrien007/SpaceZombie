@@ -72,9 +72,9 @@ public partial class MenuUpgrade : PanelContainer
     }
 
     const string addProjectileTitle = "Projectile +1";
-    private static readonly Texture2D addProjectileTexture = ResourceLoader.Load<Texture2D>("res://images/more_projectile.png");
-    private static readonly Texture2D damageTexture = ResourceLoader.Load<Texture2D>("res://images/attack_damage_icon.png");
-    private static readonly Texture2D attackSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/attack_speed_icon.png");
-    private static readonly Texture2D passthroughTexture = ResourceLoader.Load<Texture2D>("res://images/attack_piercing.png");
-    private static readonly Texture2D moveSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/move_speed_icon.png");
+    private static readonly Texture2D addProjectileTexture = ResourceLoader.Load<Texture2D>("res://images/projectiles_bonus.png");
+    private static readonly Texture2D damageTexture = ResourceLoader.Load<Texture2D>("res://images/attack_damage_bonus.png");
+    private static readonly Texture2D attackSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/attack_speed_bonus.png");
+    private static readonly Texture2D passthroughTexture = ResourceLoader.Load<Texture2D>("res://images/attack_piercing_bonus.png");
+    private static readonly Texture2D moveSpeedTexture = ResourceLoader.Load<Texture2D>("res://images/speed_bonus.webp");
 }

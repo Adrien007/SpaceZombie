@@ -168,7 +168,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_l7po7")
 libraries/ = SubResource("AnimationLibrary_eomq7")
 
 [node name="LaserGlow" type="Line2D" parent="." unique_id=374030927]
-width = 5.0
+width = 1.0
 
 [node name="LaserMain" type="Line2D" parent="." unique_id=614801089]
 width = 15.0

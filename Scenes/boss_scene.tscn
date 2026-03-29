@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://deb5rydr3b57d" path="res://Scripts/Mondes/BossScene.cs" id="1_l0l3o"]
 [ext_resource type="PackedScene" uid="uid://cctan0cxox4el" path="res://Prefabs/Joueur.tscn" id="3_vpfhl"]
 [ext_resource type="PackedScene" uid="uid://b6g5loxabm74e" path="res://Prefabs/boss.tscn" id="4_qwaro"]
+[ext_resource type="Texture2D" uid="uid://mpvjh2r5aq08" path="res://images/Purple Nebula 1 - 1024x1024.png" id="4_vpfhl"]
+[ext_resource type="Shader" uid="uid://horw6ysklkk6" path="res://Scenes/main_canva_background_scroll.gdshader" id="5_qwaro"]
+[ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="6_nvf4x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08iug"]
 bg_color = Color(1, 1, 1, 1)
@@ -21,6 +24,10 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xfyyv"]
+shader = ExtResource("5_qwaro")
+shader_parameter/speed = 0.1
 
 [node name="BossScene" type="Node2D" unique_id=825953369]
 script = ExtResource("1_l0l3o")
@@ -55,3 +62,29 @@ offset_top = 48.0
 offset_right = 627.0
 offset_bottom = 71.0
 text = "BOSS ZOMBIE"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1574501837]
+z_index = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -243.0
+offset_right = 1232.0
+offset_bottom = 802.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_vpfhl")
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1295320187]
+material = SubResource("ShaderMaterial_xfyyv")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -172.0
+offset_right = 1194.0
+offset_bottom = 725.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_nvf4x")
+stretch_mode = 1

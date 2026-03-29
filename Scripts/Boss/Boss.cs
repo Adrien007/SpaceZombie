@@ -70,6 +70,7 @@ namespace SpaceZombie.Boss
 
             DoNextAction();
         }
+        
 
         private void StartMovement(int seconds)
         {
