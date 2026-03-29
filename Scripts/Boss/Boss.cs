@@ -22,6 +22,7 @@ namespace SpaceZombie.Boss
         private Timer nextActionTimer = new Timer();
         private int nextActionIndex = 0;
         private bool died = false;
+        private ProgressBar bossHealthBar;
         [Export] public Joueur joueur;
 
         // Called when the node enters the scene tree for the first time.
@@ -37,9 +38,13 @@ namespace SpaceZombie.Boss
             AddChild(nextActionTimer);
 
             animation.AnimationFinished += AnimationFinished;
+            bossHealthBar = GetNode<ProgressBar>("/root/BossScene/BossUI/ProgressBar");
+            bossHealthBar.MaxValue = hp;
+            bossHealthBar.Value = hp;
+            CallDeferred(nameof(Foward));
         }
 
-        public void Foward()
+        private void Foward()
         {
             animation.Play("Foward");
         }
@@ -65,6 +70,7 @@ namespace SpaceZombie.Boss
 
             DoNextAction();
         }
+        
 
         private void StartMovement(int seconds)
         {
@@ -77,7 +83,7 @@ namespace SpaceZombie.Boss
             animation.Pause();
             StartNextActionTimer(seconds);
         }
-
+    
         private void StartFireBullets(int seconds)
         {
             bossAttacks.FireBullets();
@@ -117,6 +123,7 @@ namespace SpaceZombie.Boss
         public void TakeDamage(int damage)
         {
             hp -= damage;
+            bossHealthBar.Value = hp;
             if (hp <= 0 && !died)
             {
                 died = true;
@@ -141,5 +148,3 @@ namespace SpaceZombie.Boss
         }
     }
 }
-
-

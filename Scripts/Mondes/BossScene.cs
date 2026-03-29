@@ -14,4 +14,3 @@ namespace SpaceZombie.Mondes.Utilitaires
         }
     }
 }
-

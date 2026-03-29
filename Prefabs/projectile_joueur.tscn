@@ -1,35 +1,49 @@
 [gd_scene format=3 uid="uid://dytasmxwku5da"]
 
 [ext_resource type="Script" uid="uid://r6s0r2y4e8rl" path="res://Scripts/Ammunitions/ProjectileObjet.cs" id="1_latg6"]
+[ext_resource type="Shader" uid="uid://c27fglcgrxsms" path="res://Prefabs/projectile_joueur.gdshader" id="2_6gcbc"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_cd5g1"]
-size = Vector2(8, 27)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6gcbc"]
+shader = ExtResource("2_6gcbc")
+shader_parameter/intensity = 0.0
+shader_parameter/glow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5id35"]
+shader = ExtResource("2_6gcbc")
+shader_parameter/intensity = 1.8
+shader_parameter/glow_color = Color(0.19561604, 0.57557905, 0.6254929, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_latg6"]
-bg_color = Color(0.44735456, 0.829746, 0.9999997, 1)
+bg_color = Color(0.35429382, 0.76514965, 0.91185796, 1)
 border_width_left = 3
 border_width_top = 4
 border_width_right = 3
 border_width_bottom = 4
 border_color = Color(0, 0.7647059, 1, 1)
+border_blend = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cd5g1"]
+size = Vector2(8, 27)
 
 [node name="Area2D" type="Area2D" unique_id=2089616074]
+material = SubResource("ShaderMaterial_6gcbc")
 collision_layer = 1073741824
 collision_mask = 536870912
 monitoring = false
 monitorable = false
 script = ExtResource("1_latg6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=610072969]
-shape = SubResource("RectangleShape2D_cd5g1")
-
 [node name="Panel" type="Panel" parent="." unique_id=260343174]
+material = SubResource("ShaderMaterial_5id35")
 offset_left = -5.0
 offset_top = -15.0
 offset_right = 5.0
 offset_bottom = 15.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_latg6")
 metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=610072969]
+shape = SubResource("RectangleShape2D_cd5g1")
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1930893429]
 rect = Rect2(-5, -15, 10, 30)

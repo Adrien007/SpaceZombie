@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://b0fj30bc4ufp1" path="res://Scripts/Joueurs/Joueur.cs" id="1_0i1yc"]
 [ext_resource type="AudioStream" uid="uid://omewyt457dmx" path="res://Sounds/PlayerInvisibility.mp3" id="2_kfqi4"]
-[ext_resource type="Texture2D" uid="uid://71qelkwnmbek" path="res://images/vaisseau-removebg-preview.png" id="2_qpr61"]
-[ext_resource type="PackedScene" uid="uid://b8lyoihukwcpa" path="res://Prefabs/canon_joueur.tscn" id="2_trojc"]
+[ext_resource type="PackedScene" path="res://Prefabs/canon_joueur.tscn" id="2_trojc"]
 [ext_resource type="AudioStream" uid="uid://dmfv56vwlsvvo" path="res://Sounds/PlayerHitTaken.wav" id="3_klc7x"]
+[ext_resource type="Texture2D" uid="uid://yex25a24v61i" path="res://images/player/sprite.png" id="4_kfqi4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
@@ -73,24 +73,31 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -28.809998
-offset_right = 20.0
-offset_bottom = 28.809998
+offset_left = -32.999996
+offset_top = -32.0
+offset_right = 137.0
+offset_bottom = 125.499985
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_qpr61")
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_kfqi4")
 expand_mode = 1
 
 [node name="CanonJoueur" parent="Panel" unique_id=1857421205 instance=ExtResource("2_trojc")]
-position = Vector2(20, 0)
+position = Vector2(84.999985, 17.499998)
 initialProjectileSpeed = 800.0
 
 [node name="Panel" type="ColorRect" parent="Panel" unique_id=1345368400]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = -0.018000001
+anchor_top = 0.023000002
+anchor_right = 0.99300003
+anchor_bottom = 1.0660001
+offset_left = 5.560031
+offset_top = -6.1225076
+offset_right = 5.5639954
+offset_bottom = -4.1653595
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.7882353, 0.22352941, 0.4392157)

@@ -66,5 +66,6 @@ namespace SpaceZombie.Canons
             //GD.Print("HandleOutOfBoundSignal + " + projectileObj.Name);
             projectileBuffer.Enqueue(projectileObj);
         }
-    }
+        }
+     
 }

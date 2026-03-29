@@ -1,35 +1,36 @@
-[gd_scene format=3 uid="uid://csksfstlrsvpj"]
+[gd_scene format=3 uid="uid://b8ekrlendaa6a"]
 
 [ext_resource type="PackedScene" uid="uid://do7aytseveunf" path="res://Prefabs/Ui/button_upgrade.tscn" id="1_t188m"]
 [ext_resource type="Script" uid="uid://smhtqya2jdam" path="res://Scripts/Ui/MenuUpgrade.cs" id="1_uokam"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h311p"]
-bg_color = Color(1, 0.8666667, 0, 1)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6nhr"]
+bg_color = Color(0.9213415, 0.8373098, 0.64836514, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.77254903, 0.5803922, 0.30588236, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [sub_resource type="SystemFont" id="SystemFont_h311p"]
 subpixel_positioning = 0
 
 [node name="MenuUpgrade" type="PanelContainer" unique_id=1716258266 node_paths=PackedStringArray("selectionTip", "option1", "option2")]
-offset_right = 260.0
-offset_bottom = 155.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_h311p")
+offset_left = 7.0
+offset_top = 8.0
+offset_right = 391.0
+offset_bottom = 234.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_h6nhr")
 script = ExtResource("1_uokam")
 selectionTip = NodePath("MarginContainer/VBoxContainer/SelectionTip")
 option1 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option1")
 option2 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option2")
-selectionButtonName = "\"Enter\""
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1646650328]
 layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1642538308]
 layout_mode = 2
@@ -37,9 +38,9 @@ theme_override_constants/separation = 0
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2109354322]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.38314945, 0.49666166, 0.18527672, 1)
 theme_override_fonts/font = SubResource("SystemFont_h311p")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 24
 text = "UPGRADE_SELECTION"
 horizontal_alignment = 1
 
@@ -51,18 +52,32 @@ horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=535737354]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=352759549]
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-theme_override_constants/separation = 16
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+theme_override_constants/separation = 8
 
 [node name="Option1" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2026033037 instance=ExtResource("1_t188m")]
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 focus_neighbor_left = NodePath("../Option2")
 focus_neighbor_right = NodePath("../Option2")
 
-[node name="Option2" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1197431899 instance=ExtResource("1_t188m")]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=51292386]
 layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Option2" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1197431899 instance=ExtResource("1_t188m")]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 focus_neighbor_left = NodePath("../Option1")
 focus_neighbor_right = NodePath("../Option1")
