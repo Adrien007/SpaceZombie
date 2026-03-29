@@ -44,7 +44,7 @@ namespace SpaceZombie.Niveaux
             GameEvents.Instance.EndLevel += ChangerNiveauLogic;
             upgradeLoader.InitialiseAreaPlaySize(Size);
             zombiesSpawn.Initialize();
-            spawns.Initialize(Size, joueur);
+            spawns.Initialize(Size, joueur, upgradeLoader);
             prochainNiveauUi.timer.Timeout += WaitForTimerToFinish;
             //ChangerNiveauLogic("1");
         }

@@ -13,7 +13,6 @@ public partial class Zombie3MoveState : State
     {
         SetTarget(new Vector2(enemy.joueur.GlobalPosition.X, enemy.GlobalPosition.Y));
     }
-
     public void SetTarget(Vector2 target)
     {
         targetPosition = target;
@@ -25,9 +24,6 @@ public partial class Zombie3MoveState : State
         if (enemy.GlobalPosition.DistanceTo(targetPosition) > 10)
         {
             enemy.MovePosition(targetDirection, delta);
-            //Vector2 direction = enemy.GetJoueurDirection();
-            //enemy.MoveToTarget(direction, delta);
-            //enemy.RotateTowardTarget(direction, delta);
         }
         else
         {

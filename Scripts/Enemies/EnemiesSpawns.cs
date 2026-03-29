@@ -23,10 +23,11 @@ namespace SpaceZombie.Enemies
         private Joueur joueur;
         private Vector2 spawnAreaSize;
         private Timer spawnDelayTimer;
-        private int nextLevelIndex;
-        private int nextWaveIndex;
+        private int levelIndex;
+        private int waveIndex;
         private EnemySpawn[][] levels;
-        private int numberOfEnemySpawned = 0;
+        private int numberOfEnemyInLevel = 0;
+        private UpgradeLoader upgradeLoader;
 
         public override void _Ready()
         {
@@ -35,31 +36,50 @@ namespace SpaceZombie.Enemies
                 OneShot = true,
             };
             spawnDelayTimer.Timeout += SpawnWave;
-            nextLevelIndex = 0;
-            nextWaveIndex = 0;
+            levelIndex = 0;
+            waveIndex = 0;
             AddChild(spawnDelayTimer);
         }
 
-        public void Initialize(Vector2 playAreaSize, Joueur joueur)
+        public void Initialize(Vector2 playAreaSize, Joueur joueur, UpgradeLoader upgradeLoader)
         {
             this.joueur = joueur;
+            this.upgradeLoader = upgradeLoader;
             spawnAreaSize = new Vector2(playAreaSize.X, spawnAreaHeight);
             spawnCenter = spawnAreaSize.X / 2;
             spawnRight = spawnAreaSize.X - spawnMargin;
 
             Position = new Vector2(0, -spawnAreaHeight + spawnAreaY);
             levels = [
+                //Niveau 1
                 [
-                    new EnemySpawn(zombie3, (1, null), 5f, 4),
-                    //new EnemySpawn(zombie1, (3, null), 6f, 4),
-                    //new EnemySpawn(zombie2, (5, null), 10, 3),
+                    //"On spawn 3 zombie1 a des positon random et on attend 6 secondes pour spawner les prochains zombie
+                    new EnemySpawn(zombie1, (3, null), 6f),
+
+                    //"On spawn 4 zombie1 a des positon random et on attend 8 secondes et on répète une deuxième fois
+                    new EnemySpawn(zombie1, (4, null), 8f, 2),
+
+                    //Fin du niveau lorsque tout les zombies du niveau sont morts.
                 ],
+                //Niveau 2
                 [
-                    new EnemySpawn(zombie1, (3, null), 6f, 4),
-                    //new EnemySpawn("res://Prefabs/Enemies/zombie.tscn", (3, null), 7f, 2),
+                    //"On spawn 4 zombie2 a des positon random et on attend 8 secondes et on répète 3 fois
+                    new EnemySpawn(zombie2, (4, null), 8f, 3),
+
+                    //Fin du niveau lorsque tout les zombies du niveau sont morts.
                 ],
+                //Niveau 2
                 [
-                    new EnemySpawn(zombie2, (2, null), 5, 3),
+                    //"On spawn 1 zombie3 au centre et on attend 8 secondes et on répète une deuxième fois
+                    new EnemySpawn(zombie3, (1, spawnCenter), 2f, 2),
+
+                    //"On spawn 1 zombie3 à gauche et on spawn immétiatement le prochain
+                    new EnemySpawn(zombie3, (1, spawnLeft), 0),
+
+                    //"On spawn 1 zombie3 à droite
+                    new EnemySpawn(zombie3, (1, spawnRight), 0),
+
+                    //Fin du niveau lorsque tout les zombies du niveau sont morts.
                 ],
             ];
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel, "1");
@@ -67,23 +87,30 @@ namespace SpaceZombie.Enemies
 
         public void SpawnLevel()
         {
-            if (nextLevelIndex >= levels.Length) return;
-            nextWaveIndex = 0;
+            if (levelIndex >= levels.Length) return;
+            waveIndex = 0;
+            numberOfEnemyInLevel = 0;
+            foreach (EnemySpawn wave in levels[levelIndex])
+            {
+                numberOfEnemyInLevel += wave.quantityAtPositionX.Item1 * wave.repeat;
+            }
+            GD.Print($"Total of enemies in level : {numberOfEnemyInLevel}");
+            upgradeLoader.UpdateUpgradeApparition(numberOfEnemyInLevel);
             SpawnWave();
         }
 
         private void SpawnWave()
         {
 
-            EnemySpawn[] spawns = levels[nextLevelIndex];
+            EnemySpawn[] spawns = levels[levelIndex];
 
-            if (nextWaveIndex >= spawns.Length) return;
+            if (waveIndex >= spawns.Length) return;
 
-            EnemySpawn spawn = spawns[nextWaveIndex];
+            EnemySpawn spawn = spawns[waveIndex];
             if (spawn.repeat > 0)
             {
                 spawn.repeat -= 1;
-                if (spawn.repeat == 0) nextWaveIndex += 1;
+                if (spawn.repeat == 0) waveIndex += 1;
                 if (spawn.quantityAtPositionX.Item2 == null)
                 {
                     SpawnRandomPosition(spawn.loader, spawn.quantityAtPositionX.Item1);
@@ -96,7 +123,7 @@ namespace SpaceZombie.Enemies
             }
             else
             {
-                throw new($"Spawning Error : Wanting to spawn 0 Enemy : At level :{nextLevelIndex}, Wave : {nextWaveIndex}");
+                throw new($"Spawning Error : Wanting to spawn 0 Enemy : At level :{levelIndex}, Wave : {waveIndex}");
             }
         }
 
@@ -114,11 +141,19 @@ namespace SpaceZombie.Enemies
 
         private void OnEnemyDied()
         {
-            numberOfEnemySpawned -= 1;
-            if (numberOfEnemySpawned == 0)
+            numberOfEnemyInLevel -= 1;
+            upgradeLoader.EnemyDied(numberOfEnemyInLevel);
+            if (numberOfEnemyInLevel == 0)
             {
-                nextLevelIndex += 1;
-                GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel, (nextLevelIndex + 1).ToString());
+                levelIndex += 1;
+                if (levelIndex < levels.Length)
+                {
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel, (levelIndex + 1).ToString());
+                }
+                else
+                {
+                    GD.Print("Spawn Boss");
+                }
             }
         }
 
@@ -130,7 +165,6 @@ namespace SpaceZombie.Enemies
                 enemy.Initialize(GetRandomPositionY(spawn.positionX), joueur, OnEnemyDied);
                 AddChild(enemy);
             }
-            numberOfEnemySpawned += spawn.quantity;
         }
 
         private void SpawnRandomPosition(PackedScene loader, int quantity)
@@ -141,7 +175,6 @@ namespace SpaceZombie.Enemies
                 enemy.Initialize(GetRandomPosition(), joueur, OnEnemyDied);
                 AddChild(enemy);
             }
-            numberOfEnemySpawned += quantity;
         }
 
         private Vector2 GetRandomPosition() =>

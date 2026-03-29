@@ -23,7 +23,7 @@ public partial class UpgradeLoader : Node2D
     {
         if (enemieStillAlive <= upgradeApparition)
         {
-            upgradeApparition = 0;
+            upgradeApparition = -1;
             NewUpgrade();
         }
     }

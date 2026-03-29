@@ -105,10 +105,10 @@ tracks/0/path = NodePath("Explosion:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true, false]
+"values": [true]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -145,7 +145,7 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"queue_free"
+"method": &"Remove"
 }]
 }
 tracks/4/type = "value"
@@ -225,7 +225,7 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"queue_free"
+"method": &"Remove"
 }]
 }
 tracks/5/type = "value"
@@ -308,6 +308,10 @@ currentState = NodePath("MoveCloseState")
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_j3hbi")
 
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1276974171]
+rect = Rect2(-27, -27, 55, 56)
+enable_node_path = NodePath("")
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1316942000]
 material = SubResource("ShaderMaterial_j7lg8")
 scale = Vector2(0.22802734, 0.22802734)
@@ -325,11 +329,6 @@ script = ExtResource("5_p5n5v")
 [node name="AttackState" type="Node2D" parent="." unique_id=757999429]
 script = ExtResource("6_qkvls")
 
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1276974171]
-visible = false
-rect = Rect2(-27, -27, 55, 56)
-enable_node_path = NodePath("")
-
 [node name="TakeHitSound" type="AudioStreamPlayer" parent="." unique_id=14295426]
 stream = ExtResource("5_ich5e")
 volume_db = -15.0
@@ -344,4 +343,4 @@ pitch_scale = 0.95
 libraries/ = SubResource("AnimationLibrary_j3hbi")
 
 [connection signal="area_entered" from="." to="AttackState" method="OnAreaEntered"]
-[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="queue_free"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="Remove"]

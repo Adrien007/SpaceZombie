@@ -70,7 +70,7 @@ namespace SpaceZombie.Enemies
             ShowHitShader();
             if (direction.Length() < 700) Shake();
 
-            hp -= 1;
+            hp -= damage;
             if (hp <= 0)
             {
                 CallDeferred(nameof(Die));
@@ -88,7 +88,14 @@ namespace SpaceZombie.Enemies
             currentState.Exit();
             animation.Play("die");
             joueur.ScoreUpdateListener(100, GlobalPosition);
+        }
+
+        public void Remove()
+        {
             died();
+            SetProcess(false);
+            SetPhysicsProcess(false);
+            QueueFree();
         }
 
         public virtual Vector2 GetJoueurDirection()

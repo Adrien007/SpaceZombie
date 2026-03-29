@@ -9,6 +9,7 @@ public partial class Zombie2AttackState : State
     [Export] int attackDamage;
     [Export] int attackSpeed;
     [Export] Timer attacksDelay;
+    [Export] AudioStreamPlayer sound;
     [Export] private PackedScene bulletLoader;
     private Queue<ProjectileObjet> projectiles;
 
@@ -27,6 +28,7 @@ public partial class Zombie2AttackState : State
     public override void Exit()
     {
         attacksDelay.Stop();
+        enemy.SetProcess(false);
     }
 
     public override void Update(double delta)
@@ -39,7 +41,8 @@ public partial class Zombie2AttackState : State
 
     public override void PhysicUpdate(double delta)
     {
-        enemy.RotateTowardTarget(enemy.GetJoueurDirection(), delta);
+        enemy.direction = enemy.GetJoueurDirection();
+        enemy.RotateTowardTarget(enemy.direction, delta);
     }
 
     private void InitializeProjectile()
@@ -62,6 +65,7 @@ public partial class Zombie2AttackState : State
     private void Fire()
     {
         projectiles.Dequeue().Fire(enemy.direction.Normalized(), GlobalPosition, 0);
+        sound.Play();
         if (projectiles.Count == 0)
         {
             attacksDelay.Stop();
