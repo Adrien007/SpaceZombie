@@ -21,6 +21,8 @@ namespace SpaceZombie.Niveaux
 
         public void ChangerNiveauLogic()
         {
+            if (!GodotObject.IsInstanceValid(prochainNiveauUi)) return;
+            
             prochainNiveauUi.ProcessMode = Node.ProcessModeEnum.Always;
             prochainNiveauUi.UpdateLabelTexte(lm.level.ToString());
             prochainNiveauUi.Visible = true;
@@ -30,6 +32,8 @@ namespace SpaceZombie.Niveaux
 
         private void WaitForTimerToFinish()
         {
+            if (!GodotObject.IsInstanceValid(prochainNiveauUi)) return;
+            
             lm.CreerNiveau();
             prochainNiveauUi.ProcessMode = Node.ProcessModeEnum.Disabled;
             prochainNiveauUi.Visible = false;

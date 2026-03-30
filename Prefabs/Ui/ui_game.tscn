@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://sls8dni2f3o7"]
 
 [ext_resource type="Script" uid="uid://jex0wd3a3xxf" path="res://Scripts/Ui/InGameUi.cs" id="1_mknyf"]
-[ext_resource type="Texture2D" uid="uid://xvtrn1i33wb4" path="res://icon.svg" id="1_y88el"]
+[ext_resource type="Texture2D" uid="uid://botkt8kqdpy2f" path="res://images/health_bar.png" id="2_h7237"]
 [ext_resource type="LabelSettings" uid="uid://dl21rffbdd2u5" path="res://Prefabs/Ui/new_label_settings_2.tres" id="2_q4ia1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_q4ia1"]
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
 script = ExtResource("1_mknyf")
-viRestante = NodePath("VBoxContainer/PlayerVie_ctr/HBoxContainer/playerVieRestante")
+viRestante = NodePath("VBoxContainer/PlayerVie_ctr/HBoxContainer/Control/playerVieRestante")
 score = NodePath("VBoxContainer/Score")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1226663575]
@@ -63,31 +63,28 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 2
 
-[node name="playerVieRestante" type="Label" parent="VBoxContainer/PlayerVie_ctr/HBoxContainer" unique_id=706486596]
-custom_minimum_size = Vector2(40, 40)
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PlayerVie_ctr/HBoxContainer" unique_id=864075170]
+custom_minimum_size = Vector2(70, 30)
 layout_mode = 2
-text = "0 x "
-label_settings = ExtResource("2_q4ia1")
-horizontal_alignment = 2
-vertical_alignment = 1
+size_flags_horizontal = 4
+texture = ExtResource("2_h7237")
+expand_mode = 1
 
 [node name="Control" type="Control" parent="VBoxContainer/PlayerVie_ctr/HBoxContainer" unique_id=2007471940]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/PlayerVie_ctr/HBoxContainer/Control" unique_id=864075170]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -15.0
-offset_right = 30.0
-offset_bottom = 15.0
-grow_vertical = 2
-size_flags_horizontal = 4
-texture = ExtResource("1_y88el")
-expand_mode = 1
+[node name="playerVieRestante" type="Label" parent="VBoxContainer/PlayerVie_ctr/HBoxContainer/Control" unique_id=706486596]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = -76.0
+offset_top = 1.0
+offset_right = -36.0
+offset_bottom = 41.0
+text = "0  "
+label_settings = ExtResource("2_q4ia1")
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="spacing_2" type="Control" parent="VBoxContainer" unique_id=356088943]
 custom_minimum_size = Vector2(0, 10)

@@ -511,6 +511,7 @@ layout_mode = 2
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
+offset_left = -80.0
 grow_horizontal = 0
 
 [node name="Marge3" type="Control" parent="HBoxContainer" unique_id=815882770]
