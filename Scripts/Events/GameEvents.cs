@@ -20,13 +20,16 @@ namespace SpaceZombie.Events
 
 
         [Signal]
-        public delegate void EnemyDiedEventHandler(EnemyObjet enemy);
+        public delegate void UpdateScoreEventHandler(int score, Vector2 globalPosition);
+
+        [Signal]
+        public delegate void EnemyDiedEventHandler();
 
         [Signal]
         public delegate void ChooseUpgradeEventHandler();
 
         [Signal]
-        public delegate void EndLevelEventHandler();
+        public delegate void EndLevelEventHandler(string level);
 
         [Signal]
         public delegate void PlayerScoreUpdatedEventHandler(int playerScore);

@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://cvs3k0lmweie0"]
 
-[ext_resource type="Script" uid="uid://cjlfry4rh18a4" path="res://Scripts/Enemies/Zombie3.cs" id="1_dfy8o"]
+[ext_resource type="Script" uid="uid://bq3h8key0p0df" path="res://Scripts/Enemies/Zombie3.cs" id="1_dfy8o"]
 [ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="2_cvhvw"]
-[ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="2_ev6jm"]
+[ext_resource type="Shader" uid="uid://dt60v0tg4042k" path="res://Prefabs/Enemies/damage.gdshader" id="2_ev6jm"]
 [ext_resource type="Texture2D" uid="uid://d7ekkot4akb0" path="res://images/zombie3.png" id="2_fts7h"]
 [ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="4_ev6jm"]
-[ext_resource type="Script" uid="uid://8dcbccokeh1k" path="res://Scripts/States/Zombie3MoveState.cs" id="5_imsnc"]
-[ext_resource type="PackedScene" uid="uid://blmigk6bakxto" path="res://Prefabs/lazer_ray.tscn" id="5_p61eu"]
+[ext_resource type="PackedScene" uid="uid://ddtex0miunfri" path="res://Prefabs/lazer_ray.tscn" id="5_p61eu"]
 [ext_resource type="AudioStream" uid="uid://bd8lfxhgdl2jf" path="res://Sounds/ZombieShipTakeHit.wav" id="6_ev6jm"]
-[ext_resource type="Script" uid="uid://byi0pallx6sf7" path="res://Scripts/States/Zombie3AttackState.cs" id="6_p61eu"]
+[ext_resource type="Script" uid="uid://gsx6vsj38n6x" path="res://Scripts/Enemies/Zombie3MoveState.cs" id="6_p61eu"]
+[ext_resource type="Script" uid="uid://bh5hn428y6aal" path="res://Scripts/Enemies/Zombie3AttackState.cs" id="7_0nhbg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fts7h"]
 radius = 47.095646
@@ -177,13 +177,14 @@ hframes = 12
 position = Vector2(1.8, 43)
 
 [node name="MoveState" type="Node2D" parent="." unique_id=233838870]
-script = ExtResource("5_imsnc")
+script = ExtResource("6_p61eu")
 
 [node name="AttackState" type="Node2D" parent="." unique_id=1140810055 node_paths=PackedStringArray("lazer", "firstAttackTimer", "attackCooldown")]
-script = ExtResource("6_p61eu")
+script = ExtResource("7_0nhbg")
 lazer = NodePath("../LazerRay")
 firstAttackTimer = NodePath("FirsAttackTimer")
 attackCooldown = NodePath("AttackCooldown")
+followSpeed = 75.0
 
 [node name="FirsAttackTimer" type="Timer" parent="AttackState" unique_id=1505970300]
 wait_time = 0.5

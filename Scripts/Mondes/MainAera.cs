@@ -25,8 +25,6 @@ namespace SpaceZombie.Mondes.Utilitaires
         public void Initialiser()
         {
             joueur.Initialize(GetRect());
-            var ltm = new LevelTransitionManager(prochainNiveauUi, levelManager);
-            ltm.ChangerNiveauLogic();
         }
 
         private void ChooseUpgrade()

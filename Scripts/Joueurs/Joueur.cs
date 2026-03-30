@@ -57,7 +57,7 @@ namespace SpaceZombie.Joueurs
             dodgeTimer.Timeout += EndDodge;
             dodgeCooldownTimer.Timeout += EndDodgeCooldown;
 
-            GameEvents.Instance.EnemyDied += ScoreUpdateListener;
+            GameEvents.Instance.UpdateScore += ScoreUpdateListener;
 
             sonInvicible.Finished += OnSoundInvicibilityFinished;
             invinsibilityPanel.Visible = false;
@@ -270,7 +270,7 @@ namespace SpaceZombie.Joueurs
         public override void _ExitTree()
         {
             base._ExitTree();
-            GameEvents.Instance.EnemyDied -= ScoreUpdateListener;
+            GameEvents.Instance.UpdateScore -= ScoreUpdateListener;
         }
 
         private void OnSoundInvicibilityFinished()
@@ -280,10 +280,10 @@ namespace SpaceZombie.Joueurs
         }
 
         #region score section
-        private void ScoreUpdateListener(Enemies.EnemyObjet enemy)
+        public void ScoreUpdateListener(int score, Vector2 globalPosition)
         {
-            UpdateScore(enemy.Enemy.Score);
-            Ui.FloatingTextManager.Instance.ShowScore(enemy.GlobalPosition + new Vector2(GD.RandRange(-10, 10), GD.RandRange(-5, 5)), enemy.Enemy.Score);
+            UpdateScore(score);
+            Ui.FloatingTextManager.Instance.ShowScore(globalPosition + new Vector2(GD.RandRange(-10, 10), GD.RandRange(-5, 5)), score);
         }
         private void UpdateScore(int newScore)
         {

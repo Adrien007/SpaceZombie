@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://duauv0q6jc874"]
 
-[ext_resource type="Script" uid="uid://cdkcry7yapg41" path="res://Scripts/Enemies/Zombie2.cs" id="1_y7nrq"]
+[ext_resource type="Script" uid="uid://cgycglq1vddch" path="res://Scripts/Enemies/Zombie2.cs" id="1_y7nrq"]
 [ext_resource type="PackedScene" uid="uid://c2s3r4j8bv3lj" path="res://Prefabs/projectile_enemy.tscn" id="2_5yww2"]
-[ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="3_ibgbl"]
-[ext_resource type="Texture2D" uid="uid://h3x1qdtlreyr" path="res://images/zombie2.png" id="4_7qn1o"]
+[ext_resource type="Shader" uid="uid://dt60v0tg4042k" path="res://Prefabs/Enemies/damage.gdshader" id="3_ibgbl"]
+[ext_resource type="Texture2D" uid="uid://dklaaetrrdrqx" path="res://images/zombie2.png" id="4_7qn1o"]
+[ext_resource type="Script" uid="uid://cl76vm1trk6au" path="res://Scripts/Enemies/MoveInState.cs" id="5_ibgbl"]
 [ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="5_jvseb"]
-[ext_resource type="Script" uid="uid://b7ny6msywao5l" path="res://Scripts/States/MoveInState.cs" id="6_5yww2"]
-[ext_resource type="Script" uid="uid://bwiyhgco76md0" path="res://Scripts/States/Zombie2AttackState.cs" id="6_ibgbl"]
+[ext_resource type="Script" uid="uid://c2ltxvu6csn2k" path="res://Scripts/Enemies/Zombie2AttackState.cs" id="6_ibgbl"]
 [ext_resource type="AudioStream" uid="uid://bd8lfxhgdl2jf" path="res://Sounds/ZombieShipTakeHit.wav" id="6_m70n8"]
 [ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="7_0f62g"]
 [ext_resource type="AudioStream" uid="uid://nbbtq7ah5tbu" path="res://Sounds/Zombie2_Attack.wav" id="10_7qn1o"]
@@ -154,7 +154,7 @@ hframes = 12
 frame = 11
 
 [node name="MoveInState" type="Node2D" parent="." unique_id=401713179]
-script = ExtResource("6_5yww2")
+script = ExtResource("5_ibgbl")
 
 [node name="AttackState" type="Node2D" parent="." unique_id=2002954640 node_paths=PackedStringArray("attacksDelay", "sound")]
 position = Vector2(0, 45)

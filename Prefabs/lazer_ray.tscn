@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://blmigk6bakxto"]
+[gd_scene format=3 uid="uid://ddtex0miunfri"]
 
-[ext_resource type="Script" uid="uid://7idjf42t24yp" path="res://Scripts/Ammunitions/LazerRay.cs" id="1_e8ela"]
-[ext_resource type="Shader" uid="uid://b354xit7ist71" path="res://Prefabs/lazer_ray.gdshader" id="2_e8ela"]
+[ext_resource type="Script" uid="uid://bi84tb2jmphue" path="res://Scripts/Ammunitions/LazerRay.cs" id="1_e8ela"]
+[ext_resource type="Shader" uid="uid://bc10yb58rj524" path="res://Prefabs/lazer_ray.gdshader" id="2_e8ela"]
 [ext_resource type="AudioStream" uid="uid://blfyj0aw57cbs" path="res://Sounds/Laser.wav" id="3_8dr0h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e8ela"]

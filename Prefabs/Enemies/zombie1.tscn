@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://8dn8alkdfv0h"]
 
-[ext_resource type="Script" uid="uid://mn0yybhj0ut1" path="res://Scripts/Enemies/Zombie1.cs" id="1_xe8s3"]
-[ext_resource type="Shader" uid="uid://culon27jsjj76" path="res://Prefabs/Enemies/damage.gdshader" id="2_ojfvp"]
-[ext_resource type="Texture2D" uid="uid://ncap2kjrxt6m" path="res://images/zombie1.png" id="3_p5n5v"]
+[ext_resource type="Script" uid="uid://wmtkr00ks3p2" path="res://Scripts/Enemies/Zombie1.cs" id="1_xe8s3"]
+[ext_resource type="Shader" uid="uid://dt60v0tg4042k" path="res://Prefabs/Enemies/damage.gdshader" id="2_ojfvp"]
+[ext_resource type="Texture2D" uid="uid://dl5a4rf34bleg" path="res://images/zombie1.png" id="3_p5n5v"]
 [ext_resource type="Texture2D" uid="uid://depm0r718aiae" path="res://images/Explosion.png" id="4_qkvls"]
-[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/ZombieTakeHit.wav" id="5_ich5e"]
-[ext_resource type="Script" uid="uid://b7ny6msywao5l" path="res://Scripts/States/MoveInState.cs" id="5_p5n5v"]
+[ext_resource type="AudioStream" uid="uid://x2fng1xgeycv" path="res://Sounds/EnemyTakeHit.wav" id="5_ich5e"]
+[ext_resource type="Script" uid="uid://cl76vm1trk6au" path="res://Scripts/Enemies/MoveInState.cs" id="5_p5n5v"]
 [ext_resource type="AudioStream" uid="uid://bd2mndnrboibk" path="res://Sounds/Explosion.wav" id="6_da80c"]
-[ext_resource type="Script" uid="uid://drkoej8m130ll" path="res://Scripts/States/Zombie1AttackState.cs" id="6_qkvls"]
+[ext_resource type="Script" uid="uid://bg6e4j6hnarnv" path="res://Scripts/Enemies/Zombie1AttackState.cs" id="6_qkvls"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j3hbi"]
 size = Vector2(38, 35)
