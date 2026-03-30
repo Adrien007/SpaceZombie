@@ -102,8 +102,9 @@ namespace SpaceZombie.Enemies
             ];
         }
 
-        public void InitializeLevel()
+        public void InitializeLevel(int nextLevel)
         {
+            levelIndex = nextLevel;
             if (levelIndex >= levels.Length) return;
             waveIndex = 0;
             numberOfEnemyInLevel = 0;
@@ -136,10 +137,10 @@ namespace SpaceZombie.Enemies
                 }
                 StartNextSpawnTimer(spawn.delayTillNext);
             }
-            else
+            /*else
             {
                 throw new($"Spawning Error : Wanting to spawn 0 Enemy : At level :{levelIndex}, Wave : {waveIndex}");
-            }
+            }*/
         }
 
         private void StartNextSpawnTimer(float delayTillNext)

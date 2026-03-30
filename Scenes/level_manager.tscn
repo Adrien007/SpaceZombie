@@ -15,7 +15,6 @@ script = ExtResource("1_83v1d")
 zombiesSpawn = NodePath("ZombieSpawns")
 spawns = NodePath("EnemiesSpawns")
 upgradeLoader = NodePath("UpgradeLoader")
-level = 1
 
 [node name="EnemiesSpawns" type="Node2D" parent="." unique_id=464596913]
 script = ExtResource("3_4360v")

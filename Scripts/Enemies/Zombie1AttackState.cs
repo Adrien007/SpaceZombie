@@ -22,8 +22,12 @@ public partial class Zombie1AttackState : State
 
     public override void Exit()
     {
-        enemy.animation.Stop();
+        if (enemy.animation.CurrentAnimation == "prepare_attack")
+        {
+            enemy.animation.Stop();
+        }
         enemy.SetPhysicsProcess(false);
+        enemy.SetProcess(false);
     }
 
     public override void PhysicUpdate(double delta)

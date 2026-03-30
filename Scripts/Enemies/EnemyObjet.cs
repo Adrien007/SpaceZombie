@@ -30,6 +30,7 @@ namespace SpaceZombie.Enemies
                     sonMeurt.Play(0.62f);
                     Disable();
                     GameEvents.Instance.EmitSignal(GameEvents.SignalName.EnemyDied);
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.UpdateScore, enemy.Score, GlobalPosition);
                 }
                 else
                 {

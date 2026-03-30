@@ -67,7 +67,6 @@ namespace SpaceZombie.Niveaux
         private void OnEnemyDied()
         {
             nbEnemy -= 1;
-            GD.Print($"Enemy Died, Count : {nbEnemy}");
             if (nbEnemy <= 0)
             {
                 if (!gdi.HasNext())
@@ -108,7 +107,7 @@ namespace SpaceZombie.Niveaux
         {
             var niveauSettings = ncr.CreerNiveau(stage, niveau);
             nbEnemy = CountNumberOfEnemy(niveauSettings);
-            spawns.InitializeLevel();
+            spawns.InitializeLevel(niveau);
             nbEnemy += spawns.numberOfEnemyInLevel;
             ncr.AppliquerNiveau(zombiesSpawn, niveauSettings);
             enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Node2D>(), niveauSettings);
