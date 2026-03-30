@@ -41,7 +41,7 @@ namespace SpaceZombie.Ammunitions
 
         private void OnAreaEntered(Area2D area)
         {
-            if (area is IDamagable damagableNode)
+            if (area is IDamagable damagableNode && !damagableNode.IsDodging)
             {
                 //GD.Print($"Travere Projectile : {projectile.Traverse}, Traverse : {traverse}");
                 //GD.Print($"Projectile {GetInstanceId()}, Hit : {area.Name} {area.GetInstanceId()}");
@@ -55,6 +55,7 @@ namespace SpaceZombie.Ammunitions
                 {
                     traverse += 1;
                 }
+
             }
         }
 

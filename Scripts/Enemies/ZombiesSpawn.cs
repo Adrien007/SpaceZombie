@@ -53,7 +53,7 @@ namespace SpaceZombie.Enemies
             InLigneSpawnerObjetService.SetStartPosition(indexLigne, inLigneSpawnersObjet, this.Size);
         }
 
-        private void DesactiverEnemyPasEnSandwitchListener(EnemyObjet enemy)
+        private void DesactiverEnemyPasEnSandwitchListener()
         {
             service.DesactiverEnemyPasEnSandwitch(inLigneSpawnersObjet);
         }
