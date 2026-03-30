@@ -32,7 +32,7 @@ public partial class Zombie1AttackState : State
         {
             ((Zombie1)enemy).StickToJoueur();
         }
-        if (isAttaking)
+        else if (isAttaking)
         {
             enemy.MoveToDirection(attackSpeed, delta);
         }

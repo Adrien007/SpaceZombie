@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using SpaceZombie.Events;
 using SpaceZombie.Joueurs;
 using SpaceZombie.Utilitaires;
 
@@ -20,7 +21,6 @@ namespace SpaceZombie.Enemies
         private float damageFlashDuration = 0.4f;
         private ShaderMaterial damageShader;
         public Joueur joueur;
-        public Action died;
         public Vector2 direction;
 
         public override void _Ready()
@@ -33,11 +33,10 @@ namespace SpaceZombie.Enemies
             currentState.Enter();
         }
 
-        public void Initialize(Vector2 position, Joueur joueur, Action died)
+        public void Initialize(Vector2 position, Joueur joueur)
         {
             Position = position;
             this.joueur = joueur;
-            this.died = died;
         }
 
         public override void _Process(double delta)
@@ -92,7 +91,7 @@ namespace SpaceZombie.Enemies
 
         public void Remove()
         {
-            died();
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.EnemyDied);
             SetProcess(false);
             SetPhysicsProcess(false);
             QueueFree();

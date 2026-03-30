@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="4_kf714"]
 [ext_resource type="PackedScene" uid="uid://d0qcodw8wwpfc" path="res://Scenes/level_manager.tscn" id="5_ib1eq"]
 [ext_resource type="PackedScene" uid="uid://csksfstlrsvpj" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
+[ext_resource type="PackedScene" uid="uid://dch6kuwgx1577" path="res://Prefabs/Ui/floating_text_manager.tscn" id="8_ahn3c"]
 [ext_resource type="Script" uid="uid://bmrula5s1hvpo" path="res://Scripts/Ui/ProchainNiveauUi.cs" id="9_tpj28"]
 [ext_resource type="LabelSettings" uid="uid://41wxbbc2j0eo" path="res://Prefabs/Ui/new_label_settings.tres" id="10_ahn3c"]
 [ext_resource type="PackedScene" uid="uid://sls8dni2f3o7" path="res://Prefabs/Ui/ui_game.tscn" id="10_ib1eq"]
@@ -66,7 +67,7 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="MainAera" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=2040906383 node_paths=PackedStringArray("joueur", "prochainNiveauUi", "menuUpgrade")]
+[node name="MainAera" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=2040906383 node_paths=PackedStringArray("joueur", "prochainNiveauUi", "menuUpgrade", "levelManager")]
 process_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -74,6 +75,7 @@ script = ExtResource("1_3lruc")
 joueur = NodePath("Joueur")
 prochainNiveauUi = NodePath("../../../NextLevelCtr")
 menuUpgrade = NodePath("../../../MenuUpgrade")
+levelManager = NodePath("LevelManager")
 
 [node name="Joueur" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=290880064 instance=ExtResource("1_0dl77")]
 position = Vector2(561.5, 595)
@@ -105,6 +107,8 @@ grow_horizontal = 0
 [node name="Marge3" type="Control" parent="HBoxContainer" unique_id=815882770]
 custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
+
+[node name="FloatingTextManager" parent="." unique_id=1496613480 instance=ExtResource("8_ahn3c")]
 
 [node name="NextLevelCtr" type="Control" parent="." unique_id=1259785756 node_paths=PackedStringArray("p", "label")]
 process_mode = 4

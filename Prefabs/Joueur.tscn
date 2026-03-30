@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://lm2mny6rwvp0" path="res://Sounds/Dodge.wav" id="4_vdpc2"]
 [ext_resource type="AudioStream" uid="uid://dqtiyo8nf0vuu" path="res://Sounds/DodgeSimple.wav" id="5_tqf3d"]
 [ext_resource type="AudioStream" uid="uid://dtmekogfaogvo" path="res://Sounds/DodgeRestoreSound.wav" id="6_h37oc"]
-[ext_resource type="PackedScene" path="res://Prefabs/dodge_energy.tscn" id="6_klc7x"]
+[ext_resource type="PackedScene" uid="uid://ojdfu7bc8b8y" path="res://Prefabs/dodge_energy.tscn" id="6_klc7x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
@@ -34,7 +34,7 @@ length = 5.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Panel:self_modulate")
+tracks/0/path = NodePath("Panel:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
