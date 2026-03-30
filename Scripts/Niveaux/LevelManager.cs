@@ -8,6 +8,7 @@ using SpaceZombie.Niveaux.Configs;
 using SpaceZombie.Niveaux.Configs.V;
 using SpaceZombie.Joueurs;
 using System.Text.Encodings.Web;
+using SpaceZombie.Ui;
 using SpaceZombie.Mondes.Utilitaires;
 
 namespace SpaceZombie.Niveaux
@@ -17,12 +18,12 @@ namespace SpaceZombie.Niveaux
         private int nbEnemy;
         private NiveauCreatorManager ncr;
         private GameDataIterator gdi;
-        [Export] private ZombiesSpawn zombiesSpawn;
-        private EnemyAttackManager enemyAttackManager;
-        private RandomNumberGenerator randomUpgradeApparition = new RandomNumberGenerator();
-        private int upgradeApparition;
-        [Export] private UpgradeLoader upgradeLoader;
         [Export] private Joueur joueur;
+        [Export] private ProchainNiveauUi prochainNiveauUi;
+        [Export] private ZombiesSpawn zombiesSpawn;
+        [Export] private EnemiesSpawns spawns;
+        private EnemyAttackManager enemyAttackManager;
+        [Export] private UpgradeLoader upgradeLoader;
         private PackedScene bossLoader;
         [Export] public int stage;
         [Export] public int level;
@@ -41,11 +42,30 @@ namespace SpaceZombie.Niveaux
 
         private void Initialize()
         {
+            GameEvents.Instance.EndLevel += ChangerNiveauLogic;
             upgradeLoader.InitialiseAreaPlaySize(Size);
             zombiesSpawn.Initialize();
+            spawns.Initialize(Size, joueur, upgradeLoader);
+            prochainNiveauUi.timer.Timeout += WaitForTimerToFinish;
+            ChangerNiveauLogic("1");
         }
 
-        private void OnEnemyDied(EnemyObjet enemy)
+        public void ChangerNiveauLogic(string level)
+        {
+            prochainNiveauUi.ProcessMode = ProcessModeEnum.Always;
+            prochainNiveauUi.UpdateLabelTexte(level);
+            prochainNiveauUi.Visible = true;
+            prochainNiveauUi.StartTimer();
+        }
+
+        private void WaitForTimerToFinish()
+        {
+            CreerNiveau();
+            prochainNiveauUi.ProcessMode = ProcessModeEnum.Disabled;
+            prochainNiveauUi.Visible = false;
+        }
+
+        private void OnEnemyDied()
         {
             nbEnemy -= 1;
             if (nbEnemy <= 0)
@@ -63,20 +83,12 @@ namespace SpaceZombie.Niveaux
                     level = stageLevelLocal.Item2;
                     zombiesSpawn.ProcessMode = ProcessModeEnum.Disabled;
                     enemyAttackManager.StopFire();
-                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel);
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.EndLevel, level.ToString());
                 }
             }
             else
             {
-                if (!enemy.enemyFlagLogic.scoreGiven)
-                {
-                    enemy.enemyFlagLogic.scoreGiven = true; // Set the score given flag to true
-                }
-                if (nbEnemy <= upgradeApparition)
-                {
-                    upgradeApparition = 0;
-                    upgradeLoader.NewUpgrade();
-                }
+                upgradeLoader.EnemyDied(nbEnemy);
             }
         }
 
@@ -92,18 +104,16 @@ namespace SpaceZombie.Niveaux
             enemyAttackManager.StartFire();
         }
 
-        private void UpdateUpgradeApparition()
-        {
-            upgradeApparition = (int)(randomUpgradeApparition.RandfRange(0.3f, 0.7f) * nbEnemy) + 1;
-        }
-
         private void CreerNiveau(int stage, int niveau)
         {
             var niveauSettings = ncr.CreerNiveau(stage, niveau);
             nbEnemy = CountNumberOfEnemy(niveauSettings);
+            spawns.InitializeLevel(niveau);
+            nbEnemy += spawns.numberOfEnemyInLevel;
             ncr.AppliquerNiveau(zombiesSpawn, niveauSettings);
             enemyAttackManager.SetEnemyForLevel(zombiesSpawn.GetAllEnemy(new ObtainEnemyObjectService()).ToList<Node2D>(), niveauSettings);
-            UpdateUpgradeApparition();
+            spawns.SpawnWaves();
+            upgradeLoader.UpdateUpgradeApparition(nbEnemy);
         }
 
         private int CountNumberOfEnemy(NiveauZombiesSpawnSettings niveau)
@@ -140,6 +150,8 @@ namespace SpaceZombie.Niveaux
         {
             base._ExitTree();
             GameEvents.Instance.EnemyDied -= OnEnemyDied;
+            GameEvents.Instance.EndLevel -= ChangerNiveauLogic;
+            prochainNiveauUi.timer.Timeout -= WaitForTimerToFinish;
         }
     }
 

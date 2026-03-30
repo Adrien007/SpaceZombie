@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://ddtex0miunfri"]
+
+[ext_resource type="Script" uid="uid://bi84tb2jmphue" path="res://Scripts/Ammunitions/LazerRay.cs" id="1_e8ela"]
+[ext_resource type="Shader" uid="uid://bc10yb58rj524" path="res://Prefabs/lazer_ray.gdshader" id="2_e8ela"]
+[ext_resource type="AudioStream" uid="uid://blfyj0aw57cbs" path="res://Sounds/Laser.wav" id="3_8dr0h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e8ela"]
+size = Vector2(14, 1000)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e8ela"]
+shader = ExtResource("2_e8ela")
+
+[node name="LazerRay" type="Area2D" unique_id=1638562466 node_paths=PackedStringArray("aimRay", "lazerMain", "lazerGlow", "lazerCore", "fireDelay", "fireTime", "repeatDamage", "lazerSound")]
+collision_layer = 0
+collision_mask = 2147483648
+monitoring = false
+monitorable = false
+script = ExtResource("1_e8ela")
+damage = 1
+aimRay = NodePath("AimRay")
+lazerMain = NodePath("LaserMain")
+lazerGlow = NodePath("LaserGlow")
+lazerCore = NodePath("LaserCore")
+fireDelay = NodePath("FireDelay")
+fireTime = NodePath("FireTime")
+repeatDamage = NodePath("RepeatDamage")
+lazerSound = NodePath("AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1216310216]
+position = Vector2(0, 500)
+shape = SubResource("RectangleShape2D_e8ela")
+
+[node name="AimRay" type="RayCast2D" parent="." unique_id=1967638044]
+visible = false
+enabled = false
+target_position = Vector2(0, 1000)
+collision_mask = 2147483648
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="AimLine" type="Line2D" parent="AimRay" unique_id=52285303]
+self_modulate = Color(1, 1, 1, 0.65000004)
+points = PackedVector2Array(0, 0, 0, 1000)
+width = 3.0
+default_color = Color(1, 0, 0, 1)
+begin_cap_mode = 2
+
+[node name="LaserMain" type="Line2D" parent="." unique_id=332674117]
+visible = false
+use_parent_material = true
+points = PackedVector2Array(0, 0, 0, 1000)
+width = 15.0
+default_color = Color(1, 0, 0, 1)
+begin_cap_mode = 2
+
+[node name="LaserGlow" type="Line2D" parent="." unique_id=749287754]
+visible = false
+material = SubResource("ShaderMaterial_e8ela")
+points = PackedVector2Array(0, 0, 0, 1000)
+width = 20.0
+default_color = Color(0.93612784, 0.30166683, 0, 1)
+begin_cap_mode = 2
+
+[node name="LaserCore" type="Line2D" parent="." unique_id=1006634181]
+visible = false
+points = PackedVector2Array(0, 0, 0, 1000)
+width = 7.0
+begin_cap_mode = 2
+
+[node name="FireDelay" type="Timer" parent="." unique_id=1711597736]
+wait_time = 0.5
+one_shot = true
+
+[node name="FireTime" type="Timer" parent="." unique_id=763673041]
+wait_time = 3.0
+one_shot = true
+
+[node name="RepeatDamage" type="Timer" parent="." unique_id=1084311051]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=991049055]
+stream = ExtResource("3_8dr0h")
+volume_db = -15.0
+pitch_scale = 0.8
+
+[connection signal="area_entered" from="." to="." method="OnAreaEntered"]
+[connection signal="area_exited" from="." to="." method="OnAreaExited"]
