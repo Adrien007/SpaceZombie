@@ -5,9 +5,28 @@
 [ext_resource type="Texture2D" uid="uid://71qelkwnmbek" path="res://images/vaisseau-removebg-preview.png" id="2_qpr61"]
 [ext_resource type="PackedScene" uid="uid://b8lyoihukwcpa" path="res://Prefabs/canon_joueur.tscn" id="2_trojc"]
 [ext_resource type="AudioStream" uid="uid://dmfv56vwlsvvo" path="res://Sounds/PlayerHitTaken.wav" id="3_klc7x"]
+[ext_resource type="AudioStream" uid="uid://lm2mny6rwvp0" path="res://Sounds/Dodge.wav" id="4_vdpc2"]
+[ext_resource type="AudioStream" uid="uid://dqtiyo8nf0vuu" path="res://Sounds/DodgeSimple.wav" id="5_tqf3d"]
+[ext_resource type="AudioStream" uid="uid://dtmekogfaogvo" path="res://Sounds/DodgeRestoreSound.wav" id="6_h37oc"]
+[ext_resource type="PackedScene" path="res://Prefabs/dodge_energy.tscn" id="6_klc7x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
 radius = 20.0
+
+[sub_resource type="Gradient" id="Gradient_klc7x"]
+offsets = PackedFloat32Array(0, 0.004048583, 0.51821864)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0.8, 0.5179158, 0.5179158, 0.5179158, 0.3)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vdpc2"]
+gradient = SubResource("Gradient_klc7x")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tqf3d"]
+particle_flag_disable_z = true
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.16
+scale_max = 0.16
+color_ramp = SubResource("GradientTexture1D_vdpc2")
 
 [sub_resource type="Animation" id="Animation_kfqi4"]
 resource_name = "Die"
@@ -46,16 +65,26 @@ _data = {
 &"RESET": SubResource("Animation_klc7x")
 }
 
-[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("canons", "panel", "invinsibilityPanel", "sonPrendsHit", "sonInvicible")]
+[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("canons", "panel", "sonDodge", "sonDodgeSimple", "sonDodgeRestore", "dodgeEffect", "invinsibilityPanel", "sonPrendsHit", "sonInvicible", "dodgeTimer", "dodgeDelayTimer", "dodgeCooldownTimer", "dodgeEnergy1", "dodgeEnergy2")]
 collision_layer = 2147483648
 collision_mask = 268435456
 monitoring = false
 script = ExtResource("1_0i1yc")
 canons = NodePath("Panel/CanonJoueur")
 panel = NodePath("Panel")
+sonDodge = NodePath("DodgeSound")
+sonDodgeSimple = NodePath("DodgeSimpleSound")
+sonDodgeRestore = NodePath("DodgeRestoreSound")
+dodgeEffect = NodePath("Panel/GPUParticles2D")
 invinsibilityPanel = NodePath("Panel/Panel")
 sonPrendsHit = NodePath("PlayerHitTaken")
 sonInvicible = NodePath("PlayerInvisibility")
+moveSpeed = 175.0
+dodgeTimer = NodePath("Dodge")
+dodgeDelayTimer = NodePath("DodgeDelay")
+dodgeCooldownTimer = NodePath("DodgeCooldown")
+dodgeEnergy1 = NodePath("Panel/DodgeEnergy1")
+dodgeEnergy2 = NodePath("Panel/DodgeEnergy2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078271631]
 visible = false
@@ -66,6 +95,32 @@ stream = ExtResource("2_kfqi4")
 
 [node name="PlayerHitTaken" type="AudioStreamPlayer" parent="." unique_id=1609743315]
 stream = ExtResource("3_klc7x")
+
+[node name="DodgeSound" type="AudioStreamPlayer" parent="." unique_id=154524801]
+stream = ExtResource("4_vdpc2")
+volume_db = -10.0
+pitch_scale = 0.8
+
+[node name="DodgeSimpleSound" type="AudioStreamPlayer" parent="." unique_id=773722703]
+stream = ExtResource("5_tqf3d")
+volume_db = -15.0
+pitch_scale = 0.8
+
+[node name="DodgeRestoreSound" type="AudioStreamPlayer" parent="." unique_id=257049269]
+stream = ExtResource("6_h37oc")
+volume_db = -22.0
+
+[node name="Dodge" type="Timer" parent="." unique_id=2143067193]
+wait_time = 0.2
+one_shot = true
+
+[node name="DodgeDelay" type="Timer" parent="." unique_id=986652342]
+wait_time = 0.4
+one_shot = true
+
+[node name="DodgeCooldown" type="Timer" parent="." unique_id=1387405780]
+wait_time = 5.0
+one_shot = true
 
 [node name="Panel" type="TextureRect" parent="." unique_id=1496588683]
 anchors_preset = 8
@@ -82,9 +137,22 @@ grow_vertical = 2
 texture = ExtResource("2_qpr61")
 expand_mode = 1
 
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Panel" unique_id=439108477]
+position = Vector2(20, 28.81)
+amount = 20
+texture = ExtResource("2_qpr61")
+lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_tqf3d")
+
 [node name="CanonJoueur" parent="Panel" unique_id=1857421205 instance=ExtResource("2_trojc")]
 position = Vector2(20, 0)
 initialProjectileSpeed = 800.0
+
+[node name="DodgeEnergy1" parent="Panel" unique_id=1429641263 instance=ExtResource("6_klc7x")]
+position = Vector2(33, 34.81)
+
+[node name="DodgeEnergy2" parent="Panel" unique_id=1914268151 instance=ExtResource("6_klc7x")]
+position = Vector2(7, 35)
 
 [node name="Panel" type="ColorRect" parent="Panel" unique_id=1345368400]
 layout_mode = 1
