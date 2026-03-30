@@ -11,7 +11,7 @@ namespace SpaceZombie.Mondes.Utilitaires
 {
     public partial class MainAera : Control
     {
-        [Export] private Joueur joueur;
+        [Export] public Joueur joueur;
         [Export] private ProchainNiveauUi prochainNiveauUi;
         [Export] private MenuUpgrade menuUpgrade;
         [Export] private LevelManager levelManager;
@@ -20,13 +20,10 @@ namespace SpaceZombie.Mondes.Utilitaires
         {
             menuUpgrade.Upgrade += Upgrade;
             GameEvents.Instance.ChooseUpgrade += ChooseUpgrade;
-            GameEvents.Instance.ShowEndScreen += ShowEndScreen;
         }
         public void Initialiser()
         {
             joueur.Initialize(GetRect());
-            var ltm = new LevelTransitionManager(prochainNiveauUi, levelManager);
-            ltm.ChangerNiveauLogic();
         }
 
         private void ChooseUpgrade()
@@ -39,21 +36,6 @@ namespace SpaceZombie.Mondes.Utilitaires
         {
             joueur.Upgrade((UpgradeOptions)option);
             GetTree().Paused = false;
-        }
-
-        private void ShowEndScreen()
-        {
-            PackedScene endScreenLoader = (PackedScene)ResourceLoader.Load($"res://Scenes/end_screen.tscn");
-            EndScreen endScreen = endScreenLoader.Instantiate<EndScreen>();
-            endScreen.score = joueur.jState.Score;
-            GetTree().Root.AddChild(endScreen);
-        }
-
-        public override void _ExitTree()
-        {
-            base._ExitTree();
-            GameEvents.Instance.ChooseUpgrade -= ChooseUpgrade;
-            GameEvents.Instance.ShowEndScreen -= ShowEndScreen;
         }
     }
 }
