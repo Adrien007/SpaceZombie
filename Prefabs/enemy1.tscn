@@ -41,8 +41,11 @@ shape = SubResource("CircleShape2D_r77uo")
 
 [node name="EnemyTakeHit" type="AudioStreamPlayer" parent="." unique_id=674766373]
 stream = ExtResource("3_4nwae")
+volume_db = -15.0
+pitch_scale = 0.8
 
 [node name="ZombieDye" type="AudioStreamPlayer" parent="." unique_id=1199393737]
 stream = ExtResource("4_x8ovi")
+pitch_scale = 0.8
 
 [node name="Take_damage_vfx" parent="." unique_id=1540856570 instance=ExtResource("5_x8ovi")]

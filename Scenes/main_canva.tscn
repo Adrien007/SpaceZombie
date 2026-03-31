@@ -12,6 +12,7 @@
 [ext_resource type="LabelSettings" uid="uid://41wxbbc2j0eo" path="res://Prefabs/Ui/new_label_settings.tres" id="10_ahn3c"]
 [ext_resource type="PackedScene" uid="uid://sls8dni2f3o7" path="res://Prefabs/Ui/ui_game.tscn" id="10_ib1eq"]
 
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7awwb"]
 shader = ExtResource("3_p5n5s")
 shader_parameter/speed = 0.1

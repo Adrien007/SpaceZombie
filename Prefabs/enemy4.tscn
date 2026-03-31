@@ -34,6 +34,8 @@ texture = ExtResource("2_bavka")
 
 [node name="EnemyTakeHit" type="AudioStreamPlayer" parent="." unique_id=701835360]
 stream = ExtResource("3_k4dla")
+volume_db = -15.0
+pitch_scale = 0.8
 
 [node name="ZombieDye" type="AudioStreamPlayer" parent="." unique_id=2143544692]
 stream = ExtResource("4_afrxq")

@@ -7,9 +7,7 @@ using SpaceZombie.Events;
 using SpaceZombie.Niveaux.Configs;
 using SpaceZombie.Niveaux.Configs.V;
 using SpaceZombie.Joueurs;
-using System.Text.Encodings.Web;
 using SpaceZombie.Ui;
-using SpaceZombie.Mondes.Utilitaires;
 
 namespace SpaceZombie.Niveaux
 {

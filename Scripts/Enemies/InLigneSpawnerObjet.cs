@@ -141,6 +141,7 @@ namespace SpaceZombie.Enemies
                     child.CallDeferred(Node.MethodName.QueueFree);//child.QueueFree();
                 }
             }
+            indexPremierVisible = -1;
         }
 
         public EnemySlot[] GetAllEnemySlot()

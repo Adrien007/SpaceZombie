@@ -9,9 +9,12 @@
 [ext_resource type="AudioStream" uid="uid://dqtiyo8nf0vuu" path="res://Sounds/DodgeSimple.wav" id="5_tqf3d"]
 [ext_resource type="AudioStream" uid="uid://dtmekogfaogvo" path="res://Sounds/DodgeRestoreSound.wav" id="6_h37oc"]
 [ext_resource type="PackedScene" uid="uid://ojdfu7bc8b8y" path="res://Prefabs/dodge_energy.tscn" id="6_klc7x"]
+[ext_resource type="PackedScene" uid="uid://bw6qi0ilqltm2" path="res://Prefabs/Player/sheld_vfx.tscn" id="10_frocw"]
+[ext_resource type="PackedScene" uid="uid://brgqvr51kt6sh" path="res://Prefabs/Player/smoke_damage_vfx.tscn" id="11_sffmc"]
+[ext_resource type="PackedScene" uid="uid://cr0bg7upcelb3" path="res://Prefabs/Player/take_damage_vfx.tscn" id="12_2d2v3"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_0i1yc"]
-radius = 20.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kfqi4"]
+height = 42.0
 
 [sub_resource type="Gradient" id="Gradient_klc7x"]
 offsets = PackedFloat32Array(0, 0.004048583, 0.51821864)
@@ -65,7 +68,7 @@ _data = {
 &"RESET": SubResource("Animation_klc7x")
 }
 
-[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("canons", "panel", "sonDodge", "sonDodgeSimple", "sonDodgeRestore", "dodgeEffect", "invinsibilityPanel", "sonPrendsHit", "sonInvicible", "dodgeTimer", "dodgeDelayTimer", "dodgeCooldownTimer", "dodgeEnergy1", "dodgeEnergy2")]
+[node name="Area2D" type="Area2D" unique_id=404862405 node_paths=PackedStringArray("canons", "panel", "sonDodge", "sonDodgeSimple", "sonDodgeRestore", "dodgeEffect", "invinsibilityPanel", "sonPrendsHit", "sonInvicible", "smokeDamageVfx", "takeDamageVfx", "dodgeTimer", "dodgeDelayTimer", "dodgeCooldownTimer", "dodgeEnergy1", "dodgeEnergy2")]
 collision_layer = 2147483648
 collision_mask = 268435456
 monitoring = false
@@ -79,6 +82,8 @@ dodgeEffect = NodePath("Panel/GPUParticles2D")
 invinsibilityPanel = NodePath("Panel/Panel")
 sonPrendsHit = NodePath("PlayerHitTaken")
 sonInvicible = NodePath("PlayerInvisibility")
+smokeDamageVfx = NodePath("Smoke_damage_vfx")
+takeDamageVfx = NodePath("Take_damage_vfx")
 moveSpeed = 175.0
 dodgeTimer = NodePath("Dodge")
 dodgeDelayTimer = NodePath("DodgeDelay")
@@ -163,13 +168,13 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.7882353, 0.22352941, 0.4392157)
 
-[node name="Sheld_vfx" parent="Panel/Panel" unique_id=446107016 instance=ExtResource("6_klc7x")]
+[node name="Sheld_vfx" parent="Panel/Panel" unique_id=446107016 instance=ExtResource("10_frocw")]
 position = Vector2(20, 55)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=961744937]
 libraries/ = SubResource("AnimationLibrary_vdpc2")
 
-[node name="Smoke_damage_vfx" parent="." unique_id=2020028348 instance=ExtResource("7_vdpc2")]
+[node name="Smoke_damage_vfx" parent="." unique_id=2020028348 instance=ExtResource("11_sffmc")]
 position = Vector2(-7, 14)
 
-[node name="Take_damage_vfx" parent="." unique_id=1540856570 instance=ExtResource("8_tqf3d")]
+[node name="Take_damage_vfx" parent="." unique_id=1540856570 instance=ExtResource("12_2d2v3")]

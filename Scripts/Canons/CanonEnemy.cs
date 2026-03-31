@@ -9,7 +9,7 @@ namespace SpaceZombie.Canons
 
         public override void Fire(Vector2 direction)
         {
-            sonFire.Play(0.90f);
+            sonFire.Play();
             base.Fire(direction);
         }
 
