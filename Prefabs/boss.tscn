@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://c1aq57q1bhvgp" path="res://Scripts/Boss/BossAttacks.cs" id="2_ab3ne"]
 [ext_resource type="Script" uid="uid://couxhgy7yqcip" path="res://Scripts/Boss/Boss.cs" id="2_fj87s"]
 [ext_resource type="PackedScene" uid="uid://d0abunydadwtt" path="res://Prefabs/canon.tscn" id="2_obrrb"]
+[ext_resource type="Texture2D" uid="uid://u34vtsbfrbqy" path="res://images/boss/boss1.png" id="3_bi3vq"]
 [ext_resource type="PackedScene" uid="uid://cpj3804ekabf" path="res://Prefabs/boss_lazer_ray.tscn" id="3_obrrb"]
 [ext_resource type="PackedScene" uid="uid://b7uoylkqt1bey" path="res://Prefabs/boss_lazer_zone.tscn" id="6_im1n0"]
 [ext_resource type="AudioStream" uid="uid://csblwr6117qh6" path="res://Sounds/IntroPlusBossFight.mp3" id="7_bi3vq"]
@@ -17,8 +18,7 @@ point_count = 8
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ixukv"]
 size = Vector2(498, 198)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ab3ne"]
-bg_color = Color(0.0045926566, 0.003936563, 0.0030407421, 1)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_im1n0"]
 
 [sub_resource type="Animation" id="Animation_bi3vq"]
 resource_name = "Die"
@@ -119,6 +119,7 @@ self_modulate = Color(1, 1, 1, 0.088)
 z_index = 1
 curve = SubResource("Curve2D_fj87s")
 script = ExtResource("2_fj87s")
+hp = 2
 
 [node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=2144733937]
 rotates = false
@@ -130,30 +131,36 @@ monitoring = false
 script = ExtResource("2_1pyra")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/Area2D" unique_id=508312017]
-position = Vector2(0, 100)
+position = Vector2(0, 154)
 shape = SubResource("RectangleShape2D_ixukv")
+
+[node name="Sprite2D" type="Sprite2D" parent="PathFollow2D/Area2D/CollisionShape2D" unique_id=619498026]
+position = Vector2(1, 33)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_bi3vq")
 
 [node name="Attacks" type="Panel" parent="PathFollow2D/Area2D" unique_id=1405955129 node_paths=PackedStringArray("attackZone1", "attackZone2")]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -250.0
-offset_right = 250.0
-offset_bottom = 200.0
+offset_left = -248.0
+offset_top = 52.0
+offset_right = 252.0
+offset_bottom = 252.0
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ab3ne")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_im1n0")
 script = ExtResource("2_ab3ne")
 attackZone1 = NodePath("../../../ZoneAttack1")
 attackZone2 = NodePath("../../../ZoneAttack2")
 
 [node name="Canon0" parent="PathFollow2D/Area2D/Attacks" unique_id=1369072580 instance=ExtResource("2_obrrb")]
-position = Vector2(50, 200)
+position = Vector2(42, 127)
 
 [node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon0" unique_id=380489412 instance=ExtResource("3_obrrb")]
 rotation = 0.5235988
 
 [node name="Canon1" parent="PathFollow2D/Area2D/Attacks" unique_id=1137410245 instance=ExtResource("2_obrrb")]
-position = Vector2(150, 200)
+position = Vector2(159, 184)
 
 [node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon1" unique_id=1635700301 instance=ExtResource("3_obrrb")]
 rotation = 0.2617994
@@ -164,13 +171,13 @@ position = Vector2(250, 200)
 [node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon2" unique_id=307548533 instance=ExtResource("3_obrrb")]
 
 [node name="Canon3" parent="PathFollow2D/Area2D/Attacks" unique_id=595705896 instance=ExtResource("2_obrrb")]
-position = Vector2(340, 200)
+position = Vector2(339, 186)
 
 [node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon3" unique_id=1208909132 instance=ExtResource("3_obrrb")]
 rotation = -0.2617994
 
 [node name="Canon4" parent="PathFollow2D/Area2D/Attacks" unique_id=1269162833 instance=ExtResource("2_obrrb")]
-position = Vector2(450, 200)
+position = Vector2(460, 123)
 
 [node name="BossLazerRays" parent="PathFollow2D/Area2D/Attacks/Canon4" unique_id=2097247793 instance=ExtResource("3_obrrb")]
 rotation = -0.5235988
@@ -186,7 +193,7 @@ libraries/ = SubResource("AnimationLibrary_obrrb")
 
 [node name="IntroPlusBossFight" type="AudioStreamPlayer" parent="." unique_id=1733726569]
 stream = ExtResource("7_bi3vq")
-pitch_scale = 0.8
+volume_db = -15.0
 parameters/looping = true
 
 [connection signal="take_damage" from="PathFollow2D/Area2D" to="." method="TakeDamage"]

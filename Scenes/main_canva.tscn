@@ -6,16 +6,36 @@
 [ext_resource type="Shader" uid="uid://horw6ysklkk6" path="res://Scenes/main_canva_background_scroll.gdshader" id="3_p5n5s"]
 [ext_resource type="Texture2D" uid="uid://b36gtw220b55f" path="res://images/godot_pattern_tile.png" id="4_kf714"]
 [ext_resource type="PackedScene" uid="uid://d0qcodw8wwpfc" path="res://Scenes/level_manager.tscn" id="5_ib1eq"]
-[ext_resource type="PackedScene" uid="uid://csksfstlrsvpj" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
+[ext_resource type="PackedScene" uid="uid://b8ekrlendaa6a" path="res://Prefabs/Ui/menu_upgrade.tscn" id="5_kf714"]
 [ext_resource type="PackedScene" uid="uid://dch6kuwgx1577" path="res://Prefabs/Ui/floating_text_manager.tscn" id="8_ahn3c"]
 [ext_resource type="Script" uid="uid://bmrula5s1hvpo" path="res://Scripts/Ui/ProchainNiveauUi.cs" id="9_tpj28"]
 [ext_resource type="LabelSettings" uid="uid://41wxbbc2j0eo" path="res://Prefabs/Ui/new_label_settings.tres" id="10_ahn3c"]
 [ext_resource type="PackedScene" uid="uid://sls8dni2f3o7" path="res://Prefabs/Ui/ui_game.tscn" id="10_ib1eq"]
 
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7awwb"]
 shader = ExtResource("3_p5n5s")
 shader_parameter/speed = 0.1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ahn3c"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_33otj"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="Environment" id="Environment_kf714"]
+background_mode = 3
 
 [node name="MainCanva" type="Control" unique_id=206631295 node_paths=PackedStringArray("mainAera")]
 layout_mode = 3
@@ -90,6 +110,25 @@ grow_horizontal = 2
 grow_vertical = 2
 joueur = NodePath("../Joueur")
 prochainNiveauUi = NodePath("../../../../NextLevelCtr")
+level = 8
+
+[node name="Control" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=2136282105]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 47.0
+grow_horizontal = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer/MainAera/Control" unique_id=1620996288]
+visible = false
+custom_minimum_size = Vector2(468, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_ahn3c")
+theme_override_styles/fill = SubResource("StyleBoxFlat_33otj")
 
 [node name="Marge2" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=1413647310]
 custom_minimum_size = Vector2(0, 10)
@@ -103,6 +142,7 @@ layout_mode = 2
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
+offset_left = -80.0
 grow_horizontal = 0
 
 [node name="Marge3" type="Control" parent="HBoxContainer" unique_id=815882770]
@@ -183,3 +223,6 @@ offset_right = 190.0
 offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=191905982]
+environment = SubResource("Environment_kf714")

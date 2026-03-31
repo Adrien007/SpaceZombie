@@ -45,7 +45,7 @@ namespace SpaceZombie.Niveaux
             zombiesSpawn.Initialize();
             spawns.Initialize(Size, joueur, upgradeLoader);
             prochainNiveauUi.timer.Timeout += WaitForTimerToFinish;
-            ChangerNiveauLogic("1");
+            ChangerNiveauLogic(gdi.currentLevel.ToString());
         }
 
         public void ChangerNiveauLogic(string level)

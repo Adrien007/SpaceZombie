@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://cnvba2re87hed"]
+[gd_scene format=3 uid="uid://b3lxgpbdyv1wr"]
 
 [ext_resource type="Script" uid="uid://dlsdmqq8rv8rj" path="res://Scripts/Joueurs/Upgrade.cs" id="1_3fj5e"]
-[ext_resource type="Texture2D" uid="uid://djasgfapgh7u1" path="res://images/gift_drop.png" id="2_n4kt7"]
+[ext_resource type="Texture2D" uid="uid://c3q17w5f8bgma" path="res://images/gift.png" id="2_n4kt7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3fj5e"]
 size = Vector2(27, 27)
@@ -17,8 +17,8 @@ collisionShape = NodePath("CollisionShape2D")
 shape = SubResource("RectangleShape2D_3fj5e")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=1103291068]
-position = Vector2(0, -1)
-scale = Vector2(0.42499998, 0.48051947)
+position = Vector2(-1.1920929e-07, -0.29220784)
+scale = Vector2(0.5090909, 0.4569264)
 texture = ExtResource("2_n4kt7")
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=449636667]

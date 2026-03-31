@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://csksfstlrsvpj"]
+[gd_scene format=3 uid="uid://b8ekrlendaa6a"]
 
 [ext_resource type="PackedScene" uid="uid://do7aytseveunf" path="res://Prefabs/Ui/button_upgrade.tscn" id="1_t188m"]
 [ext_resource type="Script" uid="uid://smhtqya2jdam" path="res://Scripts/Ui/MenuUpgrade.cs" id="1_uokam"]
