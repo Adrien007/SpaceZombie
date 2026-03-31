@@ -9,12 +9,17 @@ namespace SpaceZombie.Enemies
         private Enemy enemy;
         [Export] private AudioStreamPlayer sonPrendsHit;
         [Export] private AudioStreamPlayer sonMeurt;
+        [Export] private Node2D smokeDamageVfx;
+        [Export] private GpuParticles2D takeDamageVfx;
 
         public Enemy Enemy { get => enemy; }
         public EnemyFlagLogic enemyFlagLogic { get; private set; }
         public override void _Ready()
         {
             enemyFlagLogic = new EnemyFlagLogic();
+
+            if (smokeDamageVfx is not null) 
+                smokeDamageVfx.Visible = false;
         }
 
         public void TakeDamage(int damage)
@@ -29,12 +34,16 @@ namespace SpaceZombie.Enemies
                     //GD.Print("[SoundSystemEnemy] Play 'enemy Die' sound.");
                     sonMeurt.Play(0.62f);
                     Disable();
-                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.EnemyDied, this);
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.EnemyDied);
+                    GameEvents.Instance.EmitSignal(GameEvents.SignalName.UpdateScore, enemy.Score, GlobalPosition);
                 }
                 else
                 {
                     //GD.Print("[SoundSystemEnemy] Play 'enemy hit' sound.");
                     sonPrendsHit.Play();
+                    takeDamageVfx.Emitting = true;
+                    if (smokeDamageVfx is not null && Enemy.Hp == 1) 
+                        smokeDamageVfx.Visible = true;
                 }
             }
         }

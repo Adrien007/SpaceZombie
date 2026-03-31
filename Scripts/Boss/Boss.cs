@@ -42,6 +42,9 @@ namespace SpaceZombie.Boss
             bossHealthBar.MaxValue = hp;
             bossHealthBar.Value = hp;
             CallDeferred(nameof(Foward));
+            
+            var introPlusBossFight = GetNode<AudioStreamPlayer>("IntroPlusBossFight");
+            introPlusBossFight.Play(21.50f);
         }
 
         private void Foward()

@@ -3,17 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://do7aytseveunf" path="res://Prefabs/Ui/button_upgrade.tscn" id="1_t188m"]
 [ext_resource type="Script" uid="uid://smhtqya2jdam" path="res://Scripts/Ui/MenuUpgrade.cs" id="1_uokam"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6nhr"]
-bg_color = Color(0.9213415, 0.8373098, 0.64836514, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.77254903, 0.5803922, 0.30588236, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h311p"]
+bg_color = Color(0, 0.43137255, 0, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_h311p"]
 subpixel_positioning = 0

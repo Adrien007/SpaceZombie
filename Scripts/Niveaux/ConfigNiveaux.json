@@ -108,7 +108,7 @@
           },
           {
             "LevelNumber": 9,
-            "NbEnemiesParLigne": 19,
+            "NbEnemiesParLigne": 1,
             "DeplaceEnBlock": true,
             "Lines": 
             [

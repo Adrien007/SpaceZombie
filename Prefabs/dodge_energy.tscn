@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://ojdfu7bc8b8y"]
+
+[ext_resource type="Texture2D" uid="uid://bycfcd0jow5ei" path="res://images/dodge_energy.png" id="1_tee4w"]
+[ext_resource type="Script" uid="uid://ba64pkiyifw0n" path="res://Scripts/Joueurs/DodgeEnergy.cs" id="2_nq832"]
+
+[sub_resource type="Animation" id="Animation_tee4w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_ee8d1"]
+resource_name = "restore"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0.15, 0.15), Vector2(0.12, 0.12)]
+}
+
+[sub_resource type="Animation" id="Animation_nq832"]
+resource_name = "use"
+length = 0.16
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.12, 0.12), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3sfja"]
+_data = {
+&"RESET": SubResource("Animation_tee4w"),
+&"restore": SubResource("Animation_ee8d1"),
+&"use": SubResource("Animation_nq832")
+}
+
+[node name="DodgeEnergy" type="Sprite2D" unique_id=1429641263 node_paths=PackedStringArray("animation")]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_tee4w")
+script = ExtResource("2_nq832")
+animation = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1894514339]
+libraries/ = SubResource("AnimationLibrary_3sfja")

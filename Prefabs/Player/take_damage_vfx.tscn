@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://cr0bg7upcelb3"]
+
+[ext_resource type="Texture2D" uid="uid://6klqga26h2ak" path="res://Assets/Textures/particles/alpha/spark_01_a.png" id="2_m27tm"]
+
+[sub_resource type="Gradient" id="Gradient_of6nc"]
+offsets = PackedFloat32Array(0, 0.20861678, 0.81405896)
+colors = PackedColorArray(1, 1, 1, 1, 0.54509807, 0.54509807, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_i5ht8"]
+gradient = SubResource("Gradient_of6nc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_elmth"]
+particle_flag_disable_z = true
+emission_shape = 2
+emission_sphere_radius = 6.0
+angle_min = -89.99999
+angle_max = 90.000015
+spread = 180.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.049999997
+scale_max = 0.099999994
+color_ramp = SubResource("GradientTexture1D_i5ht8")
+
+[node name="Take_damage_vfx" type="GPUParticles2D" unique_id=1540856570]
+emitting = false
+amount = 6
+texture = ExtResource("2_m27tm")
+lifetime = 0.7
+one_shot = true
+fixed_fps = 0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_elmth")

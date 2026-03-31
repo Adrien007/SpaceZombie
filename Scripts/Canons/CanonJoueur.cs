@@ -16,7 +16,7 @@ namespace SpaceZombie.Canons
         [Export] public int maxProjectileStraightInMiddle = 2;
         [Export] public int spaceBetweenProjectile = 40;
         [Export] public float upgradeAttackSpeed = 0.2f;
-        private Timer reloadTimer;
+        public Timer reloadTimer;
         private PackedScene canonPrefab;
         private Projectile projectile;
         private int canonMilieuPair;

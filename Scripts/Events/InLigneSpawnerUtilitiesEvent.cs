@@ -60,6 +60,10 @@ namespace SpaceZombie.Events
                     }
                 }
             }
+            if (premierIndexVisibleToutLigne == int.MaxValue)
+            {
+                return; // Skip, index is out of range.
+            }
             for (int i = 0; i < inLigneSpawnersObjet.Length; i++)
             {
                 if (!inLigneSpawnersObjet[i].IsFixe)
