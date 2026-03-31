@@ -15,11 +15,9 @@ border_color = Color(0, 0, 0, 1)
 subpixel_positioning = 0
 
 [node name="MenuUpgrade" type="PanelContainer" unique_id=1716258266 node_paths=PackedStringArray("selectionTip", "option1", "option2")]
-offset_left = 7.0
-offset_top = 8.0
-offset_right = 391.0
-offset_bottom = 234.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_h6nhr")
+offset_right = 260.0
+offset_bottom = 155.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_h311p")
 script = ExtResource("1_uokam")
 selectionTip = NodePath("MarginContainer/VBoxContainer/SelectionTip")
 option1 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option1")
@@ -27,6 +25,10 @@ option2 = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Option2")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1646650328]
 layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1642538308]
 layout_mode = 2
@@ -34,9 +36,9 @@ theme_override_constants/separation = 0
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2109354322]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.38314945, 0.49666166, 0.18527672, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = SubResource("SystemFont_h311p")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 26
 text = "UPGRADE_SELECTION"
 horizontal_alignment = 1
 
@@ -48,32 +50,18 @@ horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=535737354]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 16
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=352759549]
-custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-size_flags_stretch_ratio = 0.0
-theme_override_constants/separation = 8
+theme_override_constants/separation = 16
 
 [node name="Option1" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2026033037 instance=ExtResource("1_t188m")]
-custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 focus_neighbor_left = NodePath("../Option2")
 focus_neighbor_right = NodePath("../Option2")
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=51292386]
-layout_mode = 2
-theme_override_constants/separation = 50
-
 [node name="Option2" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1197431899 instance=ExtResource("1_t188m")]
-custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 focus_neighbor_left = NodePath("../Option1")
 focus_neighbor_right = NodePath("../Option1")

@@ -112,8 +112,6 @@
             "DeplaceEnBlock": true,
             "Lines": 
             [
-              { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [2] },
-              { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [1] },
               { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [1] }
             ],
             "TpsRecharge": 1,

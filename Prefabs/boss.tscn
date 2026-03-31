@@ -119,6 +119,7 @@ self_modulate = Color(1, 1, 1, 0.088)
 z_index = 1
 curve = SubResource("Curve2D_fj87s")
 script = ExtResource("2_fj87s")
+hp = 2
 
 [node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=2144733937]
 rotates = false
@@ -192,7 +193,7 @@ libraries/ = SubResource("AnimationLibrary_obrrb")
 
 [node name="IntroPlusBossFight" type="AudioStreamPlayer" parent="." unique_id=1733726569]
 stream = ExtResource("7_bi3vq")
-pitch_scale = 0.8
+volume_db = -15.0
 parameters/looping = true
 
 [connection signal="take_damage" from="PathFollow2D/Area2D" to="." method="TakeDamage"]

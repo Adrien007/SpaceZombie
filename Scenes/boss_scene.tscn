@@ -39,6 +39,7 @@ position = Vector2(576, 610)
 
 [node name="Boss" parent="MainAera" unique_id=1170369034 node_paths=PackedStringArray("joueur") instance=ExtResource("4_qwaro")]
 position = Vector2(576, 20)
+hp = 1
 joueur = NodePath("../Joueur")
 
 [node name="BossUI" type="CanvasLayer" parent="." unique_id=1899857513]
@@ -46,10 +47,7 @@ joueur = NodePath("../Joueur")
 [node name="ProgressBar" type="ProgressBar" parent="BossUI" unique_id=1947356633]
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 256.0
-offset_top = 20.0
-offset_right = 362.0
-offset_bottom = 67.0
+offset_bottom = 23.0
 grow_horizontal = 2
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(1, 1, 1, 1)

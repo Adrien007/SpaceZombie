@@ -45,7 +45,7 @@ namespace SpaceZombie.Niveaux
             zombiesSpawn.Initialize();
             spawns.Initialize(Size, joueur, upgradeLoader);
             prochainNiveauUi.timer.Timeout += WaitForTimerToFinish;
-            ChangerNiveauLogic("1");
+            ChangerNiveauLogic(gdi.currentLevel.ToString());
         }
 
         public void ChangerNiveauLogic(string level)
@@ -141,6 +141,7 @@ namespace SpaceZombie.Niveaux
         private void AddBoss(Boss.Boss boss)
         {
             AddChild(boss);
+            boss.Foward();
         }
 
         public override void _ExitTree()

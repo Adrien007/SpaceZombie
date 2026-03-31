@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ojdfu7bc8b8y"]
 
 [ext_resource type="Texture2D" uid="uid://bycfcd0jow5ei" path="res://images/dodge_energy.png" id="1_tee4w"]
-[ext_resource type="Script" uid="uid://ba64pkiyifw0n" path="res://Scripts/Joueurs/DodgeEnergy.cs" id="2_nq832"]
+[ext_resource type="Script" uid="uid://bpjbvu7q2v78f" path="res://Scripts/Joueurs/DodgeEnergy.cs" id="2_nq832"]
 
 [sub_resource type="Animation" id="Animation_tee4w"]
 length = 0.001

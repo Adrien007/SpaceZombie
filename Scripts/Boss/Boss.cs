@@ -13,7 +13,7 @@ namespace SpaceZombie.Boss
 {
     public partial class Boss : Path2D
     {
-        private int hp = 300;
+        [Export] private int hp = 300;
         private PathFollow2D pathFollow2D;
         private AnimationPlayer animation;
         private BossAttacks bossAttacks;
@@ -38,17 +38,19 @@ namespace SpaceZombie.Boss
             AddChild(nextActionTimer);
 
             animation.AnimationFinished += AnimationFinished;
-            bossHealthBar = GetNode<ProgressBar>("/root/BossScene/BossUI/ProgressBar");
+            bossHealthBar = GetNode<ProgressBar>("/root/MainCanva/HBoxContainer/VBoxContainer/MainAera/Control/ProgressBar");
             bossHealthBar.MaxValue = hp;
             bossHealthBar.Value = hp;
-            CallDeferred(nameof(Foward));
             
             var introPlusBossFight = GetNode<AudioStreamPlayer>("IntroPlusBossFight");
             introPlusBossFight.Play(21.50f);
+
+            //CallDeferred("Foward");
         }
 
-        private void Foward()
+        public void Foward()
         {
+            bossHealthBar.Visible = true;
             animation.Play("Foward");
         }
 
@@ -132,7 +134,9 @@ namespace SpaceZombie.Boss
                 died = true;
                 StopAttacks();
                 animation.Play("Die");
-                animation.AnimationFinished += (StringName animName) => CallDeferred(nameof(Disable));
+                //animation.AnimationFinished += (StringName animName) => CallDeferred(nameof(Disable));
+                CallDeferred(nameof(Disable));
+                GameEvents.Instance.EmitSignal(GameEvents.SignalName.UpdateScore, 15978, this.GlobalPosition);
             }
         }
 
@@ -144,10 +148,8 @@ namespace SpaceZombie.Boss
 
         private async void Disable()
         {
-            Visible = false;
-            QueueFree();
             GameEvents.Instance.EmitSignal(GameEvents.SignalName.ShowEndScreen);
-
+            QueueFree();
         }
     }
 }

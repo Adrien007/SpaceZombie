@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://b0fj30bc4ufp1" path="res://Scripts/Joueurs/Joueur.cs" id="1_0i1yc"]
 [ext_resource type="AudioStream" uid="uid://omewyt457dmx" path="res://Sounds/PlayerInvisibility.mp3" id="2_kfqi4"]
-[ext_resource type="PackedScene" path="res://Prefabs/canon_joueur.tscn" id="2_trojc"]
+[ext_resource type="Texture2D" uid="uid://71qelkwnmbek" path="res://images/vaisseau-removebg-preview.png" id="2_qpr61"]
+[ext_resource type="PackedScene" uid="uid://b8lyoihukwcpa" path="res://Prefabs/canon_joueur.tscn" id="2_trojc"]
 [ext_resource type="AudioStream" uid="uid://dmfv56vwlsvvo" path="res://Sounds/PlayerHitTaken.wav" id="3_klc7x"]
 [ext_resource type="AudioStream" uid="uid://lm2mny6rwvp0" path="res://Sounds/Dodge.wav" id="4_vdpc2"]
 [ext_resource type="AudioStream" uid="uid://dqtiyo8nf0vuu" path="res://Sounds/DodgeSimple.wav" id="5_tqf3d"]
@@ -132,14 +133,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -32.999996
-offset_top = -32.0
-offset_right = 137.0
-offset_bottom = 125.499985
+offset_left = -20.0
+offset_top = -28.809998
+offset_right = 20.0
+offset_bottom = 28.809998
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("4_kfqi4")
+texture = ExtResource("2_qpr61")
 expand_mode = 1
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="Panel" unique_id=439108477]
@@ -150,7 +150,7 @@ lifetime = 0.5
 process_material = SubResource("ParticleProcessMaterial_tqf3d")
 
 [node name="CanonJoueur" parent="Panel" unique_id=1857421205 instance=ExtResource("2_trojc")]
-position = Vector2(84.999985, 17.499998)
+position = Vector2(20, 0)
 initialProjectileSpeed = 800.0
 
 [node name="DodgeEnergy1" parent="Panel" unique_id=1429641263 instance=ExtResource("6_klc7x")]
@@ -161,15 +161,9 @@ position = Vector2(7, 35)
 
 [node name="Panel" type="ColorRect" parent="Panel" unique_id=1345368400]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.018000001
-anchor_top = 0.023000002
-anchor_right = 0.99300003
-anchor_bottom = 1.0660001
-offset_left = 5.560031
-offset_top = -6.1225076
-offset_right = 5.5639954
-offset_bottom = -4.1653595
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.7882353, 0.22352941, 0.4392157)
