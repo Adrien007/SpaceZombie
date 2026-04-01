@@ -51,11 +51,6 @@ namespace SpaceZombie.Canons
             }
         }
 
-        // Called every frame. 'delta' is the elapsed time since the previous frame.
-        public override void _Process(double delta)
-        {
-        }
-
         public void Fire()
         {
             if (reloadTimer.TimeLeft == 0)
@@ -71,7 +66,6 @@ namespace SpaceZombie.Canons
         }
         private Vector2 GetGlobalDirection(float rotation)
         {
-            //return Vector2.Up.Normalized();
             return new Vector2(Mathf.Cos(rotation), Mathf.Sin(rotation)).Normalized();
         }
 
@@ -84,7 +78,6 @@ namespace SpaceZombie.Canons
         {
             initialReloadSpeedInSeconds -= initialReloadSpeedInSeconds * upgradeAttackSpeed;
             reloadTimer.WaitTime = initialReloadSpeedInSeconds;
-            //projectile.UpgradeVitesse(upgradeAttackSpeed);
         }
 
         public void UpgradeTraverse()

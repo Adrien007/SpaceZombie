@@ -16,6 +16,7 @@ namespace SpaceZombie.Enemies
             base._Ready();
             ((MoveInState)currentState).distancePosition = GetViewportRect().Size.Y - attackDistance;
             maxAngleRad = Mathf.DegToRad(40);
+            this.score = 220;
         }
 
         public override Vector2 GetJoueurDirection()

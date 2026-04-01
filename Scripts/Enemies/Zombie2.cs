@@ -10,5 +10,6 @@ public partial class Zombie2 : BaseEnemy
     {
         base._Ready();
         ((MoveInState)currentState).distancePosition = GetViewportRect().Size.Y - GD.RandRange(425, 580);
+        this.score = 335;
     }
 }

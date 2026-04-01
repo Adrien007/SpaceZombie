@@ -20,6 +20,9 @@ namespace SpaceZombie.Mondes.Utilitaires
         {
             menuUpgrade.Upgrade += Upgrade;
             GameEvents.Instance.ChooseUpgrade += ChooseUpgrade;
+
+            //tempo pour balance
+            GameEvents.Instance.EndLevel += UpgradeJoueur;
         }
         public void Initialiser()
         {
@@ -36,6 +39,16 @@ namespace SpaceZombie.Mondes.Utilitaires
         {
             joueur.Upgrade((UpgradeOptions)option);
             GetTree().Paused = false;
+        }
+
+        /// <summary>
+        /// Fonction tempo pour augmenter le fun factor en offrant plus de projectile.
+        /// </summary>
+        /// <param name="lvl"></param>
+        private void UpgradeJoueur(String lvl)
+        {
+            if (lvl.ToInt() <= 5)
+                joueur.Upgrade(UpgradeOptions.AddProjectile);
         }
     }
 }

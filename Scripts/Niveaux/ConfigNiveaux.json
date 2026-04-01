@@ -7,21 +7,7 @@
         [
           {
             "LevelNumber": 1,
-            "NbEnemiesParLigne": 3,
-            "DeplaceEnBlock": true,
-            "Lines": 
-            [
-              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [4] },
-              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [3] },
-              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [2] },
-              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [1] }
-            ],
-            "TpsRecharge": 4,
-            "NbProjectilePerAttack": 1
-          },
-          {
-            "LevelNumber": 2,
-            "NbEnemiesParLigne": 19,
+            "NbEnemiesParLigne": 10,
             "DeplaceEnBlock": true,
             "Lines": 
             [
@@ -32,17 +18,30 @@
             "NbProjectilePerAttack": 1
           },
           {
-            "LevelNumber": 3,
-            "NbEnemiesParLigne": 19,
+            "LevelNumber": 2,
+            "NbEnemiesParLigne": 18,
             "DeplaceEnBlock": true,
             "Lines": 
             [
               { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [1] },
-              { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [1] },
-              { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [1] }
+              { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [2] },
+              { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [2] }
             ],
             "TpsRecharge": 1,
-            "NbProjectilePerAttack": 1
+            "NbProjectilePerAttack": 2
+          },
+          {
+            "LevelNumber": 3,
+            "NbEnemiesParLigne": 0,
+            "DeplaceEnBlock": false,
+            "Lines": 
+            [
+              { "Fixed": false, "Speed": 60, "Direction": -1, "EnemyLevels": [1] },
+              { "Fixed": false, "Speed": 40, "Direction": 1, "EnemyLevels": [3] },
+              { "Fixed": false, "Speed": 60, "Direction": 1, "EnemyLevels": [2] }
+            ],
+            "TpsRecharge": 1,
+            "NbProjectilePerAttack": 4
           },
           {
             "LevelNumber": 4,
@@ -50,24 +49,26 @@
             "DeplaceEnBlock": true,
             "Lines": 
             [
-              { "Fixed": false, "Speed": 40, "Direction": 1, "EnemyLevels": [1] },
-              { "Fixed": false, "Speed": 40, "Direction": 1, "EnemyLevels": [1] },
-              { "Fixed": false, "Speed": 40, "Direction": 1, "EnemyLevels": [2] }
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [3] },
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [2] },
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [3] },
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [2] },
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [3] }
             ],
             "TpsRecharge": 1,
-            "NbProjectilePerAttack": 1
+            "NbProjectilePerAttack": 4
           },
           {
             "LevelNumber": 5,
-            "NbEnemiesParLigne": 19,
+            "NbEnemiesParLigne": 0,
             "DeplaceEnBlock": true,
             "Lines": [
-              { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [2] },
-              { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [2] },
-              { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [2] }
+              { "Fixed": false, "Speed": 40, "Direction": -1, "EnemyLevels": [3] },
+              { "Fixed": false, "Speed": 40, "Direction": 1, "EnemyLevels": [3] },
+              { "Fixed": false, "Speed": 40, "Direction": -1, "EnemyLevels": [2] }
             ],
-            "TpsRecharge": 1.5,
-            "NbProjectilePerAttack": 2
+            "TpsRecharge": 1.25,
+            "NbProjectilePerAttack": 4
           },
           {
             "LevelNumber": 6,
@@ -75,11 +76,15 @@
             "DeplaceEnBlock": true,
             "Lines": 
             [
-              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [2] },
-              { "Fixed": true, "Speed": 30, "Direction": 1, "EnemyLevels": [2] }
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [4] },  
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [2] },
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [3] },
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [4] }         
             ],
-            "TpsRecharge": 1,
-            "NbProjectilePerAttack": 2
+            "TpsRecharge": 0.95,
+            "NbProjectilePerAttack": 6
           },
           {
             "LevelNumber": 7,
@@ -87,11 +92,15 @@
             "DeplaceEnBlock": true,
             "Lines": 
             [
-              { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [2] },
-              { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [2] }
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [3] },  
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [3] },
+              { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [4] }
             ],
-            "TpsRecharge": 1,
-            "NbProjectilePerAttack": 3
+            "TpsRecharge": 0.9,
+            "NbProjectilePerAttack": 6
           },
           {
             "LevelNumber": 8,
@@ -99,22 +108,30 @@
             "DeplaceEnBlock": true,
             "Lines": 
             [
-              { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [2] },
-              { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [1] },
-              { "Fixed": false, "Speed": 30, "Direction": 1, "EnemyLevels": [1] }
+              { "Fixed": false, "Speed": 60, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 60, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 60, "Direction": -1, "EnemyLevels": [4] },  
+              { "Fixed": false, "Speed": 60, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 60, "Direction": -1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 60, "Direction": 1, "EnemyLevels": [4] }
             ],
-            "TpsRecharge": 1,
-            "NbProjectilePerAttack": 4
+            "TpsRecharge": 0.8,
+            "NbProjectilePerAttack": 6
           },
           {
             "LevelNumber": 9,
-            "NbEnemiesParLigne": 1,
+            "NbEnemiesParLigne": 19,
             "DeplaceEnBlock": true,
             "Lines": 
             [
-              { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [1] }
+              { "Fixed": false, "Speed": 80, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 80, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 80, "Direction": -1, "EnemyLevels": [4] },  
+              { "Fixed": false, "Speed": 80, "Direction": 1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 80, "Direction": -1, "EnemyLevels": [4] },
+              { "Fixed": false, "Speed": 80, "Direction": -1, "EnemyLevels": [4] }
             ],
-            "TpsRecharge": 1,
+            "TpsRecharge": 0.7,
             "NbProjectilePerAttack": 6
           }
         ]

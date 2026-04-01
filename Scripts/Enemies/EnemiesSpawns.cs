@@ -53,51 +53,90 @@ namespace SpaceZombie.Enemies
             levels = [
                 //Niveau 1
                 [
-                    //"On spawn 3 zombie1 a des positon random et on attend 6 secondes pour spawner les prochains zombie
-                    new EnemySpawn(zombie1, (3, null), 6f),
-
-                    //"On spawn 4 zombie1 a des positon random et on attend 8 secondes et on répète une deuxième fois
-                    new EnemySpawn(zombie1, (4, null), 8f, 2),
-
-                    //Fin du niveau lorsque tout les zombies du niveau sont morts.
+                    new EnemySpawn(zombie1, (3, null), 9f, 3),
                 ],
                 //Niveau 2
                 [
-                    //"On spawn 4 zombie2 a des positon random et on attend 8 secondes et on répète 3 fois
-                    new EnemySpawn(zombie2, (4, null), 8f, 3),
-
-                    //Fin du niveau lorsque tout les zombies du niveau sont morts.
+                    new EnemySpawn(zombie1, (2, spawnLeft), 3f),
+                    new EnemySpawn(zombie1, (2, spawnRight), 12f),
+                    new EnemySpawn(zombie1, (3, null), 5f, 3),
                 ],
                 //Niveau 3
                 [
-                    //"On spawn 1 zombie3 au centre et on attend 8 secondes et on répète une deuxième fois
-                    //new EnemySpawn(zombie3, (1, spawnCenter), 2f, 2),
-
-                    //"On spawn 1 zombie3 à gauche et on spawn immétiatement le prochain
-                    //new EnemySpawn(zombie3, (1, spawnLeft), 0),
-
-                    //"On spawn 1 zombie3 à droite
-                    //new EnemySpawn(zombie3, (1, spawnRight), 0),
-
-                    //Fin du niveau lorsque tout les zombies du niveau sont morts.
+                    new EnemySpawn(zombie1, (3, spawnLeft), 0.3f),
+                    new EnemySpawn(zombie1, (3, spawnRight), 3f),
+                    new EnemySpawn(zombie1, (3, spawnLeft), 0.3f),
+                    new EnemySpawn(zombie1, (3, spawnRight), 6f),
+                    new EnemySpawn(zombie2, (8, spawnRight), 9f),
+                    new EnemySpawn(zombie2, (4, spawnLeft), 10f, 2),
+                    new EnemySpawn(zombie1, (3, spawnLeft), 0.3f),
+                    new EnemySpawn(zombie1, (6, spawnRight), 3f),
+                    new EnemySpawn(zombie1, (3, spawnLeft), 0.3f),
+                    new EnemySpawn(zombie1, (6, spawnRight), 3f),
+                    new EnemySpawn(zombie2, (12, null), 10f, 2),
                 ],
                 //Niveau 4
                 [
+                    new EnemySpawn(zombie1, (3, spawnLeft), 0.3f),
+                    new EnemySpawn(zombie1, (3, spawnRight), 3f),
+                    new EnemySpawn(zombie1, (3, spawnLeft), 0.3f),
+                    new EnemySpawn(zombie1, (3, spawnRight), 10f),
+                    new EnemySpawn(zombie2, (4, null), 8f, 3),
+                    new EnemySpawn(zombie1, (6, null), 2f),
+                    new EnemySpawn(zombie1, (18, null), 4f, 3),
+                    new EnemySpawn(zombie2, (12, null), 4f),
+                    new EnemySpawn(zombie1, (18, null), 4f, 3),
                 ],
                 //Niveau 5
                 [
+                    new EnemySpawn(zombie3, (2, spawnLeft), 3f, 3),
+                    new EnemySpawn(zombie2, (32, null), 4f, 2),
+                    new EnemySpawn(zombie3, (2, spawnLeft), 5f, 3),
+                    new EnemySpawn(zombie1, (27, null), 2f, 2),
+                    new EnemySpawn(zombie2, (16, null), 4f, 2),
+                    new EnemySpawn(zombie1, (18, null), 2f, 2),
+                    new EnemySpawn(zombie1, (18, null), 10f),
+                    new EnemySpawn(zombie3, (2, null), 3f, 2),
+                    new EnemySpawn(zombie1, (3, spawnLeft), 0.3f),
+                    new EnemySpawn(zombie1, (3, spawnRight), 1f),
+                    new EnemySpawn(zombie3, (2, spawnLeft), 3f, 4),
+                    new EnemySpawn(zombie2, (32, null), 3f, 4),
+                    new EnemySpawn(zombie3, (2, spawnRight), 3f, 6),
                 ],
                 //Niveau 6
                 [
+                    new EnemySpawn(zombie1, (12, null), 1f, 3),
+                    new EnemySpawn(zombie2, (16, null), 5f, 2),
+                    new EnemySpawn(zombie3, (2, null), 2f, 4),
+                    new EnemySpawn(zombie1, (27, null), 4f, 2),
+                    new EnemySpawn(zombie3, (2, null), 2f, 4),
+                    new EnemySpawn(zombie2, (32, null), 10f, 2),
+                    new EnemySpawn(zombie3, (2, null), 2f, 4),
                 ],
                 //Niveau 7
                 [
+                    new EnemySpawn(zombie1, (27, null), 1f, 2),
+                    new EnemySpawn(zombie2, (16, null), 5f),
+                    new EnemySpawn(zombie3, (2, null), 2f, 6),
+                    new EnemySpawn(zombie2, (24, null), 8f, 6),
+                    new EnemySpawn(zombie1, (9, null), 1f, 7),
                 ],
                 //Niveau 8
                 [
+                    new EnemySpawn(zombie2, (16, null), 4f, 3),
+                    new EnemySpawn(zombie2, (16, null), 5f),
+                    new EnemySpawn(zombie1, (27, null), 1f, 3),
+                    new EnemySpawn(zombie3, (2, null), 2f, 6),
+                    new EnemySpawn(zombie2, (24, null), 4f, 4)
                 ],
                 //Niveau 9
                 [
+                    new EnemySpawn(zombie2, (16, null), 4f, 4),
+                    new EnemySpawn(zombie3, (6, null), 2f, 6),
+                    new EnemySpawn(zombie1, (27, null), 1f, 3),
+                    new EnemySpawn(zombie3, (2, null), 2f, 6),
+                    new EnemySpawn(zombie2, (24, null), 1f, 3),
+                    new EnemySpawn(zombie1, (27, null), 1f, 3),
                 ],
             ];
         }
