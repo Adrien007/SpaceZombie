@@ -12,6 +12,7 @@ namespace SpaceZombie.Enemies
         {
             base._Ready();
             ((Zombie3MoveState)currentState).SetTarget(new Vector2(Position.X, GetViewportRect().Size.Y - GD.RandRange(425, 580)));
+            this.score = 511;
         }
 
         public void MoveSlowlyToward(Vector2 targetPosition, float delta)

@@ -33,12 +33,12 @@ public partial class MenuUpgrade : PanelContainer
     public void ChooseUpgrade(Joueur joueur)
     {
         ProcessMode = ProcessModeEnum.WhenPaused;
-        int firstPick = random.RandiRange(0, 4);
-        List<UpgradeOptions> options = Enum.GetValues<UpgradeOptions>().ToList();
-        SetOption(option1, options[firstPick], joueur);
 
-        int secondPick = random.RandiRange(0, 3);
-        SetOption(option2, options.Except([options[firstPick]]).ToList()[secondPick], joueur);
+        List<UpgradeOptions> options = Enum.GetValues<UpgradeOptions>().ToList();
+        //options.Remove(UpgradeOptions.AddProjectile);
+        var shuffledOptions = options.OrderBy(x => random.Randf()).ToList();
+        SetOption(option1, shuffledOptions[0], joueur);
+        SetOption(option2, shuffledOptions[1], joueur);
 
         option1.GrabFocus();
         Visible = true;

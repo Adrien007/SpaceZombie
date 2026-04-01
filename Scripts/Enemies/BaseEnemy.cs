@@ -22,6 +22,7 @@ namespace SpaceZombie.Enemies
         private ShaderMaterial damageShader;
         public Joueur joueur;
         public Vector2 direction;
+        protected int score;
 
         public override void _Ready()
         {
@@ -86,7 +87,7 @@ namespace SpaceZombie.Enemies
             Monitoring = false;
             currentState.Exit();
             animation.Play("die");
-            joueur.ScoreUpdateListener(100, GlobalPosition);
+            joueur.ScoreUpdateListener(score, GlobalPosition);
         }
 
         public void Remove()

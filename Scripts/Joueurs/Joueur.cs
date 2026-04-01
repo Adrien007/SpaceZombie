@@ -49,9 +49,7 @@ namespace SpaceZombie.Joueurs
         public override void _Ready()
         {
             playAeraPosition = Position;
-
             demiXsize = (int)(panel.Size.X * 0.5f);
-
 
             dodgeEffect.Emitting = false;
             dodgeTransparency = panel.Modulate;
@@ -65,6 +63,24 @@ namespace SpaceZombie.Joueurs
             invinsibilityPanel.Visible = false;
             smokeDamageVfx.Visible = false;
             SetProcess(false);
+        }
+        public void Initialize(Rect2 playArea)
+        {
+            jState = new JoueurEtat(hp);
+            nouvellePosition = Position;
+            nouvellePosition.X = PositionCentreX();
+            Position = nouvellePosition;
+            canons.Initialize();
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
+            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
+            if (godMode) SetGodMode();
+            playAeraSize = playArea.Size;
+            playAeraPosition = playArea.Position;
+            SetProcess(true);
+        }
+        private float PositionCentreX()
+        {
+            return playAeraPosition.X + playAeraSize.X * 0.5f;
         }
 
         public override void _Process(double delta)
@@ -183,7 +199,7 @@ namespace SpaceZombie.Joueurs
                 {
                     jState.IsDead = true;
                     jState.DeadSoundPlayed = true;
-                    GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
+                    //GD.Print("[SoundSystemJoueur] Play 'player Die' sound.");
                     CallDeferred(nameof(Disable));
                     AnimationPlayer animation = GetNode<AnimationPlayer>("AnimationPlayer");
                     animation.AnimationFinished += OnDiedAnimationFinished;
@@ -207,45 +223,6 @@ namespace SpaceZombie.Joueurs
             return hp;
         }
 
-        public void Upgrade(UpgradeOptions option)
-        {
-            //GD.Print($"Upgrade : {option}");
-            switch (option)
-            {
-                case UpgradeOptions.Damage: canons.UpgradeDamage(); break;
-                case UpgradeOptions.AttackSpeed: canons.UpgradeVitesse(); break;
-                case UpgradeOptions.AddProjectile: canons.UpgradeCanons(); break;
-                case UpgradeOptions.Passthrough: canons.UpgradeTraverse(); break;
-                case UpgradeOptions.Dodge: UpgradeDodge(); break;
-            }
-        }
-
-        private void UpgradeDodge()
-        {
-            dodgeUpgrade += 1;
-            if (dodgeCount == dodgeUpgrade)
-            {
-                dodgeEnergy1.Restore();
-                dodgeEnergy2.Restore();
-                sonDodgeRestore.Play();
-            }
-        }
-
-
-        public void Initialize(Rect2 playArea)
-        {
-            jState = new JoueurEtat(hp);
-            nouvellePosition = Position;
-            nouvellePosition.X = PositionCentreX();
-            Position = nouvellePosition;
-            canons.Initialize();
-            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerHealthUpdated, jState.Hp);
-            GameEvents.Instance.EmitSignal(GameEvents.SignalName.PlayerScoreUpdated, jState.Score);
-            if (godMode) SetGodMode();
-            playAeraSize = playArea.Size;
-            playAeraPosition = playArea.Position;
-            SetProcess(true);
-        }
 
         private void SetGodMode()
         {
@@ -260,10 +237,6 @@ namespace SpaceZombie.Joueurs
                 canons.UpgradeDamage();
             }
             moveSpeed = 500f;
-        }
-        private float PositionCentreX()
-        {
-            return playAeraPosition.X + playAeraSize.X * 0.5f;
         }
 
         public void Disable()
@@ -284,6 +257,31 @@ namespace SpaceZombie.Joueurs
             invinsibilityPanel.Visible = false;
             jState.IsInvicible = false;
         }
+
+        #region Upgrade section
+        public void Upgrade(UpgradeOptions option)
+        {
+            //GD.Print($"Upgrade : {option}");
+            switch (option)
+            {
+                case UpgradeOptions.Damage: canons.UpgradeDamage(); break;
+                case UpgradeOptions.AttackSpeed: canons.UpgradeVitesse(); break;
+                case UpgradeOptions.AddProjectile: canons.UpgradeCanons(); break;
+                case UpgradeOptions.Passthrough: canons.UpgradeTraverse(); break;
+                case UpgradeOptions.Dodge: UpgradeDodge(); break;
+            }
+        }
+        private void UpgradeDodge()
+        {
+            dodgeUpgrade += 1;
+            if (dodgeCount == dodgeUpgrade)
+            {
+                dodgeEnergy1.Restore();
+                dodgeEnergy2.Restore();
+                sonDodgeRestore.Play();
+            }
+        }
+        #endregion
 
         #region score section
         public void ScoreUpdateListener(int score, Vector2 globalPosition)
