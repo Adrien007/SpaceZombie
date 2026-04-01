@@ -105,13 +105,13 @@ namespace SpaceZombie.Enemies
                 ],
                 //Niveau 6
                 [
-                    // new EnemySpawn(zombie1, (12, null), 1f, 3),
-                    // new EnemySpawn(zombie2, (16, null), 5f, 2),
-                    // new EnemySpawn(zombie3, (2, null), 2f, 4),
-                    // new EnemySpawn(zombie1, (27, null), 4f, 2),
-                    // new EnemySpawn(zombie3, (2, null), 2f, 4),
-                    // new EnemySpawn(zombie2, (32, null), 10f, 2),
-                    // new EnemySpawn(zombie3, (2, null), 2f, 4),
+                    new EnemySpawn(zombie1, (12, null), 1f, 3),
+                    new EnemySpawn(zombie2, (16, null), 5f, 2),
+                    new EnemySpawn(zombie3, (2, null), 2f, 4),
+                    new EnemySpawn(zombie1, (27, null), 4f, 2),
+                    new EnemySpawn(zombie3, (2, null), 2f, 4),
+                    new EnemySpawn(zombie2, (32, null), 10f, 2),
+                    new EnemySpawn(zombie3, (2, null), 2f, 4),
                 ],
                 //Niveau 7
                 [
