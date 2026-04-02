@@ -130,7 +130,7 @@ script = ExtResource("1_y7nrq")
 sprite = NodePath("Sprite2D")
 takeHitSound = NodePath("TakeHitSound")
 animation = NodePath("AnimationPlayer")
-hp = 3
+hp = 4
 moveSpeed = 75.0
 turnSpeed = 2.5
 separationRadius = 50.0
@@ -172,11 +172,13 @@ bulletLoader = ExtResource("2_5yww2")
 stream = ExtResource("6_m70n8")
 volume_db = -5.0
 pitch_scale = 1.5
+bus = &"Explosion"
 
 [node name="ExplosionSound" type="AudioStreamPlayer" parent="." unique_id=601572512]
 stream = ExtResource("7_0f62g")
 volume_db = 1.5
 pitch_scale = 0.95
+bus = &"Explosion"
 
 [node name="Attack" type="AudioStreamPlayer" parent="." unique_id=1012179779]
 stream = ExtResource("10_7qn1o")

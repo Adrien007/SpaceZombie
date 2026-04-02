@@ -338,6 +338,7 @@ pitch_scale = 0.8
 stream = ExtResource("6_da80c")
 volume_db = 1.5
 pitch_scale = 0.95
+bus = &"Explosion"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=277293634]
 libraries/ = SubResource("AnimationLibrary_j3hbi")

@@ -29,7 +29,7 @@ public partial class BossLazerZone : Control
         float freeZonePosition = (float)GD.RandRange(attackZoneMargin, screenSize.X - attackZoneMargin - freeZoneWidth);
         zone1.Position = new Vector2(freeZonePosition - zone1.Size.X, 0);
         zone2.Position = new Vector2(freeZonePosition + freeZoneWidth, 0);
-        animation.Play("prepare_attack");
+        animation.Play("prepare_attack", attackSpeed);
     }
 
     public void StartAttackDelay()

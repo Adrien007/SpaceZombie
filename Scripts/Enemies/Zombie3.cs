@@ -24,6 +24,7 @@ namespace SpaceZombie.Enemies
 
             // Apply the movement
             GlobalPosition += velocity * delta;
+            score = 568;
         }
 
         public void StopMovingSlowlyToward()
@@ -33,13 +34,11 @@ namespace SpaceZombie.Enemies
 
         public void Cooldown()
         {
-            GD.Print("Cooldown");
             animation.Play("cooldown");
         }
 
         public void CooldownEnded()
         {
-            GD.Print("CooldownEnded");
             ChangeState(State.move);
         }
     }

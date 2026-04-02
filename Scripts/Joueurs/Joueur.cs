@@ -226,17 +226,17 @@ namespace SpaceZombie.Joueurs
 
         private void SetGodMode()
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 3; i++)
             {
                 canons.UpgradeCanons();
                 canons.UpgradeVitesse();
             }
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 1; i++)
             {
                 canons.UpgradeTraverse();
                 canons.UpgradeDamage();
             }
-            moveSpeed = 500f;
+            //moveSpeed = 500f;
         }
 
         public void Disable()

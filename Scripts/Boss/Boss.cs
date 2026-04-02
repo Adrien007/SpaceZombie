@@ -31,7 +31,11 @@ namespace SpaceZombie.Boss
         private (Action<int>, int)[] phase3;
         private Timer nextActionTimer = new Timer();
         private int nextActionIndex = 0;
+        private int phase2Trigger;
+        private int phase3Trigger;
+        private Action nextPhase;
         private bool died = false;
+        private float moveSpeed = 1;
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
@@ -47,7 +51,10 @@ namespace SpaceZombie.Boss
             animation.AnimationFinished += AnimationFinished;
             bossHealthBar.MaxValue = hp;
             bossHealthBar.Value = hp;
+            phase2Trigger = (int)(hp * 0.66);
+            phase3Trigger = (int)(hp * 0.33);
             InitAttackPhases();
+            bossAttacks.Phase3();
         }
 
         public void Foward()
@@ -60,13 +67,14 @@ namespace SpaceZombie.Boss
         private void AnimationFinished(StringName animName)
         {
             animation.AnimationFinished -= AnimationFinished;
-            actions = phase1;
+            actions = phase3;
+            animation.Play("Move", moveSpeed);
             DoNextAction();
         }
 
         private void StartMovement(int seconds)
         {
-            animation.Play("Move");
+            animation.Play("Move", moveSpeed);
             StartNextActionTimer(seconds);
         }
 
@@ -76,9 +84,15 @@ namespace SpaceZombie.Boss
             StartNextActionTimer(seconds);
         }
 
-        private void StartFireBullets(int seconds)
+        private void StartFireAllBullets(int seconds)
         {
-            bossAttacks.FireBullets();
+            bossAttacks.FireAllBullets();
+            StartNextActionTimer(seconds);
+        }
+
+        private void StartFireOneBulletAtTimes(int seconds)
+        {
+            bossAttacks.FireOneBulletAtTime();
             StartNextActionTimer(seconds);
         }
 
@@ -90,7 +104,13 @@ namespace SpaceZombie.Boss
 
         private void DoNextAction()
         {
-            if (nextActionIndex >= actions.Length)
+            if (nextPhase != null)
+            {
+                nextPhase();
+                nextPhase = null;
+                nextActionIndex = 0;
+            }
+            else if (nextActionIndex >= actions.Length)
             {
                 nextActionIndex = 0;
             }
@@ -123,10 +143,33 @@ namespace SpaceZombie.Boss
                 died = true;
                 StopAttacks();
                 animation.Play("Die");
-                //animation.AnimationFinished += (StringName animName) => CallDeferred(nameof(Disable));
                 CallDeferred(nameof(Disable));
                 GameEvents.Instance.EmitSignal(GameEvents.SignalName.UpdateScore, 15978, this.GlobalPosition);
             }
+            else if (hp <= phase3Trigger && actions != phase3)
+            {
+                //nextPhase = Phase3;
+            }
+            else if (hp <= phase2Trigger && actions != phase2)
+            {
+                //nextPhase = Phase2;
+            }
+        }
+
+        private void Phase2()
+        {
+            actions = phase2;
+            moveSpeed = 2f;
+            animation.Pause();
+            bossAttacks.Phase2();
+        }
+
+        private void Phase3()
+        {
+            actions = phase3;
+            moveSpeed = 4f;
+            animation.Pause();
+            bossAttacks.Phase3();
         }
 
         private void ShowHitShader()
@@ -158,12 +201,12 @@ namespace SpaceZombie.Boss
         {
             phase1 = [
                 (StartMovement, 5),
-                (StartFireBullets, 5),
+                //(StartFireBullets, 5),
                 (StopFireBullets, 0),
                 (StopMovement, 0),
                 (bossAttacks.FireRayLazers, 2),
                 (StartMovement, 1),
-                (StartFireBullets, 5),
+                //(StartFireBullets, 5),
                 (StopMovement, 0),
                 (StopFireBullets, 0),
                 (bossAttacks.FireZoneLazer, 2),
@@ -173,28 +216,24 @@ namespace SpaceZombie.Boss
                 (bossAttacks.FireZoneLazer, 2),
                 (bossAttacks.FireRayLazers, 2),
                 (StartMovement, 3),
-                (StartFireBullets, 5),
+                //(StartFireBullets, 5),
                 (StopFireBullets, 0),
                 (StopMovement, 0),
                 (bossAttacks.FireRayLazers, 2),
                 (StartMovement, 1),
-                (StartFireBullets, 5),
+                //(StartFireBullets, 5),
                 (StopMovement, 0),
                 (StopFireBullets, 0),
                 (bossAttacks.FireZoneLazer, 2),
             ];
 
             phase3 = [
-                (bossAttacks.FireZoneLazer, 2),
-                (bossAttacks.FireRayLazers, 2),
-                (StartMovement, 3),
-                (StartFireBullets, 5),
+                (StartFireAllBullets, 5),
                 (StopFireBullets, 0),
-                (StopMovement, 0),
+                (bossAttacks.FireRayLazers, 1),
+                (bossAttacks.FireZoneLazer, 1),
+                (StartFireOneBulletAtTimes, 5),
                 (bossAttacks.FireRayLazers, 2),
-                (StartMovement, 1),
-                (StartFireBullets, 5),
-                (StopMovement, 0),
                 (StopFireBullets, 0),
                 (bossAttacks.FireZoneLazer, 2),
             ];

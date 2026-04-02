@@ -234,16 +234,15 @@ _data = {
 &"die": SubResource("Animation_p61eu")
 }
 
-[node name="Zombie3" type="Area2D" unique_id=495035818 node_paths=PackedStringArray("smokeVfx", "sprite", "takeHitSound", "animation", "states", "currentState")]
+[node name="Zombie3" type="Area2D" unique_id=495035818 node_paths=PackedStringArray("sprite", "takeHitSound", "animation", "states", "currentState")]
 collision_layer = 536870912
 collision_mask = 536870912
 monitoring = false
 script = ExtResource("1_dfy8o")
-smokeVfx = NodePath("Sprite2D/Smoke_damage_vfx")
 sprite = NodePath("Sprite2D")
 takeHitSound = NodePath("TakeHitSound")
 animation = NodePath("AnimationPlayer")
-hp = 3
+hp = 10
 moveSpeed = 500.0
 separationRadius = 60.0
 states = [NodePath("MoveState"), NodePath("AttackState")]
@@ -289,11 +288,13 @@ followSpeed = 75.0
 stream = ExtResource("6_ev6jm")
 volume_db = -5.0
 pitch_scale = 1.5
+bus = &"Explosion"
 
 [node name="ExplosionSound" type="AudioStreamPlayer" parent="." unique_id=512883303]
 stream = ExtResource("4_ev6jm")
 volume_db = 1.5
 pitch_scale = 0.95
+bus = &"Explosion"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1869121089]
 libraries/ = SubResource("AnimationLibrary_0nhbg")

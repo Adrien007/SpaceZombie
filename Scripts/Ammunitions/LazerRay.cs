@@ -101,17 +101,17 @@ namespace SpaceZombie.Ammunitions
         {
             if (isAiming)
             {
+                aimRay.Visible = false;
+                lazerMain.Visible = false;
+                lazerGlow.Visible = false;
+                lazerCore.Visible = false;
+                aimRay.Enabled = false;
                 lazerSound.Stop();
                 Monitoring = false;
                 SetPhysicsProcess(false);
                 repeatDamage.Stop();
                 fireTween?.Kill();
                 fireDelay.Stop();
-                aimRay.Enabled = false;
-                aimRay.Visible = false;
-                lazerMain.Visible = false;
-                lazerGlow.Visible = false;
-                lazerCore.Visible = false;
                 fireEndedListener?.Invoke();
             }
 

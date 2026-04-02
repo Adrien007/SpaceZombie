@@ -13,6 +13,7 @@ joueur = NodePath("MainAera/Joueur")
 
 [node name="Joueur" parent="MainAera" unique_id=1982290760 instance=ExtResource("3_vpfhl")]
 position = Vector2(576, 610)
+godMode = true
 
 [node name="Boss" parent="MainAera" unique_id=1170369034 node_paths=PackedStringArray("joueur") instance=ExtResource("4_qwaro")]
 joueur = NodePath("../Joueur")

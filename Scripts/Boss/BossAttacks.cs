@@ -16,21 +16,24 @@ namespace SpaceZombie.Boss
         [Export] private BossLazerZone lazerZone;
         [Export] private AudioStreamPlayer bulletSound;
         private float attackZoneMargin = 40f;
-        private float freeZoneWidth = 200f;
-        private float fireBulletDelay = 2.0f;
         private RandomNumberGenerator random = new RandomNumberGenerator();
         private Timer fireBulletsTimer = new Timer();
         private int repeatAttack = 0;
         private Action attackEndListener;
-        private float lazerZoneWidth;
-        private float lazerZoneDelay;
+        public Projectile bullet;
+        public float fireBulletDelay = 2.0f;
+        public int numberOfBullet = 1;
+        public float lazerZoneWidth;
+        public float lazerZoneSpeed;
 
         public override void _Ready()
         {
             lazerZoneWidth = 200;
-            lazerZoneDelay = 3;
+            lazerZoneSpeed = 1;
+            bullet = new Projectile(1, 300f);
+
             fireBulletsTimer.WaitTime = fireBulletDelay;
-            fireBulletsTimer.Timeout += FireBullet;
+            fireBulletsTimer.Timeout += FireAllBullet;
             AddChild(fireBulletsTimer);
         }
 
@@ -40,7 +43,7 @@ namespace SpaceZombie.Boss
             for (int i = 0; i < 5; i++)
             {
                 CanonObjet canon = (CanonObjet)FindChild($"Canon{i}");
-                canon.Initialize("projectile_enemy", new Projectile(1, 400f));
+                canon.Initialize("projectile_enemy", bullet);
                 LazerRay lazerRay = canon.GetChild<LazerRay>(0);
                 lazers.Add(lazerRay);
                 canons.Add(canon);
@@ -48,6 +51,26 @@ namespace SpaceZombie.Boss
 
             lazers[4].fireEndedListener = LazerAttackEnded;
             lazerZone.attackEndedListener = ZoneAttackEnded;
+        }
+
+        public void Phase2()
+        {
+            Stop();
+            bullet.UpgradeVitesse(0.5f);
+            fireBulletDelay = 1.0f;
+            numberOfBullet = 2;
+            lazerZoneWidth = 100;
+            lazerZoneSpeed = 1.5f;
+        }
+
+        public void Phase3()
+        {
+            Stop();
+            bullet.UpgradeVitesse(0.5f);
+            fireBulletDelay = 1f;
+            numberOfBullet = 4;
+            lazerZoneWidth = 75;
+            lazerZoneSpeed = 2.0f;
         }
 
         public void RegisterOnAttackEnd(Action onAttackEnded)
@@ -82,7 +105,7 @@ namespace SpaceZombie.Boss
             repeatAttack -= 1;
             if (repeatAttack > 0)
             {
-                lazerZone.Fire(lazerZoneWidth, lazerZoneDelay);
+                lazerZone.Fire(lazerZoneWidth, lazerZoneSpeed);
             }
             else
             {
@@ -90,19 +113,57 @@ namespace SpaceZombie.Boss
             }
         }
 
-        private void FireBullet()
+        private void FireAllBullet()
+        {
+            foreach (CanonObjet canon in canons)
+            {
+                canon.Fire((joueur.GlobalPosition - canon.GlobalPosition).Normalized());
+            }
+            bulletSound.Play();
+        }
+
+        private void FireBulletSlowly()
         {
             CanonObjet canon = canons[random.RandiRange(0, 4)];
             canon.Fire((joueur.GlobalPosition - canon.GlobalPosition).Normalized());
             bulletSound.Play();
         }
 
-        public void FireBullets()
+
+        public void FireAllBullets()
         {
             if (fireBulletsTimer.IsStopped())
             {
-                FireBullet();
+                ClearFireBulletTimerListeners();
+                fireBulletsTimer.Timeout += FireAllBullet;
+                FireAllBullet();
                 fireBulletsTimer.Start(fireBulletDelay);
+            }
+        }
+
+        public void FireOneBulletAtTime()
+        {
+            if (fireBulletsTimer.IsStopped())
+            {
+                ClearFireBulletTimerListeners();
+                fireBulletsTimer.Timeout += FireBulletSlowly;
+                FireBulletSlowly();
+                fireBulletsTimer.Start(fireBulletDelay);
+            }
+        }
+
+        private void ClearFireBulletTimerListeners()
+        {
+            var callable = Callable.From(FireAllBullet);
+            if (fireBulletsTimer.IsConnected("timeout", callable))
+            {
+                fireBulletsTimer.Disconnect("timeout", callable);
+            }
+
+            callable = Callable.From(FireBulletSlowly);
+            if (fireBulletsTimer.IsConnected("timeout", callable))
+            {
+                fireBulletsTimer.Disconnect("timeout", callable);
             }
         }
 
@@ -128,7 +189,7 @@ namespace SpaceZombie.Boss
         public void FireZoneLazer(int repeat)
         {
             repeatAttack = repeat;
-            lazerZone.Fire(lazerZoneWidth, lazerZoneDelay);
+            lazerZone.Fire(lazerZoneWidth, lazerZoneSpeed);
         }
     }
 
