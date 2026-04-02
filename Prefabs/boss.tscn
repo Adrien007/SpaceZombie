@@ -3,11 +3,32 @@
 [ext_resource type="Script" uid="uid://u7wob0uitjvr" path="res://Scripts/Utilitaires/Damagable.cs" id="2_1pyra"]
 [ext_resource type="Script" uid="uid://c1aq57q1bhvgp" path="res://Scripts/Boss/BossAttacks.cs" id="2_ab3ne"]
 [ext_resource type="Script" uid="uid://couxhgy7yqcip" path="res://Scripts/Boss/Boss.cs" id="2_fj87s"]
+[ext_resource type="PackedScene" uid="uid://xxq4omh1vskg" path="res://Prefabs/boss_lazer_zone.tscn" id="2_im1n0"]
 [ext_resource type="PackedScene" uid="uid://d0abunydadwtt" path="res://Prefabs/canon.tscn" id="2_obrrb"]
 [ext_resource type="Texture2D" uid="uid://u34vtsbfrbqy" path="res://images/boss/boss1.png" id="3_bi3vq"]
-[ext_resource type="PackedScene" uid="uid://cpj3804ekabf" path="res://Prefabs/boss_lazer_ray.tscn" id="3_obrrb"]
-[ext_resource type="PackedScene" uid="uid://b7uoylkqt1bey" path="res://Prefabs/boss_lazer_zone.tscn" id="6_im1n0"]
+[ext_resource type="Shader" uid="uid://dt60v0tg4042k" path="res://Prefabs/Enemies/damage.gdshader" id="4_ej3y6"]
 [ext_resource type="AudioStream" uid="uid://csblwr6117qh6" path="res://Sounds/IntroPlusBossFight.mp3" id="7_bi3vq"]
+[ext_resource type="PackedScene" uid="uid://ddtex0miunfri" path="res://Prefabs/lazer_ray.tscn" id="7_ej3y6"]
+[ext_resource type="AudioStream" uid="uid://nbbtq7ah5tbu" path="res://Sounds/Zombie2_Attack.wav" id="10_imfm6"]
+[ext_resource type="AudioStream" uid="uid://bd8lfxhgdl2jf" path="res://Sounds/ZombieShipTakeHit.wav" id="11_wft1y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_im1n0"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ej3y6"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [sub_resource type="Curve2D" id="Curve2D_fj87s"]
 _data = {
@@ -15,8 +36,12 @@ _data = {
 }
 point_count = 8
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ixukv"]
-size = Vector2(498, 198)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_imfm6"]
+shader = ExtResource("4_ej3y6")
+shader_parameter/hit_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/hit_amount = 0.0
+shader_parameter/attack_color = Color(1, 0.149, 0.149, 1)
+shader_parameter/attack_amount = 0.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_im1n0"]
 
@@ -49,7 +74,31 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, -250), Vector2(0, 0)]
+"values": [Vector2(0, -300), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../ProgressBar:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(4, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../IntroPlusBossFight:volume_db")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-80.0, -15.0]
 }
 
 [sub_resource type="Animation" id="Animation_fj87s"]
@@ -78,7 +127,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"points": PackedFloat32Array(0, 0, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
 tracks/1/type = "value"
@@ -91,7 +140,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, 0)]
+"values": [Vector2(0, -300)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -105,6 +154,30 @@ tracks/2/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../ProgressBar:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../../IntroPlusBossFight:volume_db")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-15.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_obrrb"]
 _data = {
@@ -114,32 +187,76 @@ _data = {
 &"RESET": SubResource("Animation_r8bj5")
 }
 
-[node name="Path2D" type="Path2D" unique_id=1868883716]
+[node name="Boss" type="Control" unique_id=1351352154 node_paths=PackedStringArray("bossHealthBar", "pathFollow2D", "bossAttacks", "takeDamageSound", "introPlusBossFight", "area", "sprite", "animation")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_fj87s")
+bossHealthBar = NodePath("ProgressBar")
+pathFollow2D = NodePath("Control/Path2D/PathFollow2D")
+bossAttacks = NodePath("Control/Path2D/PathFollow2D/Area2D/Attacks")
+takeDamageSound = NodePath("TakeDamageSound")
+introPlusBossFight = NodePath("IntroPlusBossFight")
+area = NodePath("Control/Path2D/PathFollow2D/Area2D")
+sprite = NodePath("Control/Path2D/PathFollow2D/Area2D/Sprite2D")
+animation = NodePath("AnimationPlayer")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=376295465]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(468, 40)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -234.0
+offset_top = 10.0
+offset_right = 234.0
+offset_bottom = 50.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_im1n0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ej3y6")
+
+[node name="BossLazerZone" parent="." unique_id=1455344572 instance=ExtResource("2_im1n0")]
+layout_mode = 1
+
+[node name="Control" type="Control" parent="." unique_id=731880386]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+
+[node name="Path2D" type="Path2D" parent="Control" unique_id=1868883716]
 self_modulate = Color(1, 1, 1, 0.088)
 z_index = 1
 curve = SubResource("Curve2D_fj87s")
-script = ExtResource("2_fj87s")
-hp = 2
 
-[node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=2144733937]
+[node name="PathFollow2D" type="PathFollow2D" parent="Control/Path2D" unique_id=2144733937]
 rotates = false
 
-[node name="Area2D" type="Area2D" parent="PathFollow2D" unique_id=511207021]
+[node name="Area2D" type="Area2D" parent="Control/Path2D/PathFollow2D" unique_id=511207021]
+position = Vector2(0, -300)
 collision_layer = 536870912
 collision_mask = 0
 monitoring = false
 script = ExtResource("2_1pyra")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/Area2D" unique_id=508312017]
-position = Vector2(0, 154)
-shape = SubResource("RectangleShape2D_ixukv")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Control/Path2D/PathFollow2D/Area2D" unique_id=1353531920]
+position = Vector2(0, 90)
+polygon = PackedVector2Array(-1, 1, 221, 66, 259, 104, 108, 105, 85, 147, 49, 169, 4, 176, -45, 168, -82, 146, -108, 104, -250, 107, -211, 61)
 
-[node name="Sprite2D" type="Sprite2D" parent="PathFollow2D/Area2D/CollisionShape2D" unique_id=619498026]
-position = Vector2(1, 33)
+[node name="Sprite2D" type="Sprite2D" parent="Control/Path2D/PathFollow2D/Area2D" unique_id=619498026]
+material = SubResource("ShaderMaterial_imfm6")
+position = Vector2(1, 187)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("3_bi3vq")
 
-[node name="Attacks" type="Panel" parent="PathFollow2D/Area2D" unique_id=1405955129 node_paths=PackedStringArray("attackZone1", "attackZone2")]
+[node name="Attacks" type="Panel" parent="Control/Path2D/PathFollow2D/Area2D" unique_id=1405955129 node_paths=PackedStringArray("lazerZone", "bulletSound")]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -150,50 +267,54 @@ offset_bottom = 252.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_im1n0")
 script = ExtResource("2_ab3ne")
-attackZone1 = NodePath("../../../ZoneAttack1")
-attackZone2 = NodePath("../../../ZoneAttack2")
+lazerZone = NodePath("../../../../../BossLazerZone")
+bulletSound = NodePath("../../../../../BulletSound")
 
-[node name="Canon0" parent="PathFollow2D/Area2D/Attacks" unique_id=1369072580 instance=ExtResource("2_obrrb")]
+[node name="Canon0" parent="Control/Path2D/PathFollow2D/Area2D/Attacks" unique_id=1369072580 instance=ExtResource("2_obrrb")]
 position = Vector2(42, 127)
 
-[node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon0" unique_id=380489412 instance=ExtResource("3_obrrb")]
+[node name="LazerRay" parent="Control/Path2D/PathFollow2D/Area2D/Attacks/Canon0" unique_id=1638562466 instance=ExtResource("7_ej3y6")]
 rotation = 0.5235988
 
-[node name="Canon1" parent="PathFollow2D/Area2D/Attacks" unique_id=1137410245 instance=ExtResource("2_obrrb")]
+[node name="Canon1" parent="Control/Path2D/PathFollow2D/Area2D/Attacks" unique_id=1137410245 instance=ExtResource("2_obrrb")]
 position = Vector2(159, 184)
 
-[node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon1" unique_id=1635700301 instance=ExtResource("3_obrrb")]
+[node name="LazerRay" parent="Control/Path2D/PathFollow2D/Area2D/Attacks/Canon1" unique_id=842133133 instance=ExtResource("7_ej3y6")]
 rotation = 0.2617994
 
-[node name="Canon2" parent="PathFollow2D/Area2D/Attacks" unique_id=1129639824 instance=ExtResource("2_obrrb")]
+[node name="Canon2" parent="Control/Path2D/PathFollow2D/Area2D/Attacks" unique_id=1129639824 instance=ExtResource("2_obrrb")]
 position = Vector2(250, 200)
 
-[node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon2" unique_id=307548533 instance=ExtResource("3_obrrb")]
+[node name="LazerRay" parent="Control/Path2D/PathFollow2D/Area2D/Attacks/Canon2" unique_id=1347228499 instance=ExtResource("7_ej3y6")]
 
-[node name="Canon3" parent="PathFollow2D/Area2D/Attacks" unique_id=595705896 instance=ExtResource("2_obrrb")]
+[node name="Canon3" parent="Control/Path2D/PathFollow2D/Area2D/Attacks" unique_id=595705896 instance=ExtResource("2_obrrb")]
 position = Vector2(339, 186)
 
-[node name="BossLazerRay" parent="PathFollow2D/Area2D/Attacks/Canon3" unique_id=1208909132 instance=ExtResource("3_obrrb")]
+[node name="LazerRay" parent="Control/Path2D/PathFollow2D/Area2D/Attacks/Canon3" unique_id=1919908546 instance=ExtResource("7_ej3y6")]
 rotation = -0.2617994
 
-[node name="Canon4" parent="PathFollow2D/Area2D/Attacks" unique_id=1269162833 instance=ExtResource("2_obrrb")]
+[node name="Canon4" parent="Control/Path2D/PathFollow2D/Area2D/Attacks" unique_id=1269162833 instance=ExtResource("2_obrrb")]
 position = Vector2(460, 123)
 
-[node name="BossLazerRays" parent="PathFollow2D/Area2D/Attacks/Canon4" unique_id=2097247793 instance=ExtResource("3_obrrb")]
+[node name="LazerRay" parent="Control/Path2D/PathFollow2D/Area2D/Attacks/Canon4" unique_id=527923661 instance=ExtResource("7_ej3y6")]
 rotation = -0.5235988
-
-[node name="ZoneAttack1" parent="." unique_id=1235244731 instance=ExtResource("6_im1n0")]
-z_index = -1
-
-[node name="ZoneAttack2" parent="." unique_id=1624810469 instance=ExtResource("6_im1n0")]
-z_index = -1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1965144711]
-libraries/ = SubResource("AnimationLibrary_obrrb")
 
 [node name="IntroPlusBossFight" type="AudioStreamPlayer" parent="." unique_id=1733726569]
 stream = ExtResource("7_bi3vq")
 volume_db = -15.0
 parameters/looping = true
 
-[connection signal="take_damage" from="PathFollow2D/Area2D" to="." method="TakeDamage"]
+[node name="BulletSound" type="AudioStreamPlayer" parent="." unique_id=6524571]
+stream = ExtResource("10_imfm6")
+volume_db = -15.0
+pitch_scale = 0.5
+
+[node name="TakeDamageSound" type="AudioStreamPlayer" parent="." unique_id=1568839380]
+stream = ExtResource("11_wft1y")
+volume_db = -6.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1965144711]
+root_node = NodePath("../Control/Path2D")
+libraries/ = SubResource("AnimationLibrary_obrrb")
+
+[connection signal="take_damage" from="Control/Path2D/PathFollow2D/Area2D" to="Control/Path2D" method="TakeDamage"]

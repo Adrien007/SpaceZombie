@@ -1,80 +1,352 @@
-[gd_scene format=3 uid="uid://b7uoylkqt1bey"]
+[gd_scene format=3 uid="uid://xxq4omh1vskg"]
 
-[ext_resource type="Script" uid="uid://dk3lan0sx8sgt" path="res://Scripts/Boss/BossLazerZone.cs" id="1_y147c"]
+[ext_resource type="Script" uid="uid://djssl370m3hq2" path="res://Scripts/Boss/BossLazerZone.cs" id="1_s7xa7"]
+[ext_resource type="Shader" uid="uid://bc0bfugpkv6ct" path="res://Prefabs/lazer_zone.gdshader" id="1_y147c"]
+[ext_resource type="AudioStream" uid="uid://bd8lfxhgdl2jf" path="res://Sounds/ZombieShipTakeHit.wav" id="4_wb1ot"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y147c"]
-bg_color = Color(0.78031605, 0, 0.050708726, 0)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dswcj"]
+shader = ExtResource("1_y147c")
+shader_parameter/time_scale = 4.5
+shader_parameter/crackle_amount = 2.2
+shader_parameter/brightness = 1.7
+shader_parameter/electric_color = Color(0.571, 0.05, 0.05, 1)
+shader_parameter/alpha = 0.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jpkyw"]
-size = Vector2(100, 400)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ujpr2"]
+size = Vector2(1152, 648)
 
-[sub_resource type="Animation" id="Animation_jpkyw"]
-resource_name = "Fire"
-length = 5.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:theme_override_styles/panel:bg_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5, 3, 4.4999, 4.5, 4.9999, 5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Color(0.78031605, 0, 0.050708726, 0), Color(0.78031605, 0, 0.050708726, 0.5), Color(0.78031605, 0, 0.050708726, 0), Color(0.78031605, 0, 0.050708726, 0), Color(0.78031605, 0, 0.050708726, 1), Color(0.78031605, 0, 0.050708726, 1), Color(0.78031605, 0, 0.050708726, 0)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(4.5, 4.955),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [],
-"method": &"EnableCollision"
-}, {
-"args": [],
-"method": &"DisableCollision"
-}]
-}
-
-[sub_resource type="Animation" id="Animation_y866w"]
+[sub_resource type="Animation" id="Animation_s7xa7"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:theme_override_styles/panel:bg_color")
+tracks/0/path = NodePath("Zone2/Area2D:monitoring")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Zone1/Area2D:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Zone2:use_parent_material")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Zone1:use_parent_material")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AttackSound:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_0rk1e"]
+resource_name = "attack"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Zone1:material:shader_parameter/alpha")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Color(0.78031605, 0, 0.050708726, 0)]
+"values": [0.0, 0.50000002375, 0.50000002375, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Zone2:material:shader_parameter/alpha")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.50000002375, 0.50000002375, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Zone1/Area2D:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.13333334, 1.9333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Zone2/Area2D:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.13333334, 1.9333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"AttackEnded"
+}]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Zone2:use_parent_material")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Zone1:use_parent_material")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AttackSound:playing")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_y866w"]
+[sub_resource type="Animation" id="Animation_dswcj"]
+resource_name = "prepare_attack"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Zone1:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Zone1:use_parent_material")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Zone2:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Zone2:use_parent_material")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Zone1:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.5), Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Zone2:self_modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.5), Color(1, 1, 1, 0)]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"StartAttackDelay"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0rk1e"]
 _data = {
-&"Fire": SubResource("Animation_jpkyw"),
-&"RESET": SubResource("Animation_y866w")
+&"RESET": SubResource("Animation_s7xa7"),
+&"attack": SubResource("Animation_0rk1e"),
+&"prepare_attack": SubResource("Animation_dswcj")
 }
 
-[node name="BossLazerZone" type="Panel" unique_id=1235244731]
-offset_right = 100.0
-offset_bottom = 400.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_y147c")
-script = ExtResource("1_y147c")
+[node name="BossLazerZone" type="Control" unique_id=1455344572 node_paths=PackedStringArray("zone1", "zone2", "zone1Area", "zone2Area", "attackDelayTimer", "prepareAttackSound", "attackSound", "animation")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s7xa7")
+zone1 = NodePath("Zone1")
+zone2 = NodePath("Zone2")
+zone1Area = NodePath("Zone1/Area2D")
+zone2Area = NodePath("Zone2/Area2D")
+attackDelayTimer = NodePath("AttackDelay")
+prepareAttackSound = NodePath("")
+attackSound = NodePath("AttackSound")
+animation = NodePath("AnimationPlayer")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=1171264221]
-collision_layer = 268435456
+[node name="Zone1" type="ColorRect" parent="." unique_id=102955975]
+self_modulate = Color(1, 1, 1, 0)
+material = SubResource("ShaderMaterial_dswcj")
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.62782896, 0, 0, 1)
+
+[node name="Area2D" type="Area2D" parent="Zone1" unique_id=623222980]
+collision_layer = 0
 collision_mask = 2147483648
+monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1693270544]
-shape = SubResource("RectangleShape2D_jpkyw")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zone1/Area2D" unique_id=1252278292]
+position = Vector2(576, 324)
+shape = SubResource("RectangleShape2D_ujpr2")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1822871638]
-libraries/ = SubResource("AnimationLibrary_y866w")
+[node name="Zone2" type="ColorRect" parent="." unique_id=1421803004]
+self_modulate = Color(1, 1, 1, 0)
+material = SubResource("ShaderMaterial_dswcj")
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.62782896, 0, 0, 1)
+
+[node name="Area2D" type="Area2D" parent="Zone2" unique_id=2077919648]
+collision_layer = 0
+collision_mask = 2147483648
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zone2/Area2D" unique_id=483288121]
+position = Vector2(575, 324)
+shape = SubResource("RectangleShape2D_ujpr2")
+
+[node name="AttackDelay" type="Timer" parent="." unique_id=1417605781]
+one_shot = true
+
+[node name="AttackSound" type="AudioStreamPlayer" parent="." unique_id=278808542]
+stream = ExtResource("4_wb1ot")
+pitch_scale = 0.25
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1151135483]
+libraries/ = SubResource("AnimationLibrary_0rk1e")
+
+[connection signal="area_entered" from="Zone1/Area2D" to="." method="OnAreaEntered"]
+[connection signal="area_entered" from="Zone2/Area2D" to="." method="OnAreaEntered"]
