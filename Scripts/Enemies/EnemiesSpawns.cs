@@ -53,11 +53,12 @@ namespace SpaceZombie.Enemies
             levels = [
                 //Niveau 1
                 [
+                    new EnemySpawn(zombie3, (1, spawnCenter), 2f, 1),
                     //"On spawn 3 zombie1 a des positon random et on attend 6 secondes pour spawner les prochains zombie
-                    new EnemySpawn(zombie1, (3, null), 6f),
+                    //new EnemySpawn(zombie1, (3, null), 6f),
 
                     //"On spawn 4 zombie1 a des positon random et on attend 8 secondes et on répète une deuxième fois
-                    new EnemySpawn(zombie1, (4, null), 8f, 2),
+                    //new EnemySpawn(zombie1, (4, null), 8f, 2),
 
                     //Fin du niveau lorsque tout les zombies du niveau sont morts.
                 ],

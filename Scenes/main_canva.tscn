@@ -16,24 +16,6 @@
 shader = ExtResource("3_p5n5s")
 shader_parameter/speed = 0.1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ahn3c"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_33otj"]
-bg_color = Color(1, 0, 0, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
 [sub_resource type="Environment" id="Environment_kf714"]
 background_mode = 3
 
@@ -110,25 +92,6 @@ grow_horizontal = 2
 grow_vertical = 2
 joueur = NodePath("../Joueur")
 prochainNiveauUi = NodePath("../../../../NextLevelCtr")
-level = 8
-
-[node name="Control" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=2136282105]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 47.0
-grow_horizontal = 2
-
-[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer/MainAera/Control" unique_id=1620996288]
-visible = false
-custom_minimum_size = Vector2(468, 40)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_styles/background = SubResource("StyleBoxFlat_ahn3c")
-theme_override_styles/fill = SubResource("StyleBoxFlat_33otj")
 
 [node name="Marge2" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=1413647310]
 custom_minimum_size = Vector2(0, 10)

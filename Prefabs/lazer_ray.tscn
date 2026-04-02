@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://blfyj0aw57cbs" path="res://Sounds/Laser.wav" id="3_8dr0h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e8ela"]
-size = Vector2(14, 1000)
+size = Vector2(16, 1000)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e8ela"]
 shader = ExtResource("2_e8ela")
@@ -49,7 +49,7 @@ begin_cap_mode = 2
 visible = false
 use_parent_material = true
 points = PackedVector2Array(0, 0, 0, 1000)
-width = 15.0
+width = 20.0
 default_color = Color(1, 0, 0, 1)
 begin_cap_mode = 2
 
@@ -57,18 +57,18 @@ begin_cap_mode = 2
 visible = false
 material = SubResource("ShaderMaterial_e8ela")
 points = PackedVector2Array(0, 0, 0, 1000)
-width = 20.0
+width = 30.0
 default_color = Color(0.93612784, 0.30166683, 0, 1)
 begin_cap_mode = 2
 
 [node name="LaserCore" type="Line2D" parent="." unique_id=1006634181]
 visible = false
 points = PackedVector2Array(0, 0, 0, 1000)
-width = 7.0
+width = 8.0
 begin_cap_mode = 2
 
 [node name="FireDelay" type="Timer" parent="." unique_id=1711597736]
-wait_time = 0.5
+wait_time = 0.8
 one_shot = true
 
 [node name="FireTime" type="Timer" parent="." unique_id=763673041]
@@ -81,6 +81,8 @@ one_shot = true
 stream = ExtResource("3_8dr0h")
 volume_db = -15.0
 pitch_scale = 0.8
+max_polyphony = 5
+bus = &"SFX"
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]
 [connection signal="area_exited" from="." to="." method="OnAreaExited"]
