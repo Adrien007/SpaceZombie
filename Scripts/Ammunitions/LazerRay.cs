@@ -14,7 +14,6 @@ namespace SpaceZombie.Ammunitions
         [Export] Timer fireTime;
         [Export] Timer repeatDamage;
         [Export] AudioStreamPlayer lazerSound;
-        public Action<int> lazerCollideListener;
         public Action fireEndedListener;
         private IDamagable damaging;
         private Tween fireTween;
@@ -65,11 +64,11 @@ namespace SpaceZombie.Ammunitions
             lazerSound.Play();
 
             fireTween = CreateTween().SetLoops();
-            fireTween.TweenProperty(lazerMain, "width", 18, 0.8).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
-            fireTween.TweenProperty(lazerMain, "width", 14, 0.8).SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
-            fireTween.Parallel().TweenProperty(lazerGlow, "width", 25, 0.8);
-            fireTween.Parallel().TweenProperty(lazerGlow, "width", 17, 0.8);
-            fireTween.Parallel().TweenProperty(lazerCore, "width", 9, 0.8);
+            fireTween.TweenProperty(lazerMain, "width", 25, 0.8);
+            fireTween.Parallel().TweenProperty(lazerGlow, "width", 30, 0.8);
+            fireTween.Parallel().TweenProperty(lazerCore, "width", 12, 0.8);
+            fireTween.Chain().TweenProperty(lazerMain, "width", 16, 0.8);
+            fireTween.Parallel().TweenProperty(lazerGlow, "width", 20, 0.8);
             fireTween.Parallel().TweenProperty(lazerCore, "width", 6, 0.8);
             fireTime.Start();
         }
@@ -87,7 +86,7 @@ namespace SpaceZombie.Ammunitions
         private void OnAreaExited(Area2D area)
         {
             repeatDamage.Stop();
-            if (area == damaging)
+            if (area == damaging && !damaging.IsDodging)
             {
                 damaging = null;
             }
@@ -100,18 +99,22 @@ namespace SpaceZombie.Ammunitions
 
         public void Stop()
         {
-            lazerSound.Stop();
-            Monitoring = false;
-            SetPhysicsProcess(false);
-            repeatDamage.Stop();
-            fireTween?.Kill();
-            fireDelay.Stop();
-            aimRay.Enabled = false;
-            aimRay.Visible = false;
-            lazerMain.Visible = false;
-            lazerGlow.Visible = false;
-            lazerCore.Visible = false;
-            fireEndedListener?.Invoke();
+            if (isAiming)
+            {
+                aimRay.Visible = false;
+                lazerMain.Visible = false;
+                lazerGlow.Visible = false;
+                lazerCore.Visible = false;
+                aimRay.Enabled = false;
+                lazerSound.Stop();
+                Monitoring = false;
+                SetPhysicsProcess(false);
+                repeatDamage.Stop();
+                fireTween?.Kill();
+                fireDelay.Stop();
+                fireEndedListener?.Invoke();
+            }
+
         }
     }
 }

@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://bd8lfxhgdl2jf" path="res://Sounds/ZombieShipTakeHit.wav" id="6_ev6jm"]
 [ext_resource type="Script" uid="uid://gsx6vsj38n6x" path="res://Scripts/Enemies/Zombie3MoveState.cs" id="6_p61eu"]
 [ext_resource type="Script" uid="uid://bh5hn428y6aal" path="res://Scripts/Enemies/Zombie3AttackState.cs" id="7_0nhbg"]
+[ext_resource type="PackedScene" uid="uid://brgqvr51kt6sh" path="res://Prefabs/Player/smoke_damage_vfx.tscn" id="10_0nhbg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fts7h"]
 radius = 47.095646
@@ -70,6 +71,94 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/Smoke_damage_vfx:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D:position:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Sprite2D/Smoke_damage_vfx:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_i8flf"]
+resource_name = "cooldown"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/Smoke_damage_vfx:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.96666664, 3.5, 4.866667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, 0, 0, 0.25, 0, 0, -0.156, -8, 0, 0, 0, -0.172, 8, 0, 0, 0, -0.156, -8, 0, 0, 0, -0.133, 8, 0.0044308873, -0.13325977, 0, 0, -1, 0, 0),
+"times": PackedFloat32Array(0, 1, 2, 3, 4.0333333, 4.9333334)
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"CooldownEnded"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D/Smoke_damage_vfx:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_p61eu"]
@@ -141,6 +230,7 @@ tracks/4/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0nhbg"]
 _data = {
 &"RESET": SubResource("Animation_0nhbg"),
+&"cooldown": SubResource("Animation_i8flf"),
 &"die": SubResource("Animation_p61eu")
 }
 
@@ -152,7 +242,7 @@ script = ExtResource("1_dfy8o")
 sprite = NodePath("Sprite2D")
 takeHitSound = NodePath("TakeHitSound")
 animation = NodePath("AnimationPlayer")
-hp = 3
+hp = 10
 moveSpeed = 500.0
 separationRadius = 60.0
 states = [NodePath("MoveState"), NodePath("AttackState")]
@@ -166,6 +256,11 @@ material = SubResource("ShaderMaterial_3kagc")
 scale = Vector2(0.43121338, 0.43121338)
 texture = ExtResource("2_fts7h")
 
+[node name="Smoke_damage_vfx" parent="Sprite2D" unique_id=2020028348 instance=ExtResource("10_0nhbg")]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(4.1742673, 99.71861)
+scale = Vector2(1.3914225, 1.3914225)
+
 [node name="Explosion" type="Sprite2D" parent="." unique_id=1444088097]
 visible = false
 position = Vector2(0, 2)
@@ -176,33 +271,30 @@ hframes = 12
 [node name="LazerRay" parent="." unique_id=1638562466 instance=ExtResource("5_p61eu")]
 position = Vector2(1.8, 43)
 
-[node name="MoveState" type="Node2D" parent="." unique_id=233838870]
+[node name="MoveState" type="Node2D" parent="." unique_id=233838870 node_paths=PackedStringArray("firstMoveTimer")]
 script = ExtResource("6_p61eu")
+firstMoveTimer = NodePath("FirsMoveTimer")
 
-[node name="AttackState" type="Node2D" parent="." unique_id=1140810055 node_paths=PackedStringArray("lazer", "firstAttackTimer", "attackCooldown")]
-script = ExtResource("7_0nhbg")
-lazer = NodePath("../LazerRay")
-firstAttackTimer = NodePath("FirsAttackTimer")
-attackCooldown = NodePath("AttackCooldown")
-followSpeed = 75.0
-
-[node name="FirsAttackTimer" type="Timer" parent="AttackState" unique_id=1505970300]
+[node name="FirsMoveTimer" type="Timer" parent="MoveState" unique_id=1505970300]
 wait_time = 0.5
 one_shot = true
 
-[node name="AttackCooldown" type="Timer" parent="AttackState" unique_id=1714191884]
-wait_time = 5.0
-one_shot = true
+[node name="AttackState" type="Node2D" parent="." unique_id=1140810055 node_paths=PackedStringArray("lazer")]
+script = ExtResource("7_0nhbg")
+lazer = NodePath("../LazerRay")
+followSpeed = 75.0
 
 [node name="TakeHitSound" type="AudioStreamPlayer" parent="." unique_id=233818472]
 stream = ExtResource("6_ev6jm")
 volume_db = -5.0
 pitch_scale = 1.5
+bus = &"Explosion"
 
 [node name="ExplosionSound" type="AudioStreamPlayer" parent="." unique_id=512883303]
 stream = ExtResource("4_ev6jm")
 volume_db = 1.5
 pitch_scale = 0.95
+bus = &"Explosion"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1869121089]
 libraries/ = SubResource("AnimationLibrary_0nhbg")

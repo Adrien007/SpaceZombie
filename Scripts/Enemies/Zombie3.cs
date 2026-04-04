@@ -5,15 +5,10 @@ namespace SpaceZombie.Enemies
 {
     public partial class Zombie3 : BaseEnemy
     {
+        [Export] private Node2D smokeVfx;
         private Vector2 velocity = Vector2.Zero;
         private float acceleration = 100.0f;
         public float maxSpeed = 75.0f;
-        public override void _Ready()
-        {
-            base._Ready();
-            ((Zombie3MoveState)currentState).SetTarget(new Vector2(Position.X, GetViewportRect().Size.Y - GD.RandRange(425, 580)));
-            this.score = 511;
-        }
 
         public void MoveSlowlyToward(Vector2 targetPosition, float delta)
         {
@@ -29,11 +24,22 @@ namespace SpaceZombie.Enemies
 
             // Apply the movement
             GlobalPosition += velocity * delta;
+            score = 568;
         }
 
         public void StopMovingSlowlyToward()
         {
             velocity = Vector2.Zero;
+        }
+
+        public void Cooldown()
+        {
+            animation.Play("cooldown");
+        }
+
+        public void CooldownEnded()
+        {
+            ChangeState(State.move);
         }
     }
 }

@@ -16,6 +16,13 @@ public partial class TitleScreen : Control
     {
         GetTree().ChangeSceneToFile("res://Scenes/main_canva.tscn");
     }
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionPressed("select"))
+        {
+            _on_start_button_pressed();
+        }
+    }
 
     private void _on_quit_pressed()
     {

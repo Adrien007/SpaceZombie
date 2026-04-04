@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dqdl0p8fg2rt2"]
 
 [ext_resource type="Script" uid="uid://di6ctnjf7jobq" path="res://Scripts/GameScreen/TitleScreen.cs" id="1_55kwv"]
-[ext_resource type="Shader" path="res://Scenes/title_screen_moving.gdshader" id="2_twnyg"]
+[ext_resource type="Shader" uid="uid://dy10i5hb2xs0l" path="res://Scenes/title_screen_moving.gdshader" id="2_twnyg"]
 [ext_resource type="Theme" uid="uid://bgp1n4uijfn6m" path="res://images/white_theme.tres" id="3_4gxqj"]
 [ext_resource type="Texture2D" uid="uid://chfwe3kosxfjn" path="res://images/starfield_stars_tile.png" id="3_55kwv"]
 [ext_resource type="AudioStream" uid="uid://csblwr6117qh6" path="res://Sounds/IntroPlusBossFight.mp3" id="4_55kwv"]

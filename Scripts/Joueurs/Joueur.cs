@@ -16,7 +16,7 @@ namespace SpaceZombie.Joueurs
         [Export] private AudioStreamPlayer sonDodgeSimple;
         [Export] private AudioStreamPlayer sonDodgeRestore;
         [Export] private GpuParticles2D dodgeEffect;
-        [Export] private ColorRect invinsibilityPanel;
+        [Export] private Panel invinsibilityPanel;
         [Export] private AudioStreamPlayer sonPrendsHit;
         [Export] private AudioStreamPlayer sonMeurt;
         [Export] private AudioStreamPlayer sonInvicible;
@@ -226,17 +226,17 @@ namespace SpaceZombie.Joueurs
 
         private void SetGodMode()
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 3; i++)
             {
                 canons.UpgradeCanons();
                 canons.UpgradeVitesse();
             }
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 1; i++)
             {
                 canons.UpgradeTraverse();
                 canons.UpgradeDamage();
             }
-            moveSpeed = 500f;
+            //moveSpeed = 500f;
         }
 
         public void Disable()
@@ -287,7 +287,7 @@ namespace SpaceZombie.Joueurs
         public void ScoreUpdateListener(int score, Vector2 globalPosition)
         {
             UpdateScore(score);
-            Ui.FloatingTextManager.Instance.ShowScore(globalPosition + new Vector2(GD.RandRange(-10, 10), GD.RandRange(-5, 5)), score);
+            Ui.FloatingTextManager.Instance?.ShowScore(globalPosition + new Vector2(GD.RandRange(-10, 10), GD.RandRange(-5, 5)), score);
         }
         private void UpdateScore(int newScore)
         {

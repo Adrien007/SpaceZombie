@@ -7,28 +7,17 @@ public partial class Zombie3AttackState : State
 {
     Zombie3AttackState() { name = attack; }
     [Export] LazerRay lazer;
-    [Export] Timer firstAttackTimer;
-    [Export] Timer attackCooldown;
     [Export] float followSpeed = 3;
-    private bool isFirstAttack = true;
     public override void _Ready()
     {
         base._Ready();
-        attackCooldown.Timeout += CooldownEnded;
-        firstAttackTimer.Timeout += FirstAttack;
+
         lazer.fireEndedListener = FireEnded;
     }
 
     public override void Enter()
     {
-        if (isFirstAttack)
-        {
-            firstAttackTimer.Start();
-        }
-        else
-        {
-            lazer.Aim();
-        }
+        lazer.Aim();
     }
 
     public override void PhysicUpdate(double delta)
@@ -39,21 +28,10 @@ public partial class Zombie3AttackState : State
         }
     }
 
-    private void CooldownEnded()
-    {
-        enemy.ChangeState(move);
-    }
-
     private void FireEnded()
     {
         ((Zombie3)enemy).StopMovingSlowlyToward();
-        attackCooldown.Start();
-    }
-
-    private void FirstAttack()
-    {
-        isFirstAttack = false;
-        enemy.ChangeState(move);
+        ((Zombie3)enemy).Cooldown();
     }
 
     public override void Exit()

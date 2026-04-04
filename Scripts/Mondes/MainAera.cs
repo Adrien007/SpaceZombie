@@ -50,5 +50,12 @@ namespace SpaceZombie.Mondes.Utilitaires
             if (lvl.ToInt() <= 5)
                 joueur.Upgrade(UpgradeOptions.AddProjectile);
         }
+
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+            GameEvents.Instance.EndLevel -= UpgradeJoueur;
+            GameEvents.Instance.ChooseUpgrade -= ChooseUpgrade;
+        }
     }
 }

@@ -1,63 +1,66 @@
-using Godot;
-using SpaceZombie.Joueurs;
-using SpaceZombie.Utilitaires;
 using System;
-using System.Collections.Generic;
+using Godot;
+using SpaceZombie.Utilitaires;
 
-namespace SpaceZombie.Boss
+public partial class BossLazerZone : Control
 {
-    public partial class BossLazerZone : Panel
+    [Export] ColorRect zone1;
+    [Export] ColorRect zone2;
+    [Export] Area2D zone1Area;
+    [Export] Area2D zone2Area;
+    [Export] Timer attackDelayTimer;
+    [Export] AudioStreamPlayer prepareAttackSound;
+    [Export] AudioStreamPlayer attackSound;
+    [Export] AnimationPlayer animation;
+    public float attackZoneMargin = 40f;
+    public int damage = 1;
+    private Tween fireTween;
+    private ShaderMaterial zoneMaterial;
+    public Action attackEndedListener;
+    public override void _Ready()
     {
-        private Area2D area;
-        private CollisionShape2D collision;
-        public AnimationPlayer animation;
-        public int damage = 2;
+        attackDelayTimer.Timeout += Attack;
+    }
 
-        public override void _Ready()
-        {
-            area = GetNode<Area2D>("Area2D");
-            collision = (CollisionShape2D)FindChild("CollisionShape2D");
-            animation = GetNode<AnimationPlayer>("AnimationPlayer");
-            area.AreaEntered += OnAreaEntered;
-            DisableCollision();
-        }
+    public void Fire(float freeZoneWidth, float attackSpeed)
+    {
+        fireTween?.Kill();
+        Vector2 screenSize = GetViewportRect().Size;
+        float freeZonePosition = (float)GD.RandRange(attackZoneMargin, screenSize.X - attackZoneMargin - freeZoneWidth);
+        zone1.Position = new Vector2(freeZonePosition - zone1.Size.X, 0);
+        zone2.Position = new Vector2(freeZonePosition + freeZoneWidth, 0);
+        animation.Play("prepare_attack", attackSpeed);
+    }
 
-        public void Fire(Vector2 size, float positionX)
-        {
-            Size = size;
-            GlobalPosition = new Vector2(positionX, 0);
-            animation.Play("Fire");
-        }
+    public void StartAttackDelay()
+    {
+        attackDelayTimer.Start();
+    }
 
-        public async void EnableCollision()
-        {
-            collision.Shape = (RectangleShape2D)collision.Shape.Duplicate();
-            (collision.Shape as RectangleShape2D).Size = Size;
-            area.Position = Size / 2;
-            await ToSignal(GetTree(), "physics_frame");
-        }
+    private async void Attack()
+    {
+        animation.Play("attack");
+    }
 
-        public async void DisableCollision()
-        {
-            Vector2 screenSize = GetViewportRect().Size;
-            area.Position = screenSize + Size;
-        }
+    private void AttackEnded()
+    {
+        attackEndedListener();
+    }
 
-        public void OnAreaEntered(Area2D area)
+    public void OnAreaEntered(Area2D area)
+    {
+        if (area is IDamagable damagable && !damagable.IsDodging)
         {
-            if (area is IDamagable damagableNode)
-            {
-                damagableNode.TakeDamage(2);
-            }
-        }
-
-        public void StopAnimation()
-        {
-            if (animation.IsAnimationActive())
-            {
-                animation.Stop();
-            }
+            damagable.TakeDamage(damage);
         }
     }
 
+    public void Stop()
+    {
+        zone1Area.Monitoring = false;
+        zone2Area.Monitoring = false;
+        zone1.Visible = false;
+        zone2.Visible = false;
+        fireTween?.Kill();
+    }
 }
