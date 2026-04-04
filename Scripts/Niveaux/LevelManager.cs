@@ -37,7 +37,6 @@ namespace SpaceZombie.Niveaux
             bossLoader = (PackedScene)ResourceLoader.Load($"res://Prefabs/boss.tscn");
             CallDeferred(nameof(Initialize));
         }
-
         private void Initialize()
         {
             GameEvents.Instance.EndLevel += ChangerNiveauLogic;
@@ -46,6 +45,13 @@ namespace SpaceZombie.Niveaux
             spawns.Initialize(Size, joueur, upgradeLoader);
             prochainNiveauUi.timer.Timeout += WaitForTimerToFinish;
             ChangerNiveauLogic(gdi.currentLevel.ToString());
+        }
+        public override void _ExitTree()
+        {
+            GameEvents.Instance.EnemyDied -= OnEnemyDied;
+            GameEvents.Instance.EndLevel -= ChangerNiveauLogic;
+            prochainNiveauUi.timer.Timeout -= WaitForTimerToFinish;
+            base._ExitTree();
         }
 
         public void ChangerNiveauLogic(string level)
@@ -142,14 +148,6 @@ namespace SpaceZombie.Niveaux
         {
             AddChild(boss);
             boss.Foward();
-        }
-
-        public override void _ExitTree()
-        {
-            base._ExitTree();
-            GameEvents.Instance.EnemyDied -= OnEnemyDied;
-            GameEvents.Instance.EndLevel -= ChangerNiveauLogic;
-            prochainNiveauUi.timer.Timeout -= WaitForTimerToFinish;
         }
     }
 

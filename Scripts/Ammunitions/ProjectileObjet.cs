@@ -33,7 +33,7 @@ namespace SpaceZombie.Ammunitions
             Enable();
         }
 
-        public override void _Process(double delta)
+        public override void _PhysicsProcess(double delta)
         {
             // VisibleOnScreenEnabler2D Disable le Process quand le node est à l'extérieur de l'écran.
             GlobalPosition += directionXY * projectile.Vitesse * (float)delta;

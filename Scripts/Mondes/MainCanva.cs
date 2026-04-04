@@ -12,6 +12,11 @@ namespace SpaceZombie.Mondes.Utilitaires
             GameEvents.Instance.ShowEndScreen += ShowEndScreen;
             CallDeferred(nameof(DeferredInit));
         }
+        public override void _ExitTree()
+        {
+            GameEvents.Instance.ShowEndScreen -= ShowEndScreen;
+            base._ExitTree();
+        }
 
         private void DeferredInit()
         {
@@ -25,12 +30,6 @@ namespace SpaceZombie.Mondes.Utilitaires
             endScreen.score = mainAera.joueur.jState.Score;
             GetTree().Root.AddChild(endScreen);
             mainAera.QueueFree();
-        }
-
-        public override void _ExitTree()
-        {
-            base._ExitTree();
-            GameEvents.Instance.ShowEndScreen -= ShowEndScreen;
         }
     }
 }

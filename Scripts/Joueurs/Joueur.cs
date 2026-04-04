@@ -78,12 +78,17 @@ namespace SpaceZombie.Joueurs
             playAeraPosition = playArea.Position;
             SetProcess(true);
         }
+        public override void _ExitTree()
+        {
+            GameEvents.Instance.UpdateScore -= ScoreUpdateListener;
+            base._ExitTree();
+        }
         private float PositionCentreX()
         {
             return playAeraPosition.X + playAeraSize.X * 0.5f;
         }
 
-        public override void _Process(double delta)
+        public override void _PhysicsProcess(double delta)
         {
             if (dodgeSpeed == 0)
             {
@@ -244,12 +249,6 @@ namespace SpaceZombie.Joueurs
             SetProcess(false);
             Monitorable = false;
             Monitoring = false;
-        }
-
-        public override void _ExitTree()
-        {
-            base._ExitTree();
-            GameEvents.Instance.UpdateScore -= ScoreUpdateListener;
         }
 
         private void OnSoundInvicibilityFinished()

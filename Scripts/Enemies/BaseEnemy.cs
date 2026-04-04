@@ -40,13 +40,9 @@ namespace SpaceZombie.Enemies
             this.joueur = joueur;
         }
 
-        public override void _Process(double delta)
-        {
-            currentState.Update(delta);
-        }
-
         public override void _PhysicsProcess(double delta)
         {
+            currentState.Update(delta);
             currentState.PhysicUpdate(delta);
         }
 

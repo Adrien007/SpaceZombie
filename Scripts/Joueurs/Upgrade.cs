@@ -24,7 +24,7 @@ namespace SpaceZombie.Joueurs
             Position = new Vector2(initialPostiionX, -size.Y + 1);
         }
 
-        public override void _Process(double delta)
+        public override void _PhysicsProcess(double delta)
         {
             GlobalPosition = new Vector2(GlobalPosition.X, GlobalPosition.Y + (vitesse * (float)delta));
         }

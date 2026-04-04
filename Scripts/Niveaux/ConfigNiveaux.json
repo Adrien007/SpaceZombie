@@ -83,7 +83,7 @@
               { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [3] },
               { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [4] }         
             ],
-            "TpsRecharge": 0.95,
+            "TpsRecharge": 1,
             "NbProjectilePerAttack": 6
           },
           {
@@ -99,7 +99,7 @@
               { "Fixed": false, "Speed": 50, "Direction": -1, "EnemyLevels": [4] },
               { "Fixed": false, "Speed": 50, "Direction": 1, "EnemyLevels": [4] }
             ],
-            "TpsRecharge": 0.9,
+            "TpsRecharge": 0.95,
             "NbProjectilePerAttack": 6
           },
           {
@@ -115,7 +115,7 @@
               { "Fixed": false, "Speed": 60, "Direction": -1, "EnemyLevels": [4] },
               { "Fixed": false, "Speed": 60, "Direction": 1, "EnemyLevels": [4] }
             ],
-            "TpsRecharge": 0.8,
+            "TpsRecharge": 0.95,
             "NbProjectilePerAttack": 6
           },
           {
@@ -131,7 +131,7 @@
               { "Fixed": false, "Speed": 80, "Direction": -1, "EnemyLevels": [4] },
               { "Fixed": false, "Speed": 80, "Direction": -1, "EnemyLevels": [4] }
             ],
-            "TpsRecharge": 0.7,
+            "TpsRecharge": 0.85,
             "NbProjectilePerAttack": 6
           }
         ]
