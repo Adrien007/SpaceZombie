@@ -3,12 +3,17 @@ ENGLISH,Français,English
 START,Start,Commencer
 QUIT,Quit,Quitter
 NEXTWAVE,Next Wave,Prochaine vague
-UPGRADE_SELECTION,Choose one upgrade, Choisir une amélioration
-UPGRADE_INPUT,Press {0} to select, Appuyez sur {0} pour choisir
+UPGRADE_SELECTION,Choose one upgrade,Choisir une amélioration
+UPGRADE_INPUT,Press {0} to select,Appuyez sur {0} pour choisir
 UPGRADE_DAMAGE,Damage +1,Dégat +1
 UPGRADE_ATTACK_SPEED,Attack Speed +{0}%,Vitesse d'attaque +{0}%
 UPGRADE_PASSTHROUGH,Passthrough +1,Traverse +1
 UPGRADE_DODGE,Dodge +1,Esquive +1
 END_THANKS,Thank you for playing !,Merci d'avoir joué !
-END_BUTTON,Press {0} to return to title screen, Appuyez sur {0} pour retourner à l'écran titre
-
+END_BUTTON,Press {0} to return to title screen,Appuyez sur {0} pour retourner à l'écran titre
+PAUSE_MENUE,Pause menu,Menu pause
+ENTER_TO_SELECT,Press Enter to select,Appuyez sur Entrée pour sélectionner
+RESUME_PAUSE_MENUE,Resume,Reprendre
+QUIT_PAUSE_MENUE,Quit,Quitter
+STORY,Story..,Histoire..
+STORY_INTRO,"[b]Humanity’s last hope lies among the stars…[/b]\nTo survive, we must reach Mars. But the journey is far from simple.\nA horde of [b]space zombies[/b] has invaded our solar route, blocking the way to our new home!\nArmed with courage, wit, and whatever weapons you can find, it’s up to you to clear the invasion and secure humanity’s future.\nAre you ready to face the undead… [b]in zero gravity[/b]?","[b]Le dernier espoir de l’humanité se trouve parmi les étoiles…[/b]\nPour survivre, nous devons atteindre Mars. Mais le voyage est loin d’être simple.\nUne horde de [b]zombies de l’espace[/b] a envahi notre trajectoire, bloquant le chemin vers notre nouvelle maison !\nArmé de courage, d’ingéniosité et de toutes les armes que vous pourrez trouver, c’est à vous de repousser l’invasion et de garantir l’avenir de l’humanité.\nÊtes-vous prêt à affronter les morts-vivants… [b]en apesanteur[/b] ?"

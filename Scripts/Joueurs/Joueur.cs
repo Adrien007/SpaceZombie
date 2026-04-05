@@ -62,7 +62,7 @@ namespace SpaceZombie.Joueurs
             sonInvicible.Finished += OnSoundInvicibilityFinished;
             invinsibilityPanel.Visible = false;
             smokeDamageVfx.Visible = false;
-            SetProcess(false);
+            SetPhysicsProcess(false);
         }
         public void Initialize(Rect2 playArea)
         {
@@ -76,14 +76,19 @@ namespace SpaceZombie.Joueurs
             if (godMode) SetGodMode();
             playAeraSize = playArea.Size;
             playAeraPosition = playArea.Position;
-            SetProcess(true);
+            SetPhysicsProcess(true);
+        }
+        public override void _ExitTree()
+        {
+            GameEvents.Instance.UpdateScore -= ScoreUpdateListener;
+            base._ExitTree();
         }
         private float PositionCentreX()
         {
             return playAeraPosition.X + playAeraSize.X * 0.5f;
         }
 
-        public override void _Process(double delta)
+        public override void _PhysicsProcess(double delta)
         {
             if (dodgeSpeed == 0)
             {
@@ -204,6 +209,7 @@ namespace SpaceZombie.Joueurs
                     AnimationPlayer animation = GetNode<AnimationPlayer>("AnimationPlayer");
                     animation.AnimationFinished += OnDiedAnimationFinished;
                     animation.Play("Die");
+                    SetPhysicsProcess(false);
                 }
             }
         }
@@ -226,17 +232,14 @@ namespace SpaceZombie.Joueurs
 
         private void SetGodMode()
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 8; i++)
             {
                 canons.UpgradeCanons();
                 canons.UpgradeVitesse();
-            }
-            for (int i = 0; i < 1; i++)
-            {
                 canons.UpgradeTraverse();
                 canons.UpgradeDamage();
             }
-            //moveSpeed = 500f;
+            jState.Hp = int.MaxValue;
         }
 
         public void Disable()
@@ -244,12 +247,6 @@ namespace SpaceZombie.Joueurs
             SetProcess(false);
             Monitorable = false;
             Monitoring = false;
-        }
-
-        public override void _ExitTree()
-        {
-            base._ExitTree();
-            GameEvents.Instance.UpdateScore -= ScoreUpdateListener;
         }
 
         private void OnSoundInvicibilityFinished()

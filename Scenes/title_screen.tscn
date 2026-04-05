@@ -5,6 +5,7 @@
 [ext_resource type="Theme" uid="uid://bgp1n4uijfn6m" path="res://images/white_theme.tres" id="3_4gxqj"]
 [ext_resource type="Texture2D" uid="uid://chfwe3kosxfjn" path="res://images/starfield_stars_tile.png" id="3_55kwv"]
 [ext_resource type="AudioStream" uid="uid://csblwr6117qh6" path="res://Sounds/IntroPlusBossFight.mp3" id="4_55kwv"]
+[ext_resource type="Script" uid="uid://b65hlha5gflxc" path="res://Scripts/Ui/HBoxTitleScreenControl.cs" id="5_12m1t"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_12m1t"]
 shader = ExtResource("2_twnyg")
@@ -22,7 +23,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_55kwv")
-firstButtonToFocus = NodePath("Control1/VBoxContainer/StartButton")
+firstButtonToFocus = NodePath("Control1/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer/StartButton")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1231218953]
 layout_mode = 1
@@ -44,24 +45,6 @@ grow_vertical = 2
 texture = ExtResource("3_55kwv")
 stretch_mode = 1
 
-[node name="Title" type="Label" parent="." unique_id=2802375]
-visibility_layer = 512
-layout_mode = 0
-offset_right = 1154.0
-offset_bottom = 340.0
-scale = Vector2(1.000962, 0.99473596)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_shadow_color = Color(0.234375, 0.20727539, 0.20727539, 1)
-theme_override_colors/font_outline_color = Color(0.915625, 0.77255857, 0.77255857, 1)
-theme_override_constants/shadow_offset_x = 6
-theme_override_constants/shadow_offset_y = 6
-theme_override_constants/outline_size = 12
-theme_override_constants/shadow_outline_size = 50
-theme_override_font_sizes/font_size = 150
-text = "SPACE ZOMBIE"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="IntroPlusBossFight" type="AudioStreamPlayer" parent="." unique_id=1667132778]
 stream = ExtResource("4_55kwv")
 parameters/looping = true
@@ -74,23 +57,67 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control1" unique_id=1477861956]
-layout_mode = 0
-offset_left = 503.99997
-offset_top = 374.0
-offset_right = 573.0
-offset_bottom = 497.0
-scale = Vector2(2.0016174, 1.3681407)
+[node name="MarginContainer" type="MarginContainer" parent="Control1" unique_id=1712383926]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control1/MarginContainer" unique_id=1420868786]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="Control1/MarginContainer/VBoxContainer2" unique_id=2802375]
+visibility_layer = 512
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.234375, 0.20727539, 0.20727539, 1)
+theme_override_colors/font_outline_color = Color(0.915625, 0.77255857, 0.77255857, 1)
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 12
+theme_override_constants/shadow_outline_size = 50
+theme_override_font_sizes/font_size = 150
+text = "SPACE ZOMBIE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control1/MarginContainer/VBoxContainer2" unique_id=850581162 node_paths=PackedStringArray("ctrLeft", "ctrRight", "ctrTxt", "txt", "storyBtn")]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("5_12m1t")
+ctrLeft = NodePath("Control2")
+ctrRight = NodePath("Control3")
+ctrTxt = NodePath("txtCtr")
+txt = NodePath("RichTextLabel")
+storyBtn = NodePath("VBoxContainer/StoryButton")
+
+[node name="Control2" type="Control" parent="Control1/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=735800518]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control1/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1477861956]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("3_4gxqj")
 theme_override_constants/separation = 5
 alignment = 1
 
-[node name="StartButton" type="Button" parent="Control1/VBoxContainer" unique_id=1698263586]
+[node name="StartButton" type="Button" parent="Control1/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer" unique_id=1698263586]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 2
 size_flags_stretch_ratio = 0.0
 focus_neighbor_top = NodePath("../Quit")
-focus_neighbor_bottom = NodePath("../ButtonLanguage")
+focus_neighbor_bottom = NodePath("../StoryButton")
 theme = SubResource("Theme_55kwv")
 theme_override_colors/font_color = Color(0.00714154, 0.0071415715, 0.007141549, 1)
 theme_override_colors/font_focus_color = Color(0, 0.2784314, 0.6431373, 1)
@@ -99,11 +126,25 @@ theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
 text = "START"
 autowrap_mode = 1
 
-[node name="ButtonLanguage" type="Button" parent="Control1/VBoxContainer" unique_id=1984175847]
+[node name="StoryButton" type="Button" parent="Control1/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer" unique_id=1214137655]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 2
 size_flags_stretch_ratio = 0.0
 focus_neighbor_top = NodePath("../StartButton")
+focus_neighbor_bottom = NodePath("../ButtonLanguage")
+theme = SubResource("Theme_55kwv")
+theme_override_colors/font_color = Color(0.00714154, 0.0071415715, 0.007141549, 1)
+theme_override_colors/font_focus_color = Color(0, 0.2784314, 0.6431373, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.2784314, 0.6431373, 1)
+theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
+text = "STORY"
+autowrap_mode = 1
+
+[node name="ButtonLanguage" type="Button" parent="Control1/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer" unique_id=1984175847]
+layout_mode = 2
+size_flags_vertical = 2
+size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../StoryButton")
 focus_neighbor_bottom = NodePath("../Quit")
 theme_override_colors/font_color = Color(0.00714154, 0.0071415715, 0.007141549, 1)
 theme_override_colors/font_focus_color = Color(0, 0.2784314, 0.6431373, 1)
@@ -112,8 +153,9 @@ theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
 text = "ENGLISH"
 autowrap_mode = 1
 
-[node name="Quit" type="Button" parent="Control1/VBoxContainer" unique_id=1344365612]
+[node name="Quit" type="Button" parent="Control1/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer" unique_id=1344365612]
 layout_mode = 2
+size_flags_vertical = 2
 size_flags_stretch_ratio = 0.0
 focus_neighbor_top = NodePath("../ButtonLanguage")
 focus_neighbor_bottom = NodePath("../StartButton")
@@ -124,6 +166,34 @@ theme_override_colors/font_hover_color = Color(0, 0.2784314, 0.6431373, 1)
 text = "QUIT"
 autowrap_mode = 1
 
-[connection signal="pressed" from="Control1/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="Control1/VBoxContainer/ButtonLanguage" to="." method="_on_button_language_pressed"]
-[connection signal="pressed" from="Control1/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[node name="Control3" type="Control" parent="Control1/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1176413668]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="txtCtr" type="Control" parent="Control1/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=397622949]
+visible = false
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control1/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1391642142]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 6.0
+theme_override_colors/default_color = Color(0.9035983, 0.9035982, 0.9035983, 1)
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+bbcode_enabled = true
+text = "STORY_INTRO"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[connection signal="pressed" from="Control1/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Control1/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer/ButtonLanguage" to="." method="_on_button_language_pressed"]
+[connection signal="pressed" from="Control1/MarginContainer/VBoxContainer2/HBoxContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

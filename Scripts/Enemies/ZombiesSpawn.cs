@@ -32,6 +32,11 @@ namespace SpaceZombie.Enemies
             SetPhysicsProcess(false);
             GameEvents.Instance.EnemyDied += DesactiverEnemyPasEnSandwitchListener;
         }
+        public override void _ExitTree()
+        {
+            GameEvents.Instance.EnemyDied -= DesactiverEnemyPasEnSandwitchListener;
+            base._ExitTree();
+        }
 
         public void Initialize()
         {
@@ -67,12 +72,6 @@ namespace SpaceZombie.Enemies
         public override void _PhysicsProcess(double delta)
         {
             service.DeplacerLigne(inLigneSpawnersObjet, (float)delta, DeplaceEnBlock);
-        }
-
-        public override void _ExitTree()
-        {
-            base._ExitTree();
-            GameEvents.Instance.EnemyDied -= DesactiverEnemyPasEnSandwitchListener;
         }
     }
 

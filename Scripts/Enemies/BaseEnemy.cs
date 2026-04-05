@@ -40,13 +40,9 @@ namespace SpaceZombie.Enemies
             this.joueur = joueur;
         }
 
-        public override void _Process(double delta)
-        {
-            currentState.Update(delta);
-        }
-
         public override void _PhysicsProcess(double delta)
         {
+            currentState.Update(delta);
             currentState.PhysicUpdate(delta);
         }
 
@@ -111,7 +107,7 @@ namespace SpaceZombie.Enemies
 
             var group = GetTree().GetNodesInGroup("zombie");
 
-            // Séparation
+            // Separation
             foreach (BaseEnemy other in group)
             {
                 if (other == this) continue;

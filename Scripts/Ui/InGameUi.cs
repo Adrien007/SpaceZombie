@@ -15,6 +15,12 @@ namespace SpaceZombie.Ui
             GameEvents.Instance.PlayerScoreUpdated += UpdatePlayerScoreListener;
             GameEvents.Instance.PlayerHealthUpdated += UpdatePlayerHealthLeftListener;
         }
+        public override void _ExitTree()
+        {
+            GameEvents.Instance.PlayerScoreUpdated -= UpdatePlayerScoreListener;
+            GameEvents.Instance.PlayerHealthUpdated -= UpdatePlayerHealthLeftListener;
+            base._ExitTree();
+        }
 
         private void UpdatePlayerScoreListener(int score)
         {
@@ -27,12 +33,6 @@ namespace SpaceZombie.Ui
             this.viRestante.Text = txt;
         }
 
-        public override void _ExitTree()
-        {
-            base._ExitTree();
-            GameEvents.Instance.PlayerScoreUpdated -= UpdatePlayerScoreListener;
-            GameEvents.Instance.PlayerHealthUpdated -= UpdatePlayerHealthLeftListener;
-        }
 
     }
 }

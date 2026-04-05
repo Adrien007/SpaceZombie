@@ -277,7 +277,7 @@ _data = {
 &"prepare_attack": SubResource("Animation_dswcj")
 }
 
-[node name="BossLazerZone" type="Control" unique_id=1455344572 node_paths=PackedStringArray("zone1", "zone2", "zone1Area", "zone2Area", "attackDelayTimer", "prepareAttackSound", "attackSound", "animation")]
+[node name="BossLazerZone" type="Control" unique_id=1455344572 node_paths=PackedStringArray("zone1", "zone2", "zone1Area", "zone2Area", "zone1ColShape", "zone2ColShape", "attackDelayTimer", "attackSound", "animation")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -289,8 +289,9 @@ zone1 = NodePath("Zone1")
 zone2 = NodePath("Zone2")
 zone1Area = NodePath("Zone1/Area2D")
 zone2Area = NodePath("Zone2/Area2D")
+zone1ColShape = NodePath("Zone1/Area2D/CollisionShape2D")
+zone2ColShape = NodePath("Zone2/Area2D/CollisionShape2D")
 attackDelayTimer = NodePath("AttackDelay")
-prepareAttackSound = NodePath("")
 attackSound = NodePath("AttackSound")
 animation = NodePath("AnimationPlayer")
 
@@ -313,7 +314,6 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Zone1/Area2D" unique_id=1252278292]
-position = Vector2(576, 324)
 shape = SubResource("RectangleShape2D_ujpr2")
 
 [node name="Zone2" type="ColorRect" parent="." unique_id=1421803004]
@@ -335,7 +335,6 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Zone2/Area2D" unique_id=483288121]
-position = Vector2(575, 324)
 shape = SubResource("RectangleShape2D_ujpr2")
 
 [node name="AttackDelay" type="Timer" parent="." unique_id=1417605781]
@@ -343,6 +342,7 @@ one_shot = true
 
 [node name="AttackSound" type="AudioStreamPlayer" parent="." unique_id=278808542]
 stream = ExtResource("4_wb1ot")
+volume_db = -10.0
 pitch_scale = 0.25
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1151135483]

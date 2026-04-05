@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://blfyj0aw57cbs" path="res://Sounds/Laser.wav" id="3_8dr0h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e8ela"]
-size = Vector2(16, 1000)
+size = Vector2(8, 1000)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e8ela"]
 shader = ExtResource("2_e8ela")
@@ -27,7 +27,7 @@ repeatDamage = NodePath("RepeatDamage")
 lazerSound = NodePath("AudioStreamPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1216310216]
-position = Vector2(0, 500)
+position = Vector2(0, 501)
 shape = SubResource("RectangleShape2D_e8ela")
 
 [node name="AimRay" type="RayCast2D" parent="." unique_id=1967638044]
@@ -79,9 +79,9 @@ one_shot = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=991049055]
 stream = ExtResource("3_8dr0h")
-volume_db = -15.0
+volume_db = -35.0
 pitch_scale = 0.8
-max_polyphony = 5
+max_polyphony = 3
 bus = &"SFX"
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]

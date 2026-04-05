@@ -37,7 +37,7 @@ public partial class Zombie3MoveState : State
 
     public override void PhysicUpdate(double delta)
     {
-        if (enemy.GlobalPosition.DistanceTo(targetPosition) > 10)
+        if (enemy.GlobalPosition.DistanceSquaredTo(targetPosition) > 100)
         {
             enemy.MovePosition(targetDirection, delta);
         }
