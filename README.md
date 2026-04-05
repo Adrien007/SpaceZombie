@@ -1,9 +1,9 @@
 
 ---
 
-# **Zombie Blaster** 🎮 **WIP**
+# **Space Zombie** 🎮 
 
-**Zombie Blaster** is a fast-paced, arcade-style 2D shoot'em up game inspired by classic titles like *Chicken Invaders*. Developed using **Godot Engine** with **C#**, this project is both a nostalgic homage and a modernized gameplay experience.
+**Space Zombie** is a fast-paced, arcade-style 2D shoot'em up game inspired by classic titles like *Chicken Invaders*. Developed using **Godot Engine** with **C#**, this project is both a nostalgic homage and a modernized gameplay experience.
 
 ---
 
@@ -22,8 +22,9 @@ Take control of a spaceship at the bottom of the screen and defend the universe 
 ## 🕹️ **Controls**
 - **Move Left:** Arrow Left / A  
 - **Move Right:** Arrow Right / D  
-- **Shoot:** Spacebar
-- Controller support **WIP**
+- **Shoot:** Spacebar (can maintain for auto fire)
+- **Dodge** Shift or Ctrl or Alt
+- Controller support
 *Note: Movement is horizontal only.*
 
 ---
