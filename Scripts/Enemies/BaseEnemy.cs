@@ -107,7 +107,7 @@ namespace SpaceZombie.Enemies
 
             var group = GetTree().GetNodesInGroup("zombie");
 
-            // Séparation
+            // Separation
             foreach (BaseEnemy other in group)
             {
                 if (other == this) continue;

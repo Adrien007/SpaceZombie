@@ -83,13 +83,15 @@ levelManager = NodePath("LevelManager")
 
 [node name="Joueur" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=290880064 instance=ExtResource("1_0dl77")]
 position = Vector2(561.5, 595)
-hp = 8
+hp = 10
 
 [node name="LevelManager" parent="HBoxContainer/VBoxContainer/MainAera" unique_id=1859754752 node_paths=PackedStringArray("joueur", "prochainNiveauUi") instance=ExtResource("5_ib1eq")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 joueur = NodePath("../Joueur")

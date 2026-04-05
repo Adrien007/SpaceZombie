@@ -24,6 +24,7 @@ viRestante = NodePath("VBoxContainer/PlayerVie_ctr/HBoxContainer/playerVieRestan
 score = NodePath("VBoxContainer/Score")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1226663575]
+clip_contents = true
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -37,6 +38,7 @@ custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="Score" type="Label" parent="VBoxContainer" unique_id=1163281907]
+clip_contents = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_vertical = 1
@@ -54,6 +56,7 @@ custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PlayerVie_ctr" unique_id=1746761476]
+clip_contents = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 1
 anchors_preset = 15

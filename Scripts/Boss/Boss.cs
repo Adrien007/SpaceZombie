@@ -59,7 +59,6 @@ namespace SpaceZombie.Boss
 
         public void Foward()
         {
-
             introPlusBossFight.Play(21.50f);
             animation.Play("Foward");
         }

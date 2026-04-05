@@ -44,7 +44,16 @@ namespace SpaceZombie.Niveaux
             zombiesSpawn.Initialize();
             spawns.Initialize(Size, joueur, upgradeLoader);
             prochainNiveauUi.timer.Timeout += WaitForTimerToFinish;
-            ChangerNiveauLogic(gdi.currentLevel.ToString());
+            
+            if (!gdi.HasNext())
+            {
+                zombiesSpawn.ProcessMode = ProcessModeEnum.Disabled;
+                ShowBoss();
+            }
+            else
+            {
+                ChangerNiveauLogic(gdi.currentLevel.ToString());
+            }
         }
         public override void _ExitTree()
         {
@@ -139,7 +148,6 @@ namespace SpaceZombie.Niveaux
         private void ShowBoss()
         {
             Boss.Boss boss = (Boss.Boss)bossLoader.Instantiate();
-            boss.Position = new Vector2(Size.X / 2, 0);
             boss.joueur = joueur;
             CallDeferred(nameof(AddBoss), boss);
         }

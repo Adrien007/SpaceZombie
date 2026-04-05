@@ -62,7 +62,7 @@ namespace SpaceZombie.Joueurs
             sonInvicible.Finished += OnSoundInvicibilityFinished;
             invinsibilityPanel.Visible = false;
             smokeDamageVfx.Visible = false;
-            SetProcess(false);
+            SetPhysicsProcess(false);
         }
         public void Initialize(Rect2 playArea)
         {
@@ -76,7 +76,7 @@ namespace SpaceZombie.Joueurs
             if (godMode) SetGodMode();
             playAeraSize = playArea.Size;
             playAeraPosition = playArea.Position;
-            SetProcess(true);
+            SetPhysicsProcess(true);
         }
         public override void _ExitTree()
         {
@@ -209,6 +209,7 @@ namespace SpaceZombie.Joueurs
                     AnimationPlayer animation = GetNode<AnimationPlayer>("AnimationPlayer");
                     animation.AnimationFinished += OnDiedAnimationFinished;
                     animation.Play("Die");
+                    SetPhysicsProcess(false);
                 }
             }
         }
@@ -231,17 +232,14 @@ namespace SpaceZombie.Joueurs
 
         private void SetGodMode()
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 8; i++)
             {
                 canons.UpgradeCanons();
                 canons.UpgradeVitesse();
-            }
-            for (int i = 0; i < 1; i++)
-            {
                 canons.UpgradeTraverse();
                 canons.UpgradeDamage();
             }
-            //moveSpeed = 500f;
+            jState.Hp = int.MaxValue;
         }
 
         public void Disable()

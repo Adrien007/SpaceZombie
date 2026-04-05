@@ -61,7 +61,7 @@
           {
             "LevelNumber": 5,
             "NbEnemiesParLigne": 0,
-            "DeplaceEnBlock": true,
+            "DeplaceEnBlock": false,
             "Lines": [
               { "Fixed": false, "Speed": 40, "Direction": -1, "EnemyLevels": [3] },
               { "Fixed": false, "Speed": 40, "Direction": 1, "EnemyLevels": [3] },
@@ -131,7 +131,7 @@
               { "Fixed": false, "Speed": 80, "Direction": -1, "EnemyLevels": [4] },
               { "Fixed": false, "Speed": 80, "Direction": -1, "EnemyLevels": [4] }
             ],
-            "TpsRecharge": 0.85,
+            "TpsRecharge": 0.9,
             "NbProjectilePerAttack": 6
           }
         ]
